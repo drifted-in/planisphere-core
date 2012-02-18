@@ -36,17 +36,22 @@ public class Producer {
     public void createPDF(ArrayList<File> inputFileList, File output) throws Exception {
 
         File foFile = createFO(inputFileList);
-        //System.out.println(foFile.getAbsolutePath());
-        //System.out.println(output.getAbsolutePath());
-
+        
         OutputStream out = new BufferedOutputStream(new FileOutputStream(output));
-
+        
+        Fop fop = null;
+        Source foSource = null;
+        Result pdfResult = null;
+        
         try {
-            Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, out);
-            transform(new StreamSource(foFile), new SAXResult(fop.getDefaultHandler()));
+            fop = fopFactory.newFop(MimeConstants.MIME_PDF, out);
+            foSource = new StreamSource(foFile);
+            pdfResult = new SAXResult(fop.getDefaultHandler());
+            transform(foSource, pdfResult);
             foFile.delete();
         } finally {
             out.close();
+            fop = null;            
         }
     }
 
