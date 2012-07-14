@@ -64,19 +64,20 @@ public final class Renderer {
     private DocumentBuilder docBuilder;
     // the following value should be calculated during import
     private Integer magnitudeRange = 8;
-    ArrayList<Point2D.Double> mapArea;
-    ArrayList<CardinalPointInfo> cardinalPoints;
-    Options options;
-    Localization localization;
-    FontManager fontManager;
+    private ArrayList<Point2D.Double> mapArea;
+    private ArrayList<CardinalPointInfo> cardinalPoints;
+    private Options options;
+    private Localization localization;
+    private FontManager fontManager;
 
+    @Deprecated
     public Renderer(CacheHandler cache, OutputStream output, Options options) throws Exception {
-        this.cache = cache;
-        writer = XMLOutputFactory.newInstance().createXMLStreamWriter(output);
+        this.cache = cache;        
         inputFactory = XMLInputFactory.newInstance();
         inputFactory.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.FALSE);
         inputFactory.setProperty(XMLInputFactory.IS_VALIDATING, Boolean.FALSE);
         outputFactory = XMLOutputFactory.newInstance();
+        writer = outputFactory.createXMLStreamWriter(output);
         docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 
         this.options = options;
@@ -84,7 +85,37 @@ public final class Renderer {
         localization = new Localization(options.getCurrentLocale());
         fontManager = new FontManager(options.getCurrentLocale());
     }
+    
+    public Renderer(CacheHandler cache) throws Exception {
+        this.cache = cache;
+        inputFactory = XMLInputFactory.newInstance();
+        inputFactory.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.FALSE);
+        inputFactory.setProperty(XMLInputFactory.IS_VALIDATING, Boolean.FALSE);
+        outputFactory = XMLOutputFactory.newInstance();
+        docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+    }    
+    
+    public void createFromTemplate(String resourcePath, OutputStream output, Options options) throws Exception {
+        writer = outputFactory.createXMLStreamWriter(output);
+        this.options = options;
+        Settings.latitude = options.getLatitude();
+        localization = new Localization(options.getCurrentLocale());
+        fontManager = new FontManager(options.getCurrentLocale());
+        createFromTemplate(resourcePath);
+    }
+    
+    public byte[] createFromTemplate(String resourcePath, Options options) throws Exception {        
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        writer = outputFactory.createXMLStreamWriter(output);
+        this.options = options;
+        Settings.latitude = options.getLatitude();
+        localization = new Localization(options.getCurrentLocale());
+        fontManager = new FontManager(options.getCurrentLocale());
+        createFromTemplate(resourcePath);
+        return output.toByteArray();
+    }
 
+    
     public void createFromTemplate(String resourcePath) throws Exception {
         InputStream input = getClass().getResourceAsStream(Settings.resourceBasePath + "templates/core/" + resourcePath);
         createFromTemplate(input);

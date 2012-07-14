@@ -3,21 +3,28 @@ package in.drifted.planisphere.renderer.pdf;
 import in.drifted.planisphere.Settings;
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.Reader;
 import java.util.ArrayList;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.sax.SAXResult;
+import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamSource;
 import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.DefaultConfigurationBuilder;
 import org.apache.fop.apps.FopFactory;
 import org.apache.fop.apps.Fop;
 import org.apache.fop.apps.MimeConstants;
+import org.xml.sax.InputSource;
+import org.xml.sax.helpers.XMLReaderFactory;
 
 public class Producer {
 
@@ -42,12 +49,19 @@ public class Producer {
         Fop fop = null;
         Source foSource = null;
         Result pdfResult = null;
+        SAXSource source = null;
         
         try {
             fop = fopFactory.newFop(MimeConstants.MIME_PDF, out);
-            foSource = new StreamSource(foFile);
+            //foSource = new StreamSource(foFile);
+            
+            InputStream inputStream = new FileInputStream(foFile);
+            Reader reader = new InputStreamReader(inputStream, "UTF-8");
+            InputSource is = new InputSource(reader);
+            source = new SAXSource(is);
+            source.setXMLReader(XMLReaderFactory.createXMLReader());
             pdfResult = new SAXResult(fop.getDefaultHandler());
-            transform(foSource, pdfResult);
+            transform(source, pdfResult);
             foFile.delete();
         } finally {
             out.close();
