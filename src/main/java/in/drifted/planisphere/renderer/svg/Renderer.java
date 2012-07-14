@@ -233,9 +233,9 @@ public final class Renderer {
                         } else if (id.equals("pinMark")) {
                             renderPinMark(0);
 
-                        } else if (id.equals("guide") || id.equals("worldmap") || id.equals("buttonSettings") || id.equals("buttonExport")) {
+                        } else if (id.equals("guide") || id.equals("worldmap") || id.equals("buttonMoreInfo") || id.equals("buttonSettings") || id.equals("buttonExport")) {
                             writer.writeStartElement("g");
-                            if (id.equals("buttonSettings") || id.equals("buttonExport")) {
+                            if (id.equals("buttonMoreInfo") || id.equals("buttonSettings") || id.equals("buttonExport")) {
                                 writer.writeAttribute("title", localization.getValue(id));
                             }
                             renderSymbol(id);
