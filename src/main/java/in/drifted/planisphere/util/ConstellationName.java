@@ -18,12 +18,12 @@ public class ConstellationName implements Serializable {
     }
 
     private String generateId(String name) {
-        String [] fragments = name.split(" ");
+        String[] fragments = name.split(" ");
         StringBuilder strId = new StringBuilder();
-        for (int i=0;i<fragments.length;i++) {
+        for (int i = 0; i < fragments.length; i++) {
             String candidate = fragments[i].toLowerCase();
             if (i > 0) {
-                candidate = candidate.substring(0,1).toUpperCase() + candidate.substring(1);
+                candidate = candidate.substring(0, 1).toUpperCase() + candidate.substring(1);
             }
             strId.append(candidate);
         }

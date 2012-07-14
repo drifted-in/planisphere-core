@@ -14,7 +14,7 @@ public class ConstellationNamesDataLoader implements Serializable {
     public ConstellationNamesDataLoader(String filePath) throws Exception {
         this.constellationNames = new ArrayList();
         InputStream inputStream = getClass().getResourceAsStream(filePath);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
         String strLine;
         while ((strLine = reader.readLine()) != null) {
             if (!strLine.isEmpty()) {
