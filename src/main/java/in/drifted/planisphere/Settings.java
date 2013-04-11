@@ -4,28 +4,109 @@ import java.io.Serializable;
 
 public class Settings implements Serializable {
 
-    public static Double latitude;
-    public static Double scale = 768d;
+    public static final String RESOURCE_BASE_PATH = "/in/drifted/planisphere/resources/";
+    public static final String[] PARAM_ELEMENTS = {"dialHoursMarkerMajor", "dialHoursMarkerMinor"};
+    private Double latitude;
+    private Double scale = 768d;
+    private String filePathStars;
+    private String filePathConstellationNames;
+    private String filePathConstellationLines;
+    private String filePathConstellationBoundaries;
+    private String filePathMilkyWayDarkNorth;
+    private String filePathMilkyWayDarkSouth;
+    private String filePathMilkyWayBrightNorth;
+    private String filePathMilkyWayBrightSouth;    
 
-    /*
-    public static Double width = 1024.0;
-    public static Double height = 768.0;
-    public static Double x = -1024d;
-    public static Double y = -768d;  
-    public static Integer scaleRatio = 1;
-    public static Double shiftX = 0d;
-    public static Double shiftY = 0d;
-     */
-            
-    public static final String resourceBasePath =  "/in/drifted/planisphere/resources/";
-    private static final String resourceDataPath = resourceBasePath + "data/";
-    public static String filePathStars = resourceDataPath + "stars.txt";
-    public static String filePathConstellationNames = resourceDataPath + "constellationNames.txt";
-    public static String filePathConstellationLines = resourceDataPath + "constellationLines.txt";
-    public static String filePathConstellationBoundaries = resourceDataPath + "constellationBoundaries.txt";
-    public static String filePathMilkyWayDarkNorth = resourceDataPath + "milkyWayDarkNorth.txt";
-    public static String filePathMilkyWayDarkSouth = resourceDataPath + "milkyWayDarkSouth.txt";
-    public static String filePathMilkyWayBrightNorth = resourceDataPath + "milkyWayBrightNorth.txt";
-    public static String filePathMilkyWayBrightSouth = resourceDataPath + "milkyWayBrightSouth.txt";
-    public static String[] paramElements = {"dialHoursMarkerMajor", "dialHoursMarkerMinor"};
+    public Settings() {
+        String resourceDataPath = RESOURCE_BASE_PATH + "data/";
+        filePathStars = resourceDataPath + "stars.txt";
+        filePathConstellationNames = resourceDataPath + "constellationNames.txt";
+        filePathConstellationLines = resourceDataPath + "constellationLines.txt";
+        filePathConstellationBoundaries = resourceDataPath + "constellationBoundaries.txt";
+        filePathMilkyWayDarkNorth = resourceDataPath + "milkyWayDarkNorth.txt";
+        filePathMilkyWayDarkSouth = resourceDataPath + "milkyWayDarkSouth.txt";
+        filePathMilkyWayBrightNorth = resourceDataPath + "milkyWayBrightNorth.txt";
+        filePathMilkyWayBrightSouth = resourceDataPath + "milkyWayBrightSouth.txt";
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getScale() {
+        return scale;
+    }
+
+    public void setScale(Double scale) {
+        this.scale = scale;
+    }
+
+    public String getFilePathStars() {
+        return filePathStars;
+    }
+
+    public void setFilePathStars(String filePathStars) {
+        this.filePathStars = filePathStars;
+    }
+
+    public String getFilePathConstellationNames() {
+        return filePathConstellationNames;
+    }
+
+    public void setFilePathConstellationNames(String filePathConstellationNames) {
+        this.filePathConstellationNames = filePathConstellationNames;
+    }
+
+    public String getFilePathConstellationLines() {
+        return filePathConstellationLines;
+    }
+
+    public void setFilePathConstellationLines(String filePathConstellationLines) {
+        this.filePathConstellationLines = filePathConstellationLines;
+    }
+
+    public String getFilePathConstellationBoundaries() {
+        return filePathConstellationBoundaries;
+    }
+
+    public void setFilePathConstellationBoundaries(String filePathConstellationBoundaries) {
+        this.filePathConstellationBoundaries = filePathConstellationBoundaries;
+    }
+
+    public String getFilePathMilkyWayDarkNorth() {
+        return filePathMilkyWayDarkNorth;
+    }
+
+    public void setFilePathMilkyWayDarkNorth(String filePathMilkyWayDarkNorth) {
+        this.filePathMilkyWayDarkNorth = filePathMilkyWayDarkNorth;
+    }
+
+    public String getFilePathMilkyWayDarkSouth() {
+        return filePathMilkyWayDarkSouth;
+    }
+
+    public void setFilePathMilkyWayDarkSouth(String filePathMilkyWayDarkSouth) {
+        this.filePathMilkyWayDarkSouth = filePathMilkyWayDarkSouth;
+    }
+
+    public String getFilePathMilkyWayBrightNorth() {
+        return filePathMilkyWayBrightNorth;
+    }
+
+    public void setFilePathMilkyWayBrightNorth(String filePathMilkyWayBrightNorth) {
+        this.filePathMilkyWayBrightNorth = filePathMilkyWayBrightNorth;
+    }
+
+    public String getFilePathMilkyWayBrightSouth() {
+        return filePathMilkyWayBrightSouth;
+    }
+
+    public void setFilePathMilkyWayBrightSouth(String filePathMilkyWayBrightSouth) {
+        this.filePathMilkyWayBrightSouth = filePathMilkyWayBrightSouth;
+    }
+    
 }

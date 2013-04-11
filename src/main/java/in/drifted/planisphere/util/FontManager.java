@@ -1,14 +1,13 @@
 package in.drifted.planisphere.util;
 
 import java.io.InputStream;
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
 import java.util.Locale;
+import java.util.ResourceBundle;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
 
-public class FontManager implements Serializable {
+public class FontManager {
 
     private static final String FONT_BASE_PATH = "/in/drifted/planisphere/resources/fonts/";
     private ResourceBundle resources;
@@ -51,7 +50,7 @@ public class FontManager implements Serializable {
     }
 
     private String getValue(String key) {
-        String keyLocal = key + "." + country.toLowerCase();
+        String keyLocal = key + "." + country.toLowerCase(Locale.ENGLISH);
         String keyDefault = key + ".default";
         if (resources.containsKey(keyLocal)) {
             return resources.getString(keyLocal);
@@ -70,8 +69,8 @@ public class FontManager implements Serializable {
         fontInfo.append("data:font/");
         fontInfo.append(fontFormat);
         fontInfo.append(";base64,");
-        InputStream fontData = this.getClass().getResourceAsStream(fontPath);
-        fontInfo.append(new String(Base64.encodeBase64(IOUtils.toByteArray(fontData))));
+        InputStream fontData = FontManager.class.getResourceAsStream(fontPath);
+        fontInfo.append(new String(Base64.encodeBase64(IOUtils.toByteArray(fontData)), "ISO-8859-1"));
         return fontInfo.toString();
     }
 }

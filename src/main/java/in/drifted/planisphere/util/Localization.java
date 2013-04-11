@@ -1,6 +1,5 @@
 package in.drifted.planisphere.util;
 
-import in.drifted.planisphere.Settings;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -10,8 +9,8 @@ import java.util.ResourceBundle;
 
 public class Localization implements Serializable {
 
-    private final String LOCALE_BUNDLE = "in.drifted.planisphere.resources.localizations.messages";
-    ResourceBundle resources;
+    private static final String LOCALE_BUNDLE = "in.drifted.planisphere.resources.localizations.messages";
+    private ResourceBundle resources;
 
     public Localization(Locale locale) {
         try {
@@ -26,17 +25,28 @@ public class Localization implements Serializable {
             return resources.getString(key);
         } else if (key.equals("year")) {
             Calendar calendar = Calendar.getInstance();
-            return new Integer(calendar.get(Calendar.YEAR)).toString();
-        } else if (key.equals("latitudeValue")) {
-            String strNorth = resources.getString("cardinalPointNorth");
-            String strSouth = resources.getString("cardinalPointSouth");
-            return Math.abs(Settings.latitude.intValue()) + " " + ((Settings.latitude < 0) ? strSouth : strNorth);
+            return String.valueOf(calendar.get(Calendar.YEAR));
         } else {
             return key;
         }
     }
 
-    public String translate(String content) {
+    public String getValue(String key, Double latitude) {
+        if (resources.containsKey(key)) {
+            return resources.getString(key);
+        } else if (key.equals("year")) {
+            Calendar calendar = Calendar.getInstance();
+            return String.valueOf(calendar.get(Calendar.YEAR));
+        } else if (key.equals("latitudeValue")) {
+            String strNorth = resources.getString("cardinalPointNorth");
+            String strSouth = resources.getString("cardinalPointSouth");
+            return Math.abs(latitude.intValue()) + " " + ((latitude < 0) ? strSouth : strNorth);
+        } else {
+            return key;
+        }
+    }
+
+    public String translate(String content, Double latitude) {
         String[] chunksRaw = content.split("\\$\\{");
         if (chunksRaw.length <= 1) {
             return content;
@@ -50,7 +60,7 @@ public class Localization implements Serializable {
             } else {
                 int index = chunksRaw[c].indexOf("}");
                 String key = chunksRaw[c].substring(0, index);
-                chunks.add(getValue(key));
+                chunks.add(getValue(key, latitude));
                 if (index != chunksRaw[c].length() - 1) {
                     chunks.add(chunksRaw[c].substring(index + 1));
                 }

@@ -1,10 +1,9 @@
 package in.drifted.planisphere.util;
 
+import java.awt.Color;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-import java.awt.Color;
-import in.drifted.planisphere.Settings;
-import java.io.Serializable;
 
 public class Styles implements Serializable {
 
@@ -47,16 +46,26 @@ public class Styles implements Serializable {
     public static final String MILKY_WAY_DARK = "milkyWayDark";
     public static final String MILKY_WAY_BRIGHT = "milkyWayBright";
     public static final String PATH_FOR_TEXT = "pathForText";
-    public static final String CARDINAL_POINT_LABELS = "cardinalPointLabels";
-    private static Map<String, Color> schemeDefault = createSchemeDefault();
+    public static final String CARDINAL_POINT_LABELS = "cardinalPointLabels";    
+    
+    @Deprecated
+    private static Map<String, Color> schemeDefault;
+    @Deprecated
+    private static Map<String, Color> schemeBW = createSchemeBW();
+    private static Map<String, Map<String, String>> styles;
 
+    public Styles(Double scale) {
+        schemeDefault = createSchemeDefault();
+        styles = createStyles(scale);
+    }
+    
     private static Map<String, Color> createSchemeDefault() {
         Map<String, Color> result = new HashMap<String, Color>();
         result.put("lines", new Color(1f, 0.5f, 0.5f, 1f));
         result.put("circles", new Color(1f, 1f, 0f, 1f));
         return result;
     }
-    private static Map<String, Color> schemeBW = createSchemeBW();
+    
 
     private static Map<String, Color> createSchemeBW() {
         Map<String, Color> result = new HashMap<String, Color>();
@@ -65,31 +74,25 @@ public class Styles implements Serializable {
         return result;
     }
 
+    @Deprecated
     public static Color getColor(String key) {
         Map style = null;
-        /*
-        switch (Settings.colorScheme) {
-            case 1:
-                style = schemeBW;
-                break;
-            default:
-                style = schemeDefault;
-        }
-         */
         return (Color) style.get(key);
     }
 
+    @Deprecated
     public static String getColorStr(String key) {
         return formatColor(getColor(key));
     }
 
+    @Deprecated
     public static String getAlphaStr(String key) {
         return new Integer(getColor(key).getAlpha()).toString();
     }
-    private static Map<String, Map<String, String>> styles = createStyles();
-
-    private static Map<String, Map<String, String>> createStyles() {
-        Map<String, String> attributes = null;
+        
+    private static Map<String, Map<String, String>> createStyles(Double scale) {
+        
+        Map<String, String> attributes;
         Map<String, Map<String, String>> items = new HashMap<String, Map<String, String>>();
 
         // milky way bright
@@ -113,7 +116,7 @@ public class Styles implements Serializable {
         // cardinal point labels
         attributes = new HashMap<String, String>();
         attributes.put("fill", "orange");
-        attributes.put("font-size", Coords.format(0.04 * Settings.scale));
+        attributes.put("font-size", Coords.format(0.04 * scale));
         items.put(CARDINAL_POINT_LABELS, attributes);
 
         return items;

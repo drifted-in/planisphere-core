@@ -1,6 +1,6 @@
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>in.drifted.planisphere</groupId>
@@ -15,9 +15,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
   
-  <!--
-  C:\Users\Honza\.netbeans\7.0\maven\bin\mvn install:install-file -Dfile=\D:\Java\components\fop\fop-20111117.jar -DgroupId=org.apache.xmlgraphics -DartifactId=fop -Dversion=1.1-SNAPSHOT -Dpackaging=jar
-  -->
+    <!--
+    C:\Users\Honza\.netbeans\7.0\maven\bin\mvn install:install-file -Dfile=\D:\Java\components\fop\fop-20111117.jar -DgroupId=org.apache.xmlgraphics -DartifactId=fop -Dversion=1.1-SNAPSHOT -Dpackaging=jar
+    -->
   
     <dependencies>
         <dependency>
@@ -28,13 +28,13 @@
         <dependency>
             <groupId>org.codehaus.woodstox</groupId>
             <artifactId>woodstox-core-lgpl</artifactId>
-            <version>4.1.2</version>
+            <version>4.1.4</version>
         </dependency>
         <dependency>
             <groupId>org.codehaus.woodstox</groupId>
             <artifactId>stax2-api</artifactId>
             <version>3.1.1</version>
-        </dependency>        
+        </dependency>
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
@@ -54,7 +54,19 @@
             <groupId>avalon-framework</groupId>
             <artifactId>avalon-framework</artifactId>
             <version>4.1.5</version>
-        </dependency>        
+        </dependency>                
+        <!--        
+        <dependency>
+            <groupId>avalon-framework</groupId>
+            <artifactId>avalon-framework-api</artifactId>
+            <version>4.2.0</version>
+        </dependency>                
+        <dependency>
+            <groupId>avalon-framework</groupId>
+            <artifactId>avalon-framework-impl</artifactId>
+            <version>4.2.0</version>
+        </dependency>                
+        -->
         <dependency>
             <groupId>org.apache.xmlgraphics</groupId>
             <artifactId>batik-bridge</artifactId>
@@ -69,8 +81,7 @@
             <groupId>org.apache.xmlgraphics</groupId>
             <artifactId>batik-util</artifactId>
             <version>1.7</version>
-        </dependency>
-        
+        </dependency>        
         <dependency>
             <groupId>org.apache.xmlgraphics</groupId>
             <artifactId>batik-transcoder</artifactId>
@@ -80,25 +91,23 @@
         <dependency>
             <groupId>org.apache.xmlgraphics</groupId>
             <artifactId>xmlgraphics-commons</artifactId>
-            <version>1.5-SNAPSHOT</version>
+            <version>1.5</version>
         </dependency>
         <dependency>
             <groupId>org.apache.xmlgraphics</groupId>
             <artifactId>fop</artifactId>
             <version>1.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>1.8.1</version>
         </dependency>        
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>planisphere-resources</artifactId>
             <version>${project.version}</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.apache.pdfbox</groupId>
-            <artifactId>pdfbox</artifactId>
-            <version>1.6.0</version>
-        </dependency>
-    
+        </dependency>            
     </dependencies>
     
 </project>

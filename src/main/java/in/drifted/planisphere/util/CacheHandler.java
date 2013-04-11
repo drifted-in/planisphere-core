@@ -1,21 +1,22 @@
 package in.drifted.planisphere.util;
 
+import in.drifted.planisphere.Settings;
 import java.awt.geom.Point2D;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import in.drifted.planisphere.Settings;
-import java.io.Serializable;
 
 public class CacheHandler implements Serializable {
 
     private HashMap cache;
+    private Settings settings = new Settings();
 
     public CacheHandler() {
         clearCache();
     }
 
     public ArrayList<Star> getStars() throws Exception {
-        String path = Settings.filePathStars;
+        String path = settings.getFilePathStars();
         ArrayList stars = (ArrayList) this.cache.get(path);
         if (stars == null) {
             StarsDataLoader dl = new YaleStarsDataLoader(path);
@@ -26,7 +27,7 @@ public class CacheHandler implements Serializable {
     }
 
     public ArrayList<ConstellationName> getConstellationNames() throws Exception {
-        String path = Settings.filePathConstellationNames;
+        String path = settings.getFilePathConstellationNames();
         ArrayList constellationNames = (ArrayList) this.cache.get(path);
         if (constellationNames == null) {
             ConstellationNamesDataLoader dl = new ConstellationNamesDataLoader(path);
@@ -37,7 +38,7 @@ public class CacheHandler implements Serializable {
     }
 
     public ArrayList<Point2D> getConstellationLines() throws Exception {
-        String path = Settings.filePathConstellationLines;
+        String path = settings.getFilePathConstellationLines();
         ArrayList constellationLines = (ArrayList) this.cache.get(path);
         if (constellationLines == null) {
             ConstellationLinesDataLoader dl = new ConstellationLinesDataLoader(path);
@@ -48,7 +49,7 @@ public class CacheHandler implements Serializable {
     }
 
     public ArrayList<Point2D> getConstellationBoundaries() throws Exception {
-        String path = Settings.filePathConstellationBoundaries;
+        String path = settings.getFilePathConstellationBoundaries();
         ArrayList constellationBoundaries = (ArrayList) this.cache.get(path);
         if (constellationBoundaries == null) {
             ConstellationBoundariesDataLoader dl = new ConstellationBoundariesDataLoader(path);
@@ -59,16 +60,16 @@ public class CacheHandler implements Serializable {
     }
 
     public MilkyWayDataSet getMilkyWayDataSet() throws Exception {
-        MilkyWayDataSet milkyWayDataSet = (MilkyWayDataSet) this.cache.get(Settings.filePathMilkyWayDarkNorth);
+        MilkyWayDataSet milkyWayDataSet = (MilkyWayDataSet) this.cache.get(settings.getFilePathMilkyWayDarkNorth());
         if (milkyWayDataSet == null) {
             ArrayList filePaths = new ArrayList();
-            filePaths.add(Settings.filePathMilkyWayDarkNorth);
-            filePaths.add(Settings.filePathMilkyWayDarkSouth);
-            filePaths.add(Settings.filePathMilkyWayBrightNorth);
-            filePaths.add(Settings.filePathMilkyWayBrightSouth);
+            filePaths.add(settings.getFilePathMilkyWayDarkNorth());
+            filePaths.add(settings.getFilePathMilkyWayDarkSouth());
+            filePaths.add(settings.getFilePathMilkyWayBrightNorth());
+            filePaths.add(settings.getFilePathMilkyWayBrightSouth());
             MilkyWayDataLoader dl = new MilkyWayDataLoader(filePaths);
             milkyWayDataSet = dl.getMilkyWayDataSet();
-            this.cache.put(Settings.filePathMilkyWayDarkNorth, milkyWayDataSet);
+            this.cache.put(settings.getFilePathMilkyWayDarkNorth(), milkyWayDataSet);
         }
         return milkyWayDataSet;
     }

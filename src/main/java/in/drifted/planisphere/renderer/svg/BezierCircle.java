@@ -1,14 +1,14 @@
 package in.drifted.planisphere.renderer.svg;
 
+import in.drifted.planisphere.util.Coords;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Iterator;
-import in.drifted.planisphere.util.Coords;
 
 public final class BezierCircle {
 
     private ArrayList<Point2D> points = new ArrayList<Point2D>(12);
-    private double kappa = 0.5522847498;
+    private static final double KAPPA = 0.5522847498;
 
     public BezierCircle(double radius) {
         this(new Point2D.Double(0, 0), radius, 0d);
@@ -19,7 +19,7 @@ public final class BezierCircle {
     }
 
     public BezierCircle(Point2D center, double radius, double angle) {
-        double rKappa = radius * kappa;
+        double rKappa = radius * KAPPA;
         // p0
         points.add(new Point2D.Double(0, -radius));
         // p1
