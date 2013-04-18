@@ -1,98 +1,80 @@
 package in.drifted.planisphere;
 
-import in.drifted.planisphere.renderer.pdf.ProducerPDFBox;
+import in.drifted.planisphere.renderer.pdf.Producer;
 import in.drifted.planisphere.renderer.svg.Renderer;
-import in.drifted.planisphere.util.*;
+import in.drifted.planisphere.util.CacheHandler;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import org.apache.batik.transcoder.Transcoder;
-import org.apache.batik.transcoder.TranscoderInput;
-import org.apache.batik.transcoder.TranscoderOutput;
-import org.apache.fop.svg.PDFTranscoder;
-import org.apache.pdfbox.util.PDFMergerUtility;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Planisphere {
 
     public static void main(String[] args) {
+
+        Options options = new Options();
+        options.setLatitude(15d);
+        options.setConstellationBoundaries(true);
+        options.setConstellationLines(true);
+        options.setConstellationLabels(true);
+        options.setMilkyWay(true);
+        options.setEcliptic(true);
+        options.setConstellationLabelsOptions(0);
+        options.setCoordsRADec(true);
+        options.setDayLightSavingTimeScale(true);
+        options.setLocaleValue("fi|FI");
+
+        List<String> templateList = new LinkedList<String>();
+        templateList.add("printDefault_01.svg");
+        templateList.add("printDefault_02.svg");
+
+        createPDF(templateList, "D:/vystup-multi.pdf", options);
+        //createSVG("screenBlue.svg", "D:/test_plan.svg", options);
+
+    }
+
+    private static void createSVG(String template, String outputPath, Options options) {
+
         try {
-            
-            CacheHandler cache = new CacheHandler();
+            Renderer svg = new Renderer(new CacheHandler());
 
-            OutputStream output_01 = new FileOutputStream("D:/test_plan.svg");
-            //ByteArrayOutputStream output_01 = new ByteArrayOutputStream();
-            ByteArrayOutputStream output_02 = new ByteArrayOutputStream();
+            OutputStream outputStream = new FileOutputStream(outputPath);
+            svg.createFromTemplate(template, outputStream, options);
+            outputStream.close();
 
-            Options options = new Options();
-            options.setLatitude(15d);
-            options.setConstellationBoundaries(true);
-            options.setConstellationLines(true);
-            options.setConstellationLabels(true);
-            options.setMilkyWay(true);
-            options.setEcliptic(true);
-            options.setConstellationLabelsOptions(0);
-            options.setCoordsRADec(true);
-            options.setDayLightSavingTimeScale(true);
-            
-            //options.setLocaleValue("lt|LT");
-            //options.setLocaleValue("uk|UA");
-            options.setLocaleValue("fi|FI");
-
-            Renderer svg = new Renderer(cache);
-
-            svg.createFromTemplate("printDefault_01.svg", output_01, options);            
-            //svg.createFromTemplate("screenBlue.svg", output_01, options);
-            
-            output_01.close();
-
-
-            svg.createFromTemplate("printDefault_01.svg", output_02, options);
-            output_02.close();
-                                
-            ProducerPDFBox p = new ProducerPDFBox();
-            ArrayList<InputStream> inputStreamList = new ArrayList<InputStream>();
-            //inputStreamList.add(new ByteArrayInputStream(output_01.toByteArray()));
-            inputStreamList.add(new ByteArrayInputStream(output_02.toByteArray()));
-            p.createPDF(inputStreamList, "D:\\vystup.pdf");              
-
-            
         } catch (Exception e) {
+
             e.printStackTrace();
         }
+
     }
 
-    private static byte[] getPDFByteArray(InputStream svgStream) throws Exception {
+    private static void createPDF(List<String> templateList, String outputPath, Options options) {
 
-        Transcoder t = new PDFTranscoder();
-        
-        
-        TranscoderInput input = new TranscoderInput(svgStream);
-        
-        //OutputStream outputStream = new FileOutputStream("D:\\temp.pdf");
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream(2*1024*1024);
-        //BufferedOutputStream outputBuff = new BufferedOutputStream(outputStream);
-        //Buffer the OutputStream for better performance
-        TranscoderOutput output = new TranscoderOutput(outputStream);
-        //t.transcode(input, output);
-        
-        transcode(t, input, output);
+        List<InputStream> inputStreamList = new LinkedList<InputStream>();
 
-        return outputStream.toByteArray();
-    }        
-    
-    private static void transcode(Transcoder t, TranscoderInput input, TranscoderOutput output) throws Exception {
-        t.transcode(input, output);
-    }
+        try {
+            Renderer svg = new Renderer(new CacheHandler());
 
-    private static void merge(InputStream is1, InputStream is2) throws Exception {
-        PDFMergerUtility merger = new PDFMergerUtility();
-        merger.setDestinationFileName("D:\\vystup.pdf");
-        merger.addSource(is1);
-        merger.addSource(is2);
-        merger.mergeDocuments();
+            for (String template : templateList) {
+
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                svg.createFromTemplate(template, outputStream, options);
+                inputStreamList.add(new ByteArrayInputStream(outputStream.toByteArray()));
+                outputStream.close();
+
+            }
+
+            Producer producer = new Producer();
+            producer.createPDF(inputStreamList, outputPath);
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+
     }
 }
