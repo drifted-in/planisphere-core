@@ -1,7 +1,8 @@
 package in.drifted.planisphere.util;
 
 import java.io.InputStream;
-import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import org.apache.commons.codec.binary.Base64;
@@ -23,29 +24,30 @@ public class FontManager {
         if (chunksRaw.length <= 1) {
             return content;
         }
-        ArrayList<String> chunks = new ArrayList<String>();
+        List<String> chunkList = new LinkedList<String>();
         for (int c = 0; c < chunksRaw.length; c++) {
             if (!chunksRaw[c].contains("}")) {
                 if (chunksRaw[c].length() > 0) {
-                    chunks.add(chunksRaw[c]);
+                    chunkList.add(chunksRaw[c]);
                 }
             } else {
                 int index = chunksRaw[c].indexOf("}");
                 String key = chunksRaw[c].substring(0, index);
                 if (key.contains(".name")) {
-                    chunks.add(getValue(key.replace(".name", "")).replace(".ttf", ""));
+                    chunkList.add(getValue(key.replace(".name", "")).replace(".ttf", ""));
                 } else {
-                    chunks.add(getFontBase64Encoded(getValue(key)));
+                    chunkList.add(getFontBase64Encoded(getValue(key)));
                 }
                 if (index != chunksRaw[c].length() - 1) {
-                    chunks.add(chunksRaw[c].substring(index + 1));
+                    chunkList.add(chunksRaw[c].substring(index + 1));
                 }
             }
         }
         StringBuilder contentUpdated = new StringBuilder();
-        for (String item : chunks) {
-            contentUpdated.append(item);
+        for (String chunk : chunkList) {
+            contentUpdated.append(chunk);
         }
+        
         return contentUpdated.toString();
     }
 
@@ -62,15 +64,18 @@ public class FontManager {
     }
 
     private String getFontBase64Encoded(String fontFileName) throws Exception {
+        
         String fontPath = FONT_BASE_PATH + fontFileName;
         String [] fileNameFragments = fontFileName.split("\\.");
         String fontFormat = fileNameFragments[fileNameFragments.length - 1];
+        
         StringBuilder fontInfo = new StringBuilder();
         fontInfo.append("data:font/");
         fontInfo.append(fontFormat);
         fontInfo.append(";base64,");
         InputStream fontData = FontManager.class.getResourceAsStream(fontPath);
         fontInfo.append(new String(Base64.encodeBase64(IOUtils.toByteArray(fontData)), "ISO-8859-1"));
+        
         return fontInfo.toString();
     }
 }

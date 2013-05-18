@@ -7,13 +7,13 @@ import com.seisw.util.geom.PolyDefault;
 import in.drifted.planisphere.Options;
 import in.drifted.planisphere.Settings;
 import in.drifted.planisphere.util.CacheHandler;
-import in.drifted.planisphere.util.CardinalPointInfo;
-import in.drifted.planisphere.util.ConstellationName;
-import in.drifted.planisphere.util.Coords;
+import in.drifted.planisphere.model.CardinalPointInfo;
+import in.drifted.planisphere.model.ConstellationName;
+import in.drifted.planisphere.util.CoordUtil;
 import in.drifted.planisphere.util.FontManager;
 import in.drifted.planisphere.util.Localization;
-import in.drifted.planisphere.util.MilkyWayDataSet;
-import in.drifted.planisphere.util.Star;
+import in.drifted.planisphere.model.MilkyWayDataSet;
+import in.drifted.planisphere.model.Star;
 import java.awt.geom.Point2D;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
@@ -367,18 +368,21 @@ public final class Renderer {
         Point2D coord = new Point2D.Double();
         Double latitude = settings.getLatitude();
         Double scale = settings.getScale();
-        StringWriter[] path = new StringWriter[magnitudeRange];
+        StringBuilder[] path = new StringBuilder[magnitudeRange];
         String coordsChunk;
         Integer magnitudeIndex;
 
         for (int i = 0; i < magnitudeRange; i++) {
-            path[i] = new StringWriter();
+            path[i] = new StringBuilder();
         }
-        for (Star star : cache.getStars()) {
-            if (Coords.convert(star.getRA(), star.getDec(), coord, latitude, scale)) {
-                coordsChunk = Coords.getCoordsChunk(coord);
-                magnitudeIndex = Math.round(star.getMag() + 1);
-                path[magnitudeIndex].append("M" + coordsChunk + "L" + coordsChunk);
+        for (Star star : cache.getStarList()) {
+            if (CoordUtil.convert(star.getRA(), star.getDec(), coord, latitude, scale)) {
+                coordsChunk = CoordUtil.getCoordsChunk(coord);
+                magnitudeIndex = Math.round(star.getMag().floatValue() + 1);
+                path[magnitudeIndex].append("M");
+                path[magnitudeIndex].append(coordsChunk);
+                path[magnitudeIndex].append("L");
+                path[magnitudeIndex].append(coordsChunk);
             }
         }
         for (Integer i = 0; i < magnitudeRange; i++) {
@@ -392,11 +396,11 @@ public final class Renderer {
         StringWriter path = new StringWriter();
         Double latitude = settings.getLatitude();
         Double scale = settings.getScale();
-        for (Iterator<Point2D> i = cache.getConstellationBoundaries().iterator(); i.hasNext();) {
+        for (Iterator<Point2D> i = cache.getConstellationBoundaryList().iterator(); i.hasNext();) {
             Point2D coordStartRaw = i.next();
-            if (Coords.convert(coordStartRaw.getX(), coordStartRaw.getY(), coordStart, latitude, scale)) {
+            if (CoordUtil.convert(coordStartRaw.getX(), coordStartRaw.getY(), coordStart, latitude, scale)) {
                 Point2D coordEndRaw = i.next();
-                if (Coords.convert(coordEndRaw.getX(), coordEndRaw.getY(), coordEnd, latitude, scale)) {
+                if (CoordUtil.convert(coordEndRaw.getX(), coordEndRaw.getY(), coordEnd, latitude, scale)) {
                     if ((Math.abs(coordStartRaw.getY() - coordEndRaw.getY()) < 0.7) && (Math.abs(coordStartRaw.getX() - coordEndRaw.getX()) > 0)
                             || (Math.abs(coordStartRaw.getY()) > 86)) {
 
@@ -421,17 +425,17 @@ public final class Renderer {
                         Point2D coordTemp = new Point2D.Double();
 
                         for (int j = 0; j <= bDiv; j++) {
-                            Coords.convert(startRA + j * incRA / bDiv, Dec, coordTemp, latitude, scale);
+                            CoordUtil.convert(startRA + j * incRA / bDiv, Dec, coordTemp, latitude, scale);
                             if (j == 0) {
-                                path.append("M" + Coords.getCoordsChunk(coordTemp));
+                                path.append("M" + CoordUtil.getCoordsChunk(coordTemp));
                             } else {
-                                path.append("L" + Coords.getCoordsChunk(coordTemp));
+                                path.append("L" + CoordUtil.getCoordsChunk(coordTemp));
                             }
                             Dec = Dec + incDec;
                         }
                     } else {
-                        path.append("M" + Coords.getCoordsChunk(coordStart));
-                        path.append("L" + Coords.getCoordsChunk(coordEnd));
+                        path.append("M" + CoordUtil.getCoordsChunk(coordStart));
+                        path.append("L" + CoordUtil.getCoordsChunk(coordEnd));
                     }
                 }
             } else {
@@ -447,13 +451,13 @@ public final class Renderer {
         StringWriter path = new StringWriter();
         Double latitude = settings.getLatitude();
         Double scale = settings.getScale();
-        for (Iterator<Point2D> i = cache.getConstellationLines().iterator(); i.hasNext();) {
+        for (Iterator<Point2D> i = cache.getConstellationLineList().iterator(); i.hasNext();) {
             Point2D coordStartRaw = i.next();
-            if (Coords.convert(coordStartRaw.getX(), coordStartRaw.getY(), coordStart, latitude, scale)) {
+            if (CoordUtil.convert(coordStartRaw.getX(), coordStartRaw.getY(), coordStart, latitude, scale)) {
                 Point2D coordEndRaw = i.next();
-                if (Coords.convert(coordEndRaw.getX(), coordEndRaw.getY(), coordEnd, latitude, scale)) {
-                    path.append("M" + Coords.getCoordsChunk(coordStart));
-                    path.append("L" + Coords.getCoordsChunk(coordEnd));
+                if (CoordUtil.convert(coordEndRaw.getX(), coordEndRaw.getY(), coordEnd, latitude, scale)) {
+                    path.append("M" + CoordUtil.getCoordsChunk(coordStart));
+                    path.append("L" + CoordUtil.getCoordsChunk(coordEnd));
                 }
             } else {
                 i.next();
@@ -467,7 +471,7 @@ public final class Renderer {
         Point2D coord = new Point2D.Double();
         Double latitude = settings.getLatitude();
         Double scale = settings.getScale();
-        for (Iterator<ConstellationName> i = cache.getConstellationNames().iterator(); i.hasNext();) {
+        for (Iterator<ConstellationName> i = cache.getConstellationNameList().iterator(); i.hasNext();) {
             ConstellationName constellationName = i.next();
             String name = "";
             switch (mode) {
@@ -482,7 +486,7 @@ public final class Renderer {
             }
             //System.out.println(name + " : " + constellationName.getId());
             coordRaw = constellationName.getCoord();
-            if (Coords.convert(coordRaw.getX(), coordRaw.getY(), coord, latitude, scale)) {
+            if (CoordUtil.convert(coordRaw.getX(), coordRaw.getY(), coord, latitude, scale)) {
                 String id = "con" + constellationName.getAbbreviation();
                 renderPath(renderCircleForConstellationName(coord), id, "constellationNamesPath");
                 renderTextOnPath(id, 50d, name, "constellationNames");
@@ -508,14 +512,14 @@ public final class Renderer {
             lambda = Math.toRadians(i);
             RA = (Math.atan2(Math.sin(lambda) * Math.cos(epsilon), Math.cos(lambda))) * 12 / Math.PI;
             Dec = Math.toDegrees(Math.asin(Math.sin(epsilon) * Math.sin(lambda)));
-            if (Coords.convert(RA, Dec, coord, latitude, scale)) {
+            if (CoordUtil.convert(RA, Dec, coord, latitude, scale)) {
                 if (!flag) {
-                    coordsChunk = Coords.getCoordsChunk(coord);
+                    coordsChunk = CoordUtil.getCoordsChunk(coord);
                     flag = true;
                 } else {
                     path.append("M" + coordsChunk);
-                    path.append("L" + Coords.getCoordsChunk(coord));
-                    coordsChunk = Coords.getCoordsChunk(coord);
+                    path.append("L" + CoordUtil.getCoordsChunk(coord));
+                    coordsChunk = CoordUtil.getCoordsChunk(coord);
                 }
             } else {
                 flag = false;
@@ -535,13 +539,13 @@ public final class Renderer {
         // declination circle (it cannot be rendered using circles because of the rotation at vernal point)        
         for (Double Dec = 60.0; Dec >= Math.abs(latitude) - 90.0; Dec = Dec - 30.0) {
             for (Double RA = 0.0; RA <= 24.0; RA = RA + 0.5) {
-                Coords.convert(RA, sign * Dec, coord, latitude, scale);
+                CoordUtil.convert(RA, sign * Dec, coord, latitude, scale);
                 if (RA == 0.0) {
                     path.append("M");
                 } else {
                     path.append("L");
                 }
-                path.append(Coords.getCoordsChunk(coord));
+                path.append(CoordUtil.getCoordsChunk(coord));
             }
         }
 
@@ -562,12 +566,12 @@ public final class Renderer {
                     start = 90;
             }
 
-            Coords.convert(RA.doubleValue(), sign * start, coord, latitude, scale);
+            CoordUtil.convert(RA.doubleValue(), sign * start, coord, latitude, scale);
             path.append("M");
-            path.append(Coords.getCoordsChunk(coord));
-            Coords.convert(RA.doubleValue(), latitude - sign * 90, coord, latitude, scale);
+            path.append(CoordUtil.getCoordsChunk(coord));
+            CoordUtil.convert(RA.doubleValue(), latitude - sign * 90, coord, latitude, scale);
             path.append("L");
-            path.append(Coords.getCoordsChunk(coord));
+            path.append(CoordUtil.getCoordsChunk(coord));
         }
         renderPath(path.toString(), null, "coords");
     }
@@ -609,8 +613,8 @@ public final class Renderer {
                     path.append("L");
                 }
                 Double finalRA = (latitude >= 0) ? RA : 24.0 - RA;
-                Coords.convert(finalRA, sign * Dec, coord, latitude, scale);
-                path.append(Coords.getCoordsChunk(coord));
+                CoordUtil.convert(finalRA, sign * Dec, coord, latitude, scale);
+                path.append(CoordUtil.getCoordsChunk(coord));
             }
             renderPath(path.toString(), "coordLabelPath" + Dec.intValue(), null);
         }
@@ -622,8 +626,8 @@ public final class Renderer {
                 path.append("L");
             }
             Double finalRA = (latitude >= 0) ? RA : 24.0 - RA;
-            Coords.convert(finalRA, -sign * 3.0, coord, latitude, scale);
-            path.append(Coords.getCoordsChunk(coord));
+            CoordUtil.convert(finalRA, -sign * 3.0, coord, latitude, scale);
+            path.append(CoordUtil.getCoordsChunk(coord));
         }
         renderPath(path.toString(), "coordLabelPath00", null);
 
@@ -633,10 +637,10 @@ public final class Renderer {
         StringBuilder path = new StringBuilder();
         Iterator iter = mapArea.iterator();
         path.append("M");
-        path.append(Coords.getCoordsChunk((Point2D) iter.next()));
+        path.append(CoordUtil.getCoordsChunk((Point2D) iter.next()));
         while (iter.hasNext()) {
             path.append("L");
-            path.append(Coords.getCoordsChunk((Point2D) iter.next()));
+            path.append(CoordUtil.getCoordsChunk((Point2D) iter.next()));
         }
         renderPath(path.toString(), "mapView", null);
     }
@@ -649,9 +653,9 @@ public final class Renderer {
         StringBuilder path = new StringBuilder();
         for (CardinalPointInfo point : cardinalPoints) {
             path.append("M");
-            path.append(Coords.getCoordsChunk(point.getTickStart()));
+            path.append(CoordUtil.getCoordsChunk(point.getTickStart()));
             path.append("L");
-            path.append(Coords.getCoordsChunk(point.getTickEnd()));
+            path.append(CoordUtil.getCoordsChunk(point.getTickEnd()));
         }
         renderPath(path.toString(), null, "cardinalPointTick");
     }
@@ -741,10 +745,10 @@ public final class Renderer {
                 writeGroupStart(null);
                 writer.writeAttribute("transform", "rotate(180, " + point.getCenter().getX() + "," + point.getCenter().getY() + ")");
                 renderTextOnPath(pathID, 50.0, cardinalPointLabels[i], "cardinalPointLabel");
-                writeGroupEnd();                                
+                writeGroupEnd();
             } else {
-                renderTextOnPath(pathID, point.getStartOffset(), cardinalPointLabels[i], "cardinalPointLabel");    
-            }            
+                renderTextOnPath(pathID, point.getStartOffset(), cardinalPointLabels[i], "cardinalPointLabel");
+            }
         }
         for (Integer i = 3; i <= 5; i++) {
             pathID = "cid" + i;
@@ -808,7 +812,7 @@ public final class Renderer {
         }
 
         for (Double i = 112.5; i >= -120; i = i - 15) {
-            String strTranslate = Coords.format(0.9 * settings.getScale());
+            String strTranslate = CoordUtil.format(0.9 * settings.getScale());
             renderDefsInstance("dialHoursMarkerHalf", 0d, 0d, "translate(0,-" + strTranslate + ") rotate(" + i + ",0," + strTranslate + ")", null);
             //renderDialHoursMarker(markHalf, i);
         }
@@ -835,35 +839,35 @@ public final class Renderer {
 
         // inner arc
         pathData.append("M");
-        pathData.append(Coords.format(-x1));
+        pathData.append(CoordUtil.format(-x1));
         pathData.append(" ");
-        pathData.append(Coords.format(y1));
+        pathData.append(CoordUtil.format(y1));
         pathData.append("A");
         // rx
-        pathData.append(Coords.format(0.9 * scale));
+        pathData.append(CoordUtil.format(0.9 * scale));
         pathData.append(" ");
         // ry
-        pathData.append(Coords.format(0.9 * scale));
+        pathData.append(CoordUtil.format(0.9 * scale));
         // rotation, large arc flag, sweep flag
         pathData.append(" 0 1 1 ");
-        pathData.append(Coords.format(x1));
+        pathData.append(CoordUtil.format(x1));
         pathData.append(" ");
-        pathData.append(Coords.format(y1));
+        pathData.append(CoordUtil.format(y1));
 
         pathData.append("L");
-        pathData.append(Coords.format(x2));
+        pathData.append(CoordUtil.format(x2));
         pathData.append(" ");
-        pathData.append(Coords.format(y2));
+        pathData.append(CoordUtil.format(y2));
 
         // outer arc
         pathData.append("A");
-        pathData.append(Coords.format(scale));
+        pathData.append(CoordUtil.format(scale));
         pathData.append(" ");
-        pathData.append(Coords.format(scale));
+        pathData.append(CoordUtil.format(scale));
         pathData.append(" 0 1 0 ");
-        pathData.append(Coords.format(-x2));
+        pathData.append(CoordUtil.format(-x2));
         pathData.append(" ");
-        pathData.append(Coords.format(y2));
+        pathData.append(CoordUtil.format(y2));
 
         pathData.append("Z");
 
@@ -942,9 +946,9 @@ public final class Renderer {
             Poly contour = polygon.getInnerPoly(i);
             for (int j = 0; j < contour.getNumPoints(); j++) {
                 if (j == 0) {
-                    path.append("M" + Coords.format(contour.getX(j)) + " " + Coords.format(contour.getY(j)));
+                    path.append("M" + CoordUtil.format(contour.getX(j)) + " " + CoordUtil.format(contour.getY(j)));
                 } else {
-                    path.append("L" + Coords.format(contour.getX(j)) + " " + Coords.format(contour.getY(j)));
+                    path.append("L" + CoordUtil.format(contour.getX(j)) + " " + CoordUtil.format(contour.getY(j)));
                 }
             }
         }
@@ -956,13 +960,13 @@ public final class Renderer {
         Double angle = Math.toRadians(210d);
         Double scale = settings.getScale();
         Double ratio = 1.03 * scale;
-        String strRadius = Coords.format(ratio);
+        String strRadius = CoordUtil.format(ratio);
 
         // main arc
         pathData.append("M");
-        pathData.append(Coords.format(Math.cos(angle) * ratio));
+        pathData.append(CoordUtil.format(Math.cos(angle) * ratio));
         pathData.append(" ");
-        pathData.append(Coords.format(-Math.sin(angle) * ratio));
+        pathData.append(CoordUtil.format(-Math.sin(angle) * ratio));
         pathData.append("A");
         // rx
         pathData.append(strRadius);
@@ -972,9 +976,9 @@ public final class Renderer {
         // rotation, large arc flag, sweep flag
         angle = Math.toRadians(330d);
         pathData.append(" 0 0 0 ");
-        pathData.append(Coords.format(Math.cos(angle) * ratio));
+        pathData.append(CoordUtil.format(Math.cos(angle) * ratio));
         pathData.append(" ");
-        pathData.append(Coords.format(-Math.sin(angle) * ratio));
+        pathData.append(CoordUtil.format(-Math.sin(angle) * ratio));
 
         ArrayList<Point2D.Double> coords = new ArrayList<Point2D.Double>();
         double dy = Math.tan(Math.toRadians(30d)) * scale;
@@ -993,20 +997,20 @@ public final class Renderer {
         Double y1 = Math.sin(Math.toRadians(30d)) * 0.9 * scale;
         // main arc
         pathData.append("M");
-        pathData.append(Coords.format(-x1));
+        pathData.append(CoordUtil.format(-x1));
         pathData.append(" ");
-        pathData.append(Coords.format(y1));
+        pathData.append(CoordUtil.format(y1));
         pathData.append("A");
         // rx
-        pathData.append(Coords.format(0.9 * scale));
+        pathData.append(CoordUtil.format(0.9 * scale));
         pathData.append(" ");
         // ry
-        pathData.append(Coords.format(0.9 * scale));
+        pathData.append(CoordUtil.format(0.9 * scale));
         // rotation, large arc flag, sweep flag
         pathData.append(" 0 1 1 ");
-        pathData.append(Coords.format(x1));
+        pathData.append(CoordUtil.format(x1));
         pathData.append(" ");
-        pathData.append(Coords.format(y1));
+        pathData.append(CoordUtil.format(y1));
 
         // joiners
         Double y2 = Math.tan(Math.toRadians(30d)) * scale;
@@ -1018,57 +1022,57 @@ public final class Renderer {
 
         // right side
         pathData.append("L");
-        pathData.append(Coords.format(scale));
+        pathData.append(CoordUtil.format(scale));
         pathData.append(" ");
-        pathData.append(Coords.format(y2));
+        pathData.append(CoordUtil.format(y2));
         pathData.append("L");
-        pathData.append(Coords.format(scale));
+        pathData.append(CoordUtil.format(scale));
         pathData.append(" ");
-        pathData.append(Coords.format(y3));
+        pathData.append(CoordUtil.format(y3));
         pathData.append("L");
-        pathData.append(Coords.format(x1));
+        pathData.append(CoordUtil.format(x1));
         pathData.append(" ");
-        pathData.append(Coords.format(y4));
+        pathData.append(CoordUtil.format(y4));
         pathData.append("A");
         // rx
-        pathData.append(Coords.format(0.9 * scale));
+        pathData.append(CoordUtil.format(0.9 * scale));
         pathData.append(" ");
         // ry
-        pathData.append(Coords.format(0.9 * scale));
+        pathData.append(CoordUtil.format(0.9 * scale));
         // rotation, large arc flag, sweep flag
         pathData.append(" 0 0 1 ");
-        pathData.append(Coords.format(x5));
+        pathData.append(CoordUtil.format(x5));
         pathData.append(" ");
-        pathData.append(Coords.format(y5));
+        pathData.append(CoordUtil.format(y5));
 
         // left side
         pathData.append("L");
-        pathData.append(Coords.format(-x5));
+        pathData.append(CoordUtil.format(-x5));
         pathData.append(" ");
-        pathData.append(Coords.format(y5));
+        pathData.append(CoordUtil.format(y5));
         pathData.append("A");
         // rx
-        pathData.append(Coords.format(0.9 * scale));
+        pathData.append(CoordUtil.format(0.9 * scale));
         pathData.append(" ");
         // ry
-        pathData.append(Coords.format(0.9 * scale));
+        pathData.append(CoordUtil.format(0.9 * scale));
         // rotation, large arc flag, sweep flag
         pathData.append(" 0 0 1 ");
-        pathData.append(Coords.format(-x1));
+        pathData.append(CoordUtil.format(-x1));
         pathData.append(" ");
-        pathData.append(Coords.format(y4));
+        pathData.append(CoordUtil.format(y4));
         pathData.append("L");
-        pathData.append(Coords.format(-scale));
+        pathData.append(CoordUtil.format(-scale));
         pathData.append(" ");
-        pathData.append(Coords.format(y3));
+        pathData.append(CoordUtil.format(y3));
         pathData.append("L");
-        pathData.append(Coords.format(-scale));
+        pathData.append(CoordUtil.format(-scale));
         pathData.append(" ");
-        pathData.append(Coords.format(y2));
+        pathData.append(CoordUtil.format(y2));
         pathData.append("L");
-        pathData.append(Coords.format(-x1));
+        pathData.append(CoordUtil.format(-x1));
         pathData.append(" ");
-        pathData.append(Coords.format(y1));
+        pathData.append(CoordUtil.format(y1));
         pathData.append("Z");
 
         renderPath(pathData.toString(), "cover", "cover");
@@ -1081,13 +1085,13 @@ public final class Renderer {
         Double y = 1.12 * scale;
 
         pathData.append("M");
-        pathData.append(Coords.format(-scale));
+        pathData.append(CoordUtil.format(-scale));
         pathData.append(" ");
-        pathData.append(Coords.format(y));
+        pathData.append(CoordUtil.format(y));
         pathData.append("L");
-        pathData.append(Coords.format(scale));
+        pathData.append(CoordUtil.format(scale));
         pathData.append(" ");
-        pathData.append(Coords.format(y));
+        pathData.append(CoordUtil.format(y));
 
         renderPath(pathData.toString(), "bendLine", "bendLine");
     }
@@ -1101,17 +1105,17 @@ public final class Renderer {
             dy = 2.24 * scale;
         }
         pathData.append("M");
-        pathData.append(Coords.format(-size));
+        pathData.append(CoordUtil.format(-size));
         pathData.append(" ");
-        pathData.append(Coords.format(dy));
+        pathData.append(CoordUtil.format(dy));
         pathData.append("L");
-        pathData.append(Coords.format(size));
+        pathData.append(CoordUtil.format(size));
         pathData.append(" ");
-        pathData.append(Coords.format(dy));
+        pathData.append(CoordUtil.format(dy));
         pathData.append("M 0 ");
-        pathData.append(Coords.format(dy - size));
+        pathData.append(CoordUtil.format(dy - size));
         pathData.append("L 0 ");
-        pathData.append(Coords.format(dy + size));
+        pathData.append(CoordUtil.format(dy + size));
 
         renderPath(pathData.toString(), "pinMark", "pinMark");
     }
@@ -1126,15 +1130,15 @@ public final class Renderer {
                 } else {
                     pathData.append("M");
                 }
-                pathData.append(Coords.format(coord.getX()));
+                pathData.append(CoordUtil.format(coord.getX()));
                 pathData.append(" ");
-                pathData.append(Coords.format(coord.getY()));
+                pathData.append(CoordUtil.format(coord.getY()));
                 isFirst = false;
             }
             pathData.append("L");
-            pathData.append(Coords.format(coord.getX()));
+            pathData.append(CoordUtil.format(coord.getX()));
             pathData.append(" ");
-            pathData.append(Coords.format(coord.getY()));
+            pathData.append(CoordUtil.format(coord.getY()));
         }
         pathData.append("z");
         return pathData.toString();
@@ -1157,7 +1161,7 @@ public final class Renderer {
         writer.writeStartElement("text");
         writer.writeStartElement("textPath");
         writer.writeAttribute("xlink:href", "#" + pathID);
-        writer.writeAttribute("startOffset", Coords.format(startOffset) + "%");
+        writer.writeAttribute("startOffset", CoordUtil.format(startOffset) + "%");
         if (style != null) {
             writer.writeAttribute("class", style);
         }
@@ -1166,13 +1170,13 @@ public final class Renderer {
         writer.writeEndElement();
     }
 
-    private Poly createContour(ArrayList<Point2D> coords) throws Exception {
+    private Poly createContour(List<Point2D> coords) throws Exception {
         Poly contour = new PolyDefault();
         Double latitude = settings.getLatitude();
         Double scale = settings.getScale();
         for (Point2D coordRaw : coords) {
             Point2D coord = new Point2D.Double();
-            Coords.convertWithoutCheck(coordRaw.getX(), coordRaw.getY(), coord, latitude, scale);
+            CoordUtil.convertWithoutCheck(coordRaw.getX(), coordRaw.getY(), coord, latitude, scale);
             contour.add(coord);
         }
         return contour;
@@ -1185,7 +1189,7 @@ public final class Renderer {
         Double Dec = latitude > 0 ? latitude - 90 : latitude + 90;
         for (Double RA = 0.0; RA <= 24; RA = RA + 0.5) {
             Point2D coord = new Point2D.Double();
-            Coords.convertWithoutCheck(RA, Dec, coord, latitude, scale);
+            CoordUtil.convertWithoutCheck(RA, Dec, coord, latitude, scale);
             contour.add(coord);
         }
         return contour;
@@ -1280,10 +1284,10 @@ public final class Renderer {
 
     private String renderDialMonthsTick(Double angle, Double radius) {
         Double scale = settings.getScale();
-        return "M" + Coords.format(Math.cos(angle) * 0.89 * scale)
-                + " " + Coords.format(-Math.sin(angle) * 0.89 * scale)
-                + "L" + Coords.format(Math.cos(angle) * radius * scale)
-                + " " + Coords.format(-Math.sin(angle) * radius * scale);
+        return "M" + CoordUtil.format(Math.cos(angle) * 0.89 * scale)
+                + " " + CoordUtil.format(-Math.sin(angle) * 0.89 * scale)
+                + "L" + CoordUtil.format(Math.cos(angle) * radius * scale)
+                + " " + CoordUtil.format(-Math.sin(angle) * radius * scale);
     }
 
     private Element replaceTextElementContent(Element element, String originalText, String newText) {
@@ -1354,7 +1358,7 @@ public final class Renderer {
     }
 
     private void renderDialHoursMarker(Element mark, Double angle, String style) throws Exception {
-        String strTranslate = Coords.format(0.9 * settings.getScale());
+        String strTranslate = CoordUtil.format(0.9 * settings.getScale());
         writer.writeStartElement("g");
         writer.writeAttribute("class", style);
         writer.writeAttribute("transform", "translate(0,-" + strTranslate + ") rotate(" + angle + ",0," + strTranslate + ")");
@@ -1365,10 +1369,10 @@ public final class Renderer {
     private void renderDefsInstance(String id, Double x, Double y, String transform, String style) throws Exception {
         writer.writeStartElement("use");
         if (x != 0) {
-            writer.writeAttribute("x", Coords.format(x));
+            writer.writeAttribute("x", CoordUtil.format(x));
         }
         if (y != 0) {
-            writer.writeAttribute("y", Coords.format(y));
+            writer.writeAttribute("y", CoordUtil.format(y));
         }
         writer.writeAttribute("xlink", "http://www.w3.org/1999/xlink", "href", "#" + id);
         if (transform != null) {
@@ -1461,7 +1465,7 @@ public final class Renderer {
 
             Dec = Math.toDegrees(Math.atan(Math.cos(RA * Math.PI / 12d) * Math.cos(latitudeInRads) / Math.sin(latitudeInRads)));
 
-            Coords.convertWithoutCheck(RA - 6d, Dec, coord, latitude, scale);
+            CoordUtil.convertWithoutCheck(RA - 6d, Dec, coord, latitude, scale);
             mapAreaCoords.add(coord);
         }
         return mapAreaCoords;

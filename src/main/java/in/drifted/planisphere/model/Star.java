@@ -1,4 +1,4 @@
-package in.drifted.planisphere.util;
+package in.drifted.planisphere.model;
 
 import java.awt.Color;
 import java.io.Serializable;
@@ -7,7 +7,7 @@ public class Star implements Serializable {
 
     private Double RA;
     private Double Dec;
-    private Float Mag;
+    private Double Mag;
     private Color Color;
 
     public Color getColor() {
@@ -26,11 +26,11 @@ public class Star implements Serializable {
         this.Dec = Dec;
     }
 
-    public Float getMag() {
-        return this.Mag;
+    public Double getMag() {
+        return Mag;
     }
 
-    public void setMag(Float Mag) {
+    public void setMag(Double Mag) {
         this.Mag = Mag;
     }
 

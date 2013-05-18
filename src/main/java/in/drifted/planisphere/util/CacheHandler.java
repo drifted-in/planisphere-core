@@ -1,10 +1,15 @@
 package in.drifted.planisphere.util;
 
+import in.drifted.planisphere.model.ConstellationName;
+import in.drifted.planisphere.model.MilkyWayDataSet;
+import in.drifted.planisphere.model.Star;
 import in.drifted.planisphere.Settings;
 import java.awt.geom.Point2D;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class CacheHandler implements Serializable {
 
@@ -15,51 +20,51 @@ public class CacheHandler implements Serializable {
         clearCache();
     }
 
-    public ArrayList<Star> getStars() throws Exception {
+    public List<Star> getStarList() throws IOException {
         String path = settings.getFilePathStars();
-        ArrayList stars = (ArrayList) this.cache.get(path);
-        if (stars == null) {
+        List starList = (List) this.cache.get(path);
+        if (starList == null) {
             StarsDataLoader dl = new YaleStarsDataLoader(path);
-            stars = dl.getStars();
-            this.cache.put(path, stars);
+            starList = dl.getStarList();
+            this.cache.put(path, starList);
         }
-        return stars;
+        return starList;
     }
 
-    public ArrayList<ConstellationName> getConstellationNames() throws Exception {
+    public List<ConstellationName> getConstellationNameList() throws IOException {
         String path = settings.getFilePathConstellationNames();
-        ArrayList constellationNames = (ArrayList) this.cache.get(path);
-        if (constellationNames == null) {
+        List constellationNameList = (List) this.cache.get(path);
+        if (constellationNameList == null) {
             ConstellationNamesDataLoader dl = new ConstellationNamesDataLoader(path);
-            constellationNames = dl.getConstellationNames();
-            this.cache.put(path, constellationNames);
+            constellationNameList = dl.getConstellationNameList();
+            this.cache.put(path, constellationNameList);
         }
-        return constellationNames;
+        return constellationNameList;
     }
 
-    public ArrayList<Point2D> getConstellationLines() throws Exception {
+    public List<Point2D> getConstellationLineList() throws IOException {
         String path = settings.getFilePathConstellationLines();
-        ArrayList constellationLines = (ArrayList) this.cache.get(path);
-        if (constellationLines == null) {
+        List constellationLineList = (List) this.cache.get(path);
+        if (constellationLineList == null) {
             ConstellationLinesDataLoader dl = new ConstellationLinesDataLoader(path);
-            constellationLines = dl.getConstellationLines();
-            this.cache.put(path, constellationLines);
+            constellationLineList = dl.getConstellationLineList();
+            this.cache.put(path, constellationLineList);
         }
-        return constellationLines;
+        return constellationLineList;
     }
 
-    public ArrayList<Point2D> getConstellationBoundaries() throws Exception {
+    public List<Point2D> getConstellationBoundaryList() throws IOException {
         String path = settings.getFilePathConstellationBoundaries();
-        ArrayList constellationBoundaries = (ArrayList) this.cache.get(path);
-        if (constellationBoundaries == null) {
+        List constellationBoundaryList = (List) this.cache.get(path);
+        if (constellationBoundaryList == null) {
             ConstellationBoundariesDataLoader dl = new ConstellationBoundariesDataLoader(path);
-            constellationBoundaries = dl.getConstellationBoundaries();
-            this.cache.put(path, constellationBoundaries);
+            constellationBoundaryList = dl.getConstellationBoundaryList();
+            this.cache.put(path, constellationBoundaryList);
         }
-        return constellationBoundaries;
+        return constellationBoundaryList;
     }
 
-    public MilkyWayDataSet getMilkyWayDataSet() throws Exception {
+    public MilkyWayDataSet getMilkyWayDataSet() throws IOException {
         MilkyWayDataSet milkyWayDataSet = (MilkyWayDataSet) this.cache.get(settings.getFilePathMilkyWayDarkNorth());
         if (milkyWayDataSet == null) {
             ArrayList filePaths = new ArrayList();
@@ -75,6 +80,6 @@ public class CacheHandler implements Serializable {
     }
 
     private synchronized void clearCache() {
-        this.cache = new HashMap(20);
+        cache = new HashMap(20);
     }
 }

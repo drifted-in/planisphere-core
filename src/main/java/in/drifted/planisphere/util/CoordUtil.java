@@ -7,7 +7,7 @@ import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-public final class Coords implements Serializable {
+public final class CoordUtil implements Serializable {
 
     private static NumberFormat numberFormat = new DecimalFormat("###.##", new DecimalFormatSymbols(Locale.ENGLISH));
 
