@@ -8,12 +8,12 @@ import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-public class Localization implements Serializable {
+public class LocalizationUtil implements Serializable {
 
     private static final String LOCALE_BUNDLE = "in.drifted.planisphere.resources.localizations.messages";
     private ResourceBundle resources;
 
-    public Localization(Locale locale) {
+    public LocalizationUtil(Locale locale) {
         try {
             resources = ResourceBundle.getBundle(LOCALE_BUNDLE, locale);
         } catch (MissingResourceException e) {

@@ -4,7 +4,7 @@ import java.awt.geom.Point2D;
 import java.io.Serializable;
 import java.util.List;
 
-public class MilkyWayDataSet implements Serializable {
+public class MilkyWay implements Serializable {
 
     private List<Point2D> darkNorth;
     private List<Point2D> darkSouth;
@@ -12,7 +12,7 @@ public class MilkyWayDataSet implements Serializable {
     private List<Point2D> brightSouth;
 
     public List<Point2D> getDarkNorth() {
-        return this.darkNorth;
+        return darkNorth;
     }
 
     public void setDarkNorth(List<Point2D> darkNorth) {
@@ -20,7 +20,7 @@ public class MilkyWayDataSet implements Serializable {
     }
 
     public List<Point2D> getDarkSouth() {
-        return this.darkSouth;
+        return darkSouth;
     }
 
     public void setDarkSouth(List<Point2D> darkSouth) {
@@ -28,18 +28,18 @@ public class MilkyWayDataSet implements Serializable {
     }
 
     public List<Point2D> getBrightNorth() {
-        return this.brightNorth;
+        return brightNorth;
     }
 
-    public void setBrightNorth(List<Point2D> lightNorth) {
-        this.brightNorth = lightNorth;
+    public void setBrightNorth(List<Point2D> brightNorth) {
+        this.brightNorth = brightNorth;
     }
 
     public List<Point2D> getBrightSouth() {
-        return this.brightSouth;
+        return brightSouth;
     }
 
-    public void setBrightSouth(List<Point2D> lightSouth) {
-        this.brightSouth = lightSouth;
+    public void setBrightSouth(List<Point2D> brightSouth) {
+        this.brightSouth = brightSouth;
     }
 }

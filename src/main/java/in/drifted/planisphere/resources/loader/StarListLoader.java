@@ -1,9 +1,9 @@
-package in.drifted.planisphere.util;
+package in.drifted.planisphere.resources.loader;
 
 import in.drifted.planisphere.model.Star;
 import java.util.List;
 
-public abstract interface StarsDataLoader {
+public abstract interface StarListLoader {
 
     public abstract List<Star> getStarList();
 }

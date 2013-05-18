@@ -1,4 +1,4 @@
-package in.drifted.planisphere.util;
+package in.drifted.planisphere.resources.loader;
 
 import java.awt.geom.Point2D;
 import java.io.BufferedReader;
@@ -9,11 +9,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class ConstellationBoundariesDataLoader implements Serializable {
+public final class ConstellationBoundaryListLoader implements Serializable {
 
     private List<Point2D> constellationBoundaryList;
 
-    public ConstellationBoundariesDataLoader(String filePath) throws IOException {
+    public ConstellationBoundaryListLoader(String filePath) throws IOException {
 
         constellationBoundaryList = new ArrayList();
 

@@ -1,4 +1,4 @@
-package in.drifted.planisphere.util;
+package in.drifted.planisphere.resources.loader;
 
 import java.awt.geom.Point2D;
 import java.io.BufferedReader;
@@ -9,15 +9,15 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
-public final class ConstellationLinesDataLoader implements Serializable {
+public final class ConstellationLineListLoader implements Serializable {
 
     private List<Point2D> constellationLineList;
 
-    public ConstellationLinesDataLoader(String filePath) throws IOException {
+    public ConstellationLineListLoader(String filePath) throws IOException {
 
         constellationLineList = new LinkedList<Point2D>();
 
-        InputStream inputStream = ConstellationLinesDataLoader.class.getResourceAsStream(filePath);
+        InputStream inputStream = ConstellationLineListLoader.class.getResourceAsStream(filePath);
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "ASCII"));
 
         try {

@@ -1,6 +1,6 @@
-package in.drifted.planisphere.util;
+package in.drifted.planisphere.resources.loader;
 
-import in.drifted.planisphere.model.MilkyWayDataSet;
+import in.drifted.planisphere.model.MilkyWay;
 import java.awt.geom.Point2D;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,13 +10,13 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
-public final class MilkyWayDataLoader implements Serializable {
+public final class MilkyWayLoader implements Serializable {
 
-    private MilkyWayDataSet milkyWayDataSet;
+    private MilkyWay milkyWay;
 
-    public MilkyWayDataLoader(List<String> filePathList) throws IOException {
+    public MilkyWayLoader(List<String> filePathList) throws IOException {
 
-        milkyWayDataSet = new MilkyWayDataSet();
+        milkyWay = new MilkyWay();
 
         int i = 0;
         Double ngp = Math.toRadians(27.4);
@@ -25,7 +25,7 @@ public final class MilkyWayDataLoader implements Serializable {
 
             List dataSet = new LinkedList<Point2D>();
             
-            InputStream inputStream = MilkyWayDataLoader.class.getResourceAsStream(filePath);
+            InputStream inputStream = MilkyWayLoader.class.getResourceAsStream(filePath);
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "ASCII"));
 
             try {
@@ -49,16 +49,16 @@ public final class MilkyWayDataLoader implements Serializable {
 
             switch (i) {
                 case 0:
-                    milkyWayDataSet.setDarkNorth(dataSet);
+                    milkyWay.setDarkNorth(dataSet);
                     break;
                 case 1:
-                    milkyWayDataSet.setDarkSouth(dataSet);
+                    milkyWay.setDarkSouth(dataSet);
                     break;
                 case 2:
-                    milkyWayDataSet.setBrightNorth(dataSet);
+                    milkyWay.setBrightNorth(dataSet);
                     break;
                 case 3:
-                    milkyWayDataSet.setBrightSouth(dataSet);
+                    milkyWay.setBrightSouth(dataSet);
                     break;
                 default:
             }
@@ -66,7 +66,7 @@ public final class MilkyWayDataLoader implements Serializable {
         }
     }
 
-    public MilkyWayDataSet getMilkyWayDataSet() {
-        return milkyWayDataSet;
+    public MilkyWay getMilkyWay() {
+        return milkyWay;
     }
 }

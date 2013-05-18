@@ -1,5 +1,6 @@
 package in.drifted.planisphere.util;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.List;
@@ -19,7 +20,7 @@ public class FontManager {
         country = locale.getCountry();
     }
 
-    public String translate(String content) throws Exception {
+    public String translate(String content) throws IOException {
         String[] chunksRaw = content.split("\\$\\{");
         if (chunksRaw.length <= 1) {
             return content;
@@ -47,7 +48,7 @@ public class FontManager {
         for (String chunk : chunkList) {
             contentUpdated.append(chunk);
         }
-        
+
         return contentUpdated.toString();
     }
 
@@ -63,19 +64,19 @@ public class FontManager {
         }
     }
 
-    private String getFontBase64Encoded(String fontFileName) throws Exception {
-        
+    private String getFontBase64Encoded(String fontFileName) throws IOException {
+
         String fontPath = FONT_BASE_PATH + fontFileName;
-        String [] fileNameFragments = fontFileName.split("\\.");
+        String[] fileNameFragments = fontFileName.split("\\.");
         String fontFormat = fileNameFragments[fileNameFragments.length - 1];
-        
+
         StringBuilder fontInfo = new StringBuilder();
         fontInfo.append("data:font/");
         fontInfo.append(fontFormat);
         fontInfo.append(";base64,");
         InputStream fontData = FontManager.class.getResourceAsStream(fontPath);
         fontInfo.append(new String(Base64.encodeBase64(IOUtils.toByteArray(fontData)), "ISO-8859-1"));
-        
+
         return fontInfo.toString();
     }
 }

@@ -3,7 +3,7 @@ package in.drifted.planisphere.model;
 import java.awt.geom.Point2D;
 import java.io.Serializable;
 
-public class CardinalPointInfo implements Serializable {
+public class CardinalPoint implements Serializable {
 
     private Double startOffset;
     private Double radius;

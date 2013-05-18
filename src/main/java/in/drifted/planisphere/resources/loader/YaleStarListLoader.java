@@ -1,5 +1,6 @@
-package in.drifted.planisphere.util;
+package in.drifted.planisphere.resources.loader;
 
+import in.drifted.planisphere.resources.loader.StarListLoader;
 import in.drifted.planisphere.model.Star;
 import java.awt.Color;
 import java.io.BufferedReader;
@@ -9,15 +10,15 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class YaleStarsDataLoader implements StarsDataLoader {
+public final class YaleStarListLoader implements StarListLoader {
 
     private List<Star> starList;
 
-    public YaleStarsDataLoader(String filePath) throws IOException {
+    public YaleStarListLoader(String filePath) throws IOException {
 
         starList = new ArrayList<Star>();
 
-        InputStream inputStream = YaleStarsDataLoader.class.getResourceAsStream(filePath);
+        InputStream inputStream = YaleStarListLoader.class.getResourceAsStream(filePath);
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "ASCII"));
 
         try {
