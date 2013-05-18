@@ -300,7 +300,7 @@ public final class Renderer {
                             try {
                                 char[] buffer = new char[1024];
                                 int n;
-                                while ((n = reader.read(buffer)) != -1) {
+                                while ((n = reader.read(buffer)) >= 0) {
                                     cdata.write(buffer, 0, n);
                                 }
                             } finally {
@@ -402,7 +402,7 @@ public final class Renderer {
     private void renderConstellationBoundaries() throws XMLStreamException, IOException {
         Point2D coordStart = new Point2D.Double();
         Point2D coordEnd = new Point2D.Double();
-        StringWriter path = new StringWriter();
+        StringBuilder pathData = new StringBuilder();
         Double latitude = settings.getLatitude();
         Double scale = settings.getScale();
         for (Iterator<Point2D> i = cache.getConstellationBoundaryList().iterator(); i.hasNext();) {
@@ -421,12 +421,10 @@ public final class Renderer {
 
                         if (incRA > 12) {
                             startRA = coordEndRaw.getX();
-                            //endRA = coordStartRaw.getX() + 24;
                             incRA = 24 - incRA;
                         }
                         if (incRA < -12) {
                             incRA = incRA + 24;
-                            //endRA = coordEndRaw.getX() + 24;
                         }
 
                         Double incDec = (coordEndRaw.getY() - coordStartRaw.getY()) / bDiv;
@@ -436,28 +434,32 @@ public final class Renderer {
                         for (int j = 0; j <= bDiv; j++) {
                             CoordUtil.convert(startRA + j * incRA / bDiv, Dec, coordTemp, latitude, scale);
                             if (j == 0) {
-                                path.append("M" + CoordUtil.getCoordsChunk(coordTemp));
+                                pathData.append("M");
+
                             } else {
-                                path.append("L" + CoordUtil.getCoordsChunk(coordTemp));
+                                pathData.append("L");
                             }
+                            pathData.append(CoordUtil.getCoordsChunk(coordTemp));
                             Dec = Dec + incDec;
                         }
                     } else {
-                        path.append("M" + CoordUtil.getCoordsChunk(coordStart));
-                        path.append("L" + CoordUtil.getCoordsChunk(coordEnd));
+                        pathData.append("M");
+                        pathData.append(CoordUtil.getCoordsChunk(coordStart));
+                        pathData.append("L");
+                        pathData.append(CoordUtil.getCoordsChunk(coordEnd));
                     }
                 }
             } else {
                 i.next();
             }
         }
-        renderPath(path.toString(), null, "constellationBoundaries");
+        renderPath(pathData.toString(), null, "constellationBoundaries");
     }
 
     private void renderConstellationLines() throws XMLStreamException, IOException {
         Point2D coordStart = new Point2D.Double();
         Point2D coordEnd = new Point2D.Double();
-        StringWriter path = new StringWriter();
+        StringBuilder pathData = new StringBuilder();
         Double latitude = settings.getLatitude();
         Double scale = settings.getScale();
         for (Iterator<Point2D> i = cache.getConstellationLineList().iterator(); i.hasNext();) {
@@ -465,14 +467,16 @@ public final class Renderer {
             if (CoordUtil.convert(coordStartRaw.getX(), coordStartRaw.getY(), coordStart, latitude, scale)) {
                 Point2D coordEndRaw = i.next();
                 if (CoordUtil.convert(coordEndRaw.getX(), coordEndRaw.getY(), coordEnd, latitude, scale)) {
-                    path.append("M" + CoordUtil.getCoordsChunk(coordStart));
-                    path.append("L" + CoordUtil.getCoordsChunk(coordEnd));
+                    pathData.append("M");
+                    pathData.append(CoordUtil.getCoordsChunk(coordStart));
+                    pathData.append("L");
+                    pathData.append(CoordUtil.getCoordsChunk(coordEnd));
                 }
             } else {
                 i.next();
             }
         }
-        renderPath(path.toString(), null, "constellationLines");
+        renderPath(pathData.toString(), null, "constellationLines");
     }
 
     private void renderConstellationNames(Integer mode) throws XMLStreamException, IOException {
@@ -513,7 +517,7 @@ public final class Renderer {
         Double Dec;
         Boolean flag = false;
         String coordsChunk = "";
-        StringWriter path = new StringWriter();
+        StringBuilder pathData = new StringBuilder();
         Double latitude = settings.getLatitude();
         Double scale = settings.getScale();
 
@@ -528,15 +532,17 @@ public final class Renderer {
                     coordsChunk = CoordUtil.getCoordsChunk(coord);
                     flag = true;
                 } else {
-                    path.append("M" + coordsChunk);
-                    path.append("L" + CoordUtil.getCoordsChunk(coord));
+                    pathData.append("M");
+                    pathData.append(coordsChunk);
+                    pathData.append("L");
                     coordsChunk = CoordUtil.getCoordsChunk(coord);
+                    pathData.append(coordsChunk);
                 }
             } else {
                 flag = false;
             }
         }
-        renderPath(path.toString(), null, "ecliptic");
+        renderPath(pathData.toString(), null, "ecliptic");
     }
 
     private void renderCoords() throws XMLStreamException {
@@ -906,13 +912,13 @@ public final class Renderer {
 
         for (int month = 0; month < 12; month++) {
 
-            StringWriter path = new StringWriter();
+            StringBuilder pathData = new StringBuilder();
             for (int day = 0; day < daysInMonth[month]; day++) {
                 angleInRads = sign * Math.toRadians(angle);
                 angle = angle - 360.0 / daysInYear;
                 switch (day) {
                     case 0:
-                        path.append(renderDialMonthsTick(angleInRads, 1.0));
+                        pathData.append(renderDialMonthsTick(angleInRads, 1.0));
                         break;
                     case 5:
                     case 10:
@@ -920,13 +926,13 @@ public final class Renderer {
                     case 20:
                     case 25:
                     case 30:
-                        path.append(renderDialMonthsTick(angleInRads, 0.914));
+                        pathData.append(renderDialMonthsTick(angleInRads, 0.914));
                         break;
                     default:
-                        path.append(renderDialMonthsTick(angleInRads, 0.908));
+                        pathData.append(renderDialMonthsTick(angleInRads, 0.908));
                 }
             }
-            renderPath(path.toString(), null, "dialMonthsTick");
+            renderPath(pathData.toString(), null, "dialMonthsTick");
         }
     }
 
@@ -951,18 +957,21 @@ public final class Renderer {
     }
 
     private void renderMilkyWay(Poly polygon, String style) throws XMLStreamException {
-        StringWriter path = new StringWriter();
+        StringBuilder pathData = new StringBuilder();
         for (int i = 0; i < polygon.getNumInnerPoly(); i++) {
             Poly contour = polygon.getInnerPoly(i);
             for (int j = 0; j < contour.getNumPoints(); j++) {
                 if (j == 0) {
-                    path.append("M" + CoordUtil.format(contour.getX(j)) + " " + CoordUtil.format(contour.getY(j)));
+                    pathData.append("M");
                 } else {
-                    path.append("L" + CoordUtil.format(contour.getX(j)) + " " + CoordUtil.format(contour.getY(j)));
+                    pathData.append("L");
                 }
+                pathData.append(CoordUtil.format(contour.getX(j)));
+                pathData.append(" ");
+                pathData.append(CoordUtil.format(contour.getY(j)));
             }
         }
-        renderPath(path.toString(), null, style);
+        renderPath(pathData.toString(), null, style);
     }
 
     private void renderSpacer() throws XMLStreamException {
