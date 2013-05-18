@@ -19,14 +19,13 @@ import java.util.List;
 public class CacheHandler implements Serializable {
 
     private HashMap cache;
-    private Settings settings = new Settings();
 
     public CacheHandler() {
         clearCache();
     }
 
     public List<Star> getStarList() throws IOException {
-        String path = settings.getFilePathStars();
+        String path = Settings.FILE_PATH_STARS;
         List starList = (List) cache.get(path);
         if (starList == null) {
             starList = StarListLoader.getStarList(path);
@@ -36,7 +35,7 @@ public class CacheHandler implements Serializable {
     }
 
     public List<ConstellationName> getConstellationNameList() throws IOException {
-        String path = settings.getFilePathConstellationNames();
+        String path = Settings.FILE_PATH_CONSTELLATION_NAMES;
         List constellationNameList = (List) cache.get(path);
         if (constellationNameList == null) {
             constellationNameList = ConstellationNameListLoader.getConstellationNameList(path);
@@ -46,7 +45,7 @@ public class CacheHandler implements Serializable {
     }
 
     public List<Point2D> getConstellationLineList() throws IOException {
-        String path = settings.getFilePathConstellationLines();
+        String path = Settings.FILE_PATH_CONSTELLATION_LINES;
         List constellationLineList = (List) cache.get(path);
         if (constellationLineList == null) {
             constellationLineList = ConstellationLineListLoader.getConstellationLineList(path);
@@ -56,7 +55,7 @@ public class CacheHandler implements Serializable {
     }
 
     public List<Point2D> getConstellationBoundaryList() throws IOException {
-        String path = settings.getFilePathConstellationBoundaries();
+        String path = Settings.FILE_PATH_CONSTELLATION_BOUNDARIES;
         List constellationBoundaryList = (List) cache.get(path);
         if (constellationBoundaryList == null) {
             constellationBoundaryList = ConstellationBoundaryListLoader.getConstellationBoundaryList(path);
@@ -66,15 +65,15 @@ public class CacheHandler implements Serializable {
     }
 
     public MilkyWay getMilkyWay() throws IOException {
-        MilkyWay milkyWay = (MilkyWay) cache.get(settings.getFilePathMilkyWayDarkNorth());
+        MilkyWay milkyWay = (MilkyWay) cache.get(Settings.FILE_PATH_MILKY_WAY_DARK_NORTH);
         if (milkyWay == null) {
             List filePaths = new ArrayList();
-            filePaths.add(settings.getFilePathMilkyWayDarkNorth());
-            filePaths.add(settings.getFilePathMilkyWayDarkSouth());
-            filePaths.add(settings.getFilePathMilkyWayBrightNorth());
-            filePaths.add(settings.getFilePathMilkyWayBrightSouth());
+            filePaths.add(Settings.FILE_PATH_MILKY_WAY_DARK_NORTH);
+            filePaths.add(Settings.FILE_PATH_MILKY_WAY_DARK_SOUTH);
+            filePaths.add(Settings.FILE_PATH_MILKY_WAY_BRIGHT_NORTH);
+            filePaths.add(Settings.FILE_PATH_MILKY_WAY_BRIGHT_SOUTH);
             milkyWay = MilkyWayLoader.getMilkyWay(filePaths);
-            cache.put(settings.getFilePathMilkyWayDarkNorth(), milkyWay);
+            cache.put(Settings.FILE_PATH_MILKY_WAY_DARK_NORTH, milkyWay);
         }
         return milkyWay;
     }

@@ -15,7 +15,6 @@ import in.drifted.planisphere.util.CoordUtil;
 import in.drifted.planisphere.util.FontManager;
 import in.drifted.planisphere.util.LocalizationUtil;
 import java.awt.geom.Point2D;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -56,60 +55,45 @@ import org.w3c.dom.NodeList;
 
 public final class Renderer {
 
-    private CacheHandler cache;
+    // the MAGNITUDE_RANGE should be calculated during the star import
+    private static final Integer MAGNITUDE_RANGE = 8;
+    private CacheHandler cacheHandler;
     private XMLStreamWriter writer;
     private XMLInputFactory inputFactory;
     private XMLOutputFactory outputFactory;
-    private DocumentBuilder docBuilder;
-    // the following value should be calculated during import
-    private Integer magnitudeRange = 8;
+    private DocumentBuilder documentBuilder;
     private List<Point2D.Double> mapAreaPointList = new LinkedList<>();
     private List<CardinalPoint> cardinalPointList = new ArrayList<>();
-    private Options options;
     private LocalizationUtil localizationUtil;
-    private FontManager fontManager;
-    private Settings settings = new Settings();
+    private Double latitude;
+    private Double scale;
 
-    public Renderer(CacheHandler cache) throws ParserConfigurationException {
-        this.cache = cache;
+    public Renderer(CacheHandler cacheHandler) throws ParserConfigurationException {
+        this.cacheHandler = cacheHandler;
         inputFactory = XMLInputFactory.newInstance();
-        inputFactory.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.FALSE);
-        inputFactory.setProperty(XMLInputFactory.IS_VALIDATING, Boolean.FALSE);
+        inputFactory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
+        inputFactory.setProperty(XMLInputFactory.IS_VALIDATING, false);
         outputFactory = XMLOutputFactory.newInstance();
-        docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
     }
 
     public void createFromTemplate(String resourcePath, OutputStream output, Options options) throws XMLStreamException, IOException {
         writer = outputFactory.createXMLStreamWriter(output);
-        this.options = options;
-        settings.setLatitude(options.getLatitude());
-        localizationUtil = new LocalizationUtil(options.getCurrentLocale());
-        fontManager = new FontManager(options.getCurrentLocale());
-        createFromTemplate(resourcePath);
-    }
-
-    public byte[] createFromTemplate(String resourcePath, Options options) throws XMLStreamException, IOException {
-        ByteArrayOutputStream output = new ByteArrayOutputStream();
-        writer = outputFactory.createXMLStreamWriter(output);
-        this.options = options;
-        settings.setLatitude(options.getLatitude());
-        localizationUtil = new LocalizationUtil(options.getCurrentLocale());
-        fontManager = new FontManager(options.getCurrentLocale());
-        createFromTemplate(resourcePath);
-        return output.toByteArray();
-    }
-
-    public void createFromTemplate(String resourcePath) throws XMLStreamException, IOException {
         try (InputStream input = getClass().getResourceAsStream(Settings.RESOURCE_BASE_PATH + "templates/core/" + resourcePath)) {
-            createFromTemplate(input);
+            createFromTemplate(input, options);
         }
+        writer.close();
     }
 
-    public void createFromTemplate(InputStream input) throws XMLStreamException, IOException {
+    private void createFromTemplate(InputStream input, Options options) throws XMLStreamException, IOException {
+
+        latitude = options.getLatitude();
+        Locale locale = options.getCurrentLocale();
+        localizationUtil = new LocalizationUtil(locale);
+        FontManager fontManager = new FontManager(locale);
+        XMLEventReader parser = inputFactory.createXMLEventReader(input);
 
         List<Element> paramElements = new ArrayList<>();
-
-        XMLEventReader parser = inputFactory.createXMLEventReader(input);
 
         Boolean isUsed = true;
         StartElement startElement;
@@ -137,8 +121,6 @@ public final class Renderer {
                                 renderDefsMonthsView();
                                 break;
                             case "dialHoursMarkerMajor":
-                                paramElements.add(getParamElement(parser, event));
-                                break;
                             case "dialHoursMarkerMinor":
                                 paramElements.add(getParamElement(parser, event));
                                 break;
@@ -161,7 +143,7 @@ public final class Renderer {
                             case "wheel":
                                 writeGroupStart("wheel");
                                 renderMapBackground();
-                                renderDialMonths();
+                                renderDialMonths(locale);
                                 renderDialMonthsTicks();
                                 if (options.getMilkyWay()) {
                                     renderMilkyWay();
@@ -236,7 +218,7 @@ public final class Renderer {
                                     if (attr.getLocalPart().equals("y")) {
                                         Double range = Double.valueOf(a.getValue());
                                         Double ratio = range / 180;
-                                        Double y = ratio * (Math.abs(settings.getLatitude() - 90) - 90);
+                                        Double y = ratio * (Math.abs(latitude - 90) - 90);
                                         writer.writeAttribute("y", y.toString());
                                     } else {
                                         writer.writeAttribute(attr.getPrefix(), attr.getNamespaceURI(), attr.getLocalPart(), a.getValue());
@@ -252,7 +234,7 @@ public final class Renderer {
                         }
                     } else if (elementName.equals("svg")) {
                         String[] values = startElement.getAttributeByName(new QName("viewBox")).getValue().split(" ");
-                        settings.setScale(Math.min(Double.valueOf(values[2]) / 2, Double.valueOf(values[3]) / 2));
+                        scale = Math.min(Double.valueOf(values[2]) / 2, Double.valueOf(values[3]) / 2);
                         createMapAreaPointList();
                         createCardinalPointList();
                         writer.writeStartElement(elementName);
@@ -275,7 +257,7 @@ public final class Renderer {
                         characters = (Characters) event;
                         String text = characters.getData();
                         if (!(text.trim().isEmpty())) {
-                            writer.writeCharacters(localizationUtil.translate(text, settings.getLatitude()));
+                            writer.writeCharacters(localizationUtil.translate(text, latitude));
                         }
                     }
                     break;
@@ -307,7 +289,7 @@ public final class Renderer {
                         }
                     }
                     break;
-                    
+
                 default:
             }
         }
@@ -316,7 +298,7 @@ public final class Renderer {
     }
 
     private Element getParamElement(XMLEventReader parser, XMLEvent event) throws XMLStreamException {
-        Element paramElement = docBuilder.newDocument().createElement("g");
+        Element paramElement = documentBuilder.newDocument().createElement("g");
         XMLEventWriter xmlWriter = outputFactory.createXMLEventWriter(new DOMResult(paramElement));
         int level = 1;
         XMLEvent paramEvent = event;
@@ -370,16 +352,14 @@ public final class Renderer {
 
     private void renderStars() throws XMLStreamException, IOException {
         Point2D coord = new Point2D.Double();
-        Double latitude = settings.getLatitude();
-        Double scale = settings.getScale();
-        StringBuilder[] path = new StringBuilder[magnitudeRange];
+        StringBuilder[] path = new StringBuilder[MAGNITUDE_RANGE];
         String coordsChunk;
         Integer magnitudeIndex;
 
-        for (int i = 0; i < magnitudeRange; i++) {
+        for (int i = 0; i < MAGNITUDE_RANGE; i++) {
             path[i] = new StringBuilder();
         }
-        for (Star star : cache.getStarList()) {
+        for (Star star : cacheHandler.getStarList()) {
             if (CoordUtil.convert(star.getRA(), star.getDec(), coord, latitude, scale)) {
                 coordsChunk = CoordUtil.getCoordsChunk(coord);
                 magnitudeIndex = Math.round(star.getMag().floatValue() + 1);
@@ -389,7 +369,7 @@ public final class Renderer {
                 path[magnitudeIndex].append(coordsChunk);
             }
         }
-        for (Integer i = 0; i < magnitudeRange; i++) {
+        for (Integer i = 0; i < MAGNITUDE_RANGE; i++) {
             renderPath(path[i].toString(), null, "star level" + i);
         }
     }
@@ -398,9 +378,7 @@ public final class Renderer {
         Point2D coordStart = new Point2D.Double();
         Point2D coordEnd = new Point2D.Double();
         StringBuilder pathData = new StringBuilder();
-        Double latitude = settings.getLatitude();
-        Double scale = settings.getScale();
-        for (Iterator<Point2D> i = cache.getConstellationBoundaryList().iterator(); i.hasNext();) {
+        for (Iterator<Point2D> i = cacheHandler.getConstellationBoundaryList().iterator(); i.hasNext();) {
             Point2D coordStartRaw = i.next();
             if (CoordUtil.convert(coordStartRaw.getX(), coordStartRaw.getY(), coordStart, latitude, scale)) {
                 Point2D coordEndRaw = i.next();
@@ -408,7 +386,7 @@ public final class Renderer {
                     if ((Math.abs(coordStartRaw.getY() - coordEndRaw.getY()) < 0.7) && (Math.abs(coordStartRaw.getX() - coordEndRaw.getX()) > 0)
                             || (Math.abs(coordStartRaw.getY()) > 86)) {
 
-                        Integer bDiv = (int) (5 + (15 * ((settings.getLatitude() > 0) ? (90 - coordEndRaw.getY()) : (90 + coordEndRaw.getY())) / 90));
+                        Integer bDiv = (int) (5 + (15 * ((latitude > 0) ? (90 - coordEndRaw.getY()) : (90 + coordEndRaw.getY())) / 90));
 
                         Double startRA = coordStartRaw.getX();
                         Double endRA = coordEndRaw.getX();
@@ -455,9 +433,7 @@ public final class Renderer {
         Point2D coordStart = new Point2D.Double();
         Point2D coordEnd = new Point2D.Double();
         StringBuilder pathData = new StringBuilder();
-        Double latitude = settings.getLatitude();
-        Double scale = settings.getScale();
-        for (Iterator<Point2D> i = cache.getConstellationLineList().iterator(); i.hasNext();) {
+        for (Iterator<Point2D> i = cacheHandler.getConstellationLineList().iterator(); i.hasNext();) {
             Point2D coordStartRaw = i.next();
             if (CoordUtil.convert(coordStartRaw.getX(), coordStartRaw.getY(), coordStart, latitude, scale)) {
                 Point2D coordEndRaw = i.next();
@@ -477,9 +453,7 @@ public final class Renderer {
     private void renderConstellationNames(Integer mode) throws XMLStreamException, IOException {
         Point2D coordRaw;
         Point2D coord = new Point2D.Double();
-        Double latitude = settings.getLatitude();
-        Double scale = settings.getScale();
-        for (Iterator<ConstellationName> i = cache.getConstellationNameList().iterator(); i.hasNext();) {
+        for (Iterator<ConstellationName> i = cacheHandler.getConstellationNameList().iterator(); i.hasNext();) {
             ConstellationName constellationName = i.next();
             String name = "";
             switch (mode) {
@@ -513,8 +487,6 @@ public final class Renderer {
         Boolean flag = false;
         String coordsChunk = "";
         StringBuilder pathData = new StringBuilder();
-        Double latitude = settings.getLatitude();
-        Double scale = settings.getScale();
 
         Point2D coord = new Point2D.Double();
 
@@ -544,8 +516,6 @@ public final class Renderer {
 
         StringBuilder path = new StringBuilder();
         Point2D coord = new Point2D.Double();
-        Double latitude = settings.getLatitude();
-        Double scale = settings.getScale();
         Double sign = Math.signum(latitude);
 
         // declination circle (it cannot be rendered using circles because of the rotation at vernal point)        
@@ -590,7 +560,6 @@ public final class Renderer {
 
     private void renderCoordLabels() throws XMLStreamException {
 
-        Double latitude = settings.getLatitude();
         Double sign = Math.signum(latitude);
 
         for (int RA = 1; RA < 24; RA++) {
@@ -613,10 +582,7 @@ public final class Renderer {
     private void renderDefsCoordLabelPaths() throws XMLStreamException {
 
         Point2D coord = new Point2D.Double();
-
-        Double latitude = settings.getLatitude();
-        Double scale = settings.getScale();
-        double sign = Math.signum(latitude);
+        Double sign = Math.signum(latitude);
 
         for (Double Dec = 60.0; Dec >= Math.abs(latitude) - 90.0; Dec = Dec - 30.0) {
             StringBuilder path = new StringBuilder("M");
@@ -674,8 +640,6 @@ public final class Renderer {
 
     private void renderDefsCardinalPointLabelPaths() throws XMLStreamException {
 
-        Double latitude = settings.getLatitude();
-
         int cq = 2;
         if (Math.abs(latitude) > 78) {
             cq = 0;
@@ -686,9 +650,6 @@ public final class Renderer {
         String pathID;
         CardinalPoint cardinalPoint;
 
-        //writeGroupStart(null);
-        //writer.writeAttribute("transform", "translate()");
-        Double scale = settings.getScale();
         Double gap = scale * 0.006;
         Double letterHeight = scale * 0.032;
         for (Integer i = 0; i <= cq; i++) {
@@ -708,12 +669,11 @@ public final class Renderer {
                 renderPath(renderCircle(cardinalPoint.getCenter(), cardinalPoint.getRadius() + gap), pathID, null);
             }
         }
-        //writeGroupEnd();
     }
 
     private void renderCardinalPointsLabels() throws XMLStreamException {
 
-        List<String> points = new ArrayList<>();
+        List<String> points = new LinkedList<>();
         points.add(localizationUtil.getValue("cardinalPointNorth"));
         points.add(localizationUtil.getValue("cardinalPointNorthWest"));
         points.add(localizationUtil.getValue("cardinalPointWest"));
@@ -727,7 +687,6 @@ public final class Renderer {
         points.toArray(cardinalPointLabels);
 
         int cq = 2;
-        Double latitude = settings.getLatitude();
         if (Math.abs(latitude) > 78) {
             cq = 0;
         } else if (Math.abs(latitude) > 70) {
@@ -784,7 +743,6 @@ public final class Renderer {
 
         int q = 8;
         int qq = 7;
-        Double latitude = settings.getLatitude();
         Double latitudeAbs = Math.abs(latitude);
 
         if (latitudeAbs > 76) {
@@ -823,9 +781,8 @@ public final class Renderer {
         }
 
         for (Double i = 112.5; i >= -120; i = i - 15) {
-            String strTranslate = CoordUtil.format(0.9 * settings.getScale());
+            String strTranslate = CoordUtil.format(0.9 * scale);
             renderDefsInstance("dialHoursMarkerHalf", 0d, 0d, "translate(0,-" + strTranslate + ") rotate(" + i + ",0," + strTranslate + ")", null);
-            //renderDialHoursMarker(markHalf, i);
         }
     }
 
@@ -839,7 +796,6 @@ public final class Renderer {
 
         StringBuilder pathData = new StringBuilder();
         Double angle = Math.toRadians(30d);
-        Double scale = settings.getScale();
         Double x1 = Math.cos(angle) * 0.9 * scale;
         Double y1 = Math.sin(angle) * 0.9 * scale;
         Double x2 = Math.cos(angle) * scale;
@@ -898,9 +854,9 @@ public final class Renderer {
             daysInYear = 366;
         }
 
-        double sign = Math.signum(settings.getLatitude());
-        double angle = 19 + 60 + (sign < 0 ? 180 : 0);
-        double angleInRads;
+        Double sign = Math.signum(latitude);
+        Double angle = 19.0 + 60.0 + (sign < 0 ? 180 : 0);
+        Double angleInRads;
 
         for (int month = 0; month < 12; month++) {
 
@@ -930,7 +886,7 @@ public final class Renderer {
 
     private void renderMilkyWay() throws XMLStreamException, IOException {
 
-        MilkyWay milkyWay = cache.getMilkyWay();
+        MilkyWay milkyWay = cacheHandler.getMilkyWay();
         Poly sourcePolygon = new PolyDefault();
         Poly destPolygon = new PolyDefault();
 
@@ -969,7 +925,6 @@ public final class Renderer {
     private void renderSpacer() throws XMLStreamException {
         StringBuilder pathData = new StringBuilder();
         Double angle = Math.toRadians(210d);
-        Double scale = settings.getScale();
         Double ratio = 1.03 * scale;
         String strRadius = CoordUtil.format(ratio);
 
@@ -1003,7 +958,6 @@ public final class Renderer {
 
     private void renderCover() throws XMLStreamException {
         StringBuilder pathData = new StringBuilder();
-        Double scale = settings.getScale();
         Double x1 = Math.cos(Math.toRadians(30d)) * 0.9 * scale;
         Double y1 = Math.sin(Math.toRadians(30d)) * 0.9 * scale;
         // main arc
@@ -1092,7 +1046,6 @@ public final class Renderer {
 
     private void renderBendLine() throws XMLStreamException {
         StringBuilder pathData = new StringBuilder();
-        Double scale = settings.getScale();
         Double y = 1.12 * scale;
 
         pathData.append("M");
@@ -1109,7 +1062,6 @@ public final class Renderer {
 
     private void renderPinMark(Integer mode) throws XMLStreamException {
         StringBuilder pathData = new StringBuilder();
-        Double scale = settings.getScale();
         Double size = 0.02 * scale;
         Double dy = 0d;
         if (mode > 0) {
@@ -1183,8 +1135,6 @@ public final class Renderer {
 
     private Poly createContour(List<Point2D> coords) {
         Poly contour = new PolyDefault();
-        Double latitude = settings.getLatitude();
-        Double scale = settings.getScale();
         for (Point2D coordRaw : coords) {
             Point2D coord = new Point2D.Double();
             CoordUtil.convertWithoutCheck(coordRaw.getX(), coordRaw.getY(), coord, latitude, scale);
@@ -1195,8 +1145,6 @@ public final class Renderer {
 
     private Poly createClipArea() {
         Poly contour = new PolyDefault();
-        Double latitude = settings.getLatitude();
-        Double scale = settings.getScale();
         Double Dec = latitude > 0 ? latitude - 90 : latitude + 90;
         for (Double RA = 0.0; RA <= 24; RA = RA + 0.5) {
             Point2D coord = new Point2D.Double();
@@ -1208,12 +1156,12 @@ public final class Renderer {
 
     private void renderDefsDialMonthsLabelMajorPath() throws XMLStreamException {
         renderPath(renderCircle(0.95), "dialMonthsLabelMajorPath", null);
-        renderPath(renderCircle(new Point2D.Double(0, 0), 0.95 * settings.getScale(), 0d), "dialMonthsLabelMajorPathShifted", null);
+        renderPath(renderCircle(new Point2D.Double(0, 0), 0.95 * scale, 0d), "dialMonthsLabelMajorPathShifted", null);
     }
 
     private void renderDefsDialMonthsLabelMinorPath() throws XMLStreamException {
         renderPath(renderCircle(0.92), "dialMonthsLabelMinorPath", null);
-        renderPath(renderCircle(new Point2D.Double(0, 0), 0.92 * settings.getScale(), 0d), "dialMonthsLabelMinorPathShifted", null);
+        renderPath(renderCircle(new Point2D.Double(0, 0), 0.92 * scale, 0d), "dialMonthsLabelMinorPathShifted", null);
     }
 
     private String[] getMonthNames(Locale locale) {
@@ -1234,14 +1182,7 @@ public final class Renderer {
         return monthNames;
     }
 
-    private void renderDialMonths() throws XMLStreamException {
-        String[] localeFragments = options.getLocaleValue().split("\\|");
-        Locale locale;
-        if (localeFragments.length > 1) {
-            locale = new Locale(localeFragments[0], localeFragments[1]);
-        } else {
-            locale = new Locale(localeFragments[0]);
-        }
+    private void renderDialMonths(Locale locale) throws XMLStreamException {
 
         String[] monthNames = getMonthNames(locale);
         Integer[] daysInMonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
@@ -1253,7 +1194,7 @@ public final class Renderer {
             daysInYear = 366;
         }
 
-        Double sign = Math.signum(settings.getLatitude());
+        Double sign = Math.signum(latitude);
         double angleInPercent;
 
         double angle = 90 - (19 + 60);
@@ -1294,7 +1235,6 @@ public final class Renderer {
     }
 
     private String renderDialMonthsTick(Double angle, Double radius) {
-        Double scale = settings.getScale();
         return "M" + CoordUtil.format(Math.cos(angle) * 0.89 * scale)
                 + " " + CoordUtil.format(-Math.sin(angle) * 0.89 * scale)
                 + "L" + CoordUtil.format(Math.cos(angle) * radius * scale)
@@ -1371,7 +1311,7 @@ public final class Renderer {
     }
 
     private void renderDialHoursMarker(Element mark, Double angle, String style) throws XMLStreamException {
-        String strTranslate = CoordUtil.format(0.9 * settings.getScale());
+        String strTranslate = CoordUtil.format(0.9 * scale);
         writer.writeStartElement("g");
         writer.writeAttribute("class", style);
         writer.writeAttribute("transform", "translate(0,-" + strTranslate + ") rotate(" + angle + ",0," + strTranslate + ")");
@@ -1399,16 +1339,14 @@ public final class Renderer {
 
     private String renderCircle(Double radius) {
 
-        BezierCircle circle = new BezierCircle(radius * settings.getScale());
+        BezierCircle circle = new BezierCircle(radius * scale);
         return circle.render();
-
     }
 
     private String renderCircle(Point2D center, Double radius) {
 
         BezierCircle circle = new BezierCircle(center, radius);
         return circle.render();
-
     }
 
     private String renderCircle(Point2D center, Double radius, Double angle) {
@@ -1467,8 +1405,6 @@ public final class Renderer {
 
     private void createMapAreaPointList() {
 
-        Double latitude = settings.getLatitude();
-        Double scale = settings.getScale();
         Double latitudeInRads = Math.toRadians(latitude);
         Double Dec;
 
@@ -1485,7 +1421,6 @@ public final class Renderer {
 
     private void createCardinalPointList() {
 
-        Double scale = settings.getScale();
         double ax, ay, bx, by, cx, cy, dx, dy, sx, sy, radius, delta;
         Point2D intersection = new Point2D.Double();
 
