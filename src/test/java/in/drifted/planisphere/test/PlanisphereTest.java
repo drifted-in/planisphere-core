@@ -19,7 +19,7 @@ public class PlanisphereTest {
     public void generate() throws Exception {
 
         Options options = new Options();
-        options.setLatitude(50d);
+        options.setLatitude(80d);
         options.setConstellationBoundaries(true);
         options.setConstellationLines(true);
         options.setConstellationLabels(true);
@@ -30,14 +30,14 @@ public class PlanisphereTest {
         options.setDayLightSavingTimeScale(true);
         options.setLocaleValue("en|EN");
 
-        List<String> templateList = new LinkedList<String>();
+        List<String> templateList = new LinkedList<>();
         //templateList.add("printDefault_01.svg");
         //templateList.add("printDefault_02.svg");
         templateList.add("screenWaves.svg");
 
-        createPDF(templateList, "D:/vystup-multi.pdf", options);
+        //createPDF(templateList, "D:/vystup-multi.pdf", options);
         //createSVG("screenBlue.svg", "D:/test_plan.svg", options);
-        //createSVG("printDefault_01.svg", "D:/test_plan.svg", options);
+        createSVG("printDefault_02.svg", "D:/test_plan.svg", options);
 /*
          try {
          List<InputStream> inputStreamList = new ArrayList<InputStream>();
@@ -60,7 +60,7 @@ public class PlanisphereTest {
 
     private void createPDF(List<String> templateList, String outputPath, Options options) throws Exception {
 
-        List<InputStream> inputStreamList = new LinkedList<InputStream>();
+        List<InputStream> inputStreamList = new LinkedList<>();
 
         Renderer svg = new Renderer(new CacheHandler());
 

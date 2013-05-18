@@ -52,7 +52,7 @@ public class LocalizationUtil implements Serializable {
         if (chunksRaw.length <= 1) {
             return content;
         }
-        List<String> chunkList = new LinkedList<String>();
+        List<String> chunkList = new LinkedList<>();
         for (int c = 0; c < chunksRaw.length; c++) {
             if (!chunksRaw[c].contains("}")) {
                 if (chunksRaw[c].length() > 0) {

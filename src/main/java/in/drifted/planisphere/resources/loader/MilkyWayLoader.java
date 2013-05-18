@@ -6,29 +6,24 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
-public final class MilkyWayLoader implements Serializable {
+public final class MilkyWayLoader {
 
-    private MilkyWay milkyWay;
+    public static MilkyWay getMilkyWay(List<String> filePathList) throws IOException {
 
-    public MilkyWayLoader(List<String> filePathList) throws IOException {
-
-        milkyWay = new MilkyWay();
+        MilkyWay milkyWay = new MilkyWay();
 
         int i = 0;
         Double ngp = Math.toRadians(27.4);
 
         for (String filePath : filePathList) {
 
-            List dataSet = new LinkedList<Point2D>();
-            
-            InputStream inputStream = MilkyWayLoader.class.getResourceAsStream(filePath);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "ASCII"));
+            List<Point2D> dataSet = new LinkedList<>();
 
-            try {
+            try (InputStream inputStream = MilkyWayLoader.class.getResourceAsStream(filePath); BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "ASCII"))) {
+
                 String strLine;
                 while ((strLine = reader.readLine()) != null) {
                     if (!strLine.isEmpty()) {
@@ -42,10 +37,7 @@ public final class MilkyWayLoader implements Serializable {
                         dataSet.add(coord);
                     }
                 }
-            } finally {
-                reader.close();
             }
-            inputStream.close();
 
             switch (i) {
                 case 0:
@@ -64,9 +56,7 @@ public final class MilkyWayLoader implements Serializable {
             }
             i++;
         }
-    }
 
-    public MilkyWay getMilkyWay() {
         return milkyWay;
     }
 }

@@ -6,22 +6,16 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class ConstellationNameListLoader implements Serializable {
+public final class ConstellationNameListLoader {
 
-    private List<ConstellationName> constellationNameList;
+    public static List<ConstellationName> getConstellationNameList(String filePath) throws IOException {
 
-    public ConstellationNameListLoader(String filePath) throws IOException {
+        List<ConstellationName> constellationNameList = new ArrayList<>();
 
-        constellationNameList = new ArrayList();
-
-        InputStream inputStream = ConstellationNameListLoader.class.getResourceAsStream(filePath);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
-
-        try {
+        try (InputStream inputStream = ConstellationNameListLoader.class.getResourceAsStream(filePath); BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"))) {
             String strLine;
             while ((strLine = reader.readLine()) != null) {
                 if (!strLine.isEmpty()) {
@@ -31,13 +25,8 @@ public final class ConstellationNameListLoader implements Serializable {
                     constellationNameList.add(new ConstellationName(values[2], values[3], coord));
                 }
             }
-        } finally {
-            reader.close();
         }
-        inputStream.close();
-    }
 
-    public List<ConstellationName> getConstellationNameList() {
-        return this.constellationNameList;
+        return constellationNameList;
     }
 }

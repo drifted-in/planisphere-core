@@ -5,22 +5,16 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
-public final class ConstellationLineListLoader implements Serializable {
+public final class ConstellationLineListLoader {
 
-    private List<Point2D> constellationLineList;
+    public static List<Point2D> getConstellationLineList(String filePath) throws IOException {
 
-    public ConstellationLineListLoader(String filePath) throws IOException {
-
-        constellationLineList = new LinkedList<Point2D>();
-
-        InputStream inputStream = ConstellationLineListLoader.class.getResourceAsStream(filePath);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "ASCII"));
-
-        try {
+        List<Point2D> constellationLineList = new LinkedList<>();
+        
+        try (InputStream inputStream = ConstellationLineListLoader.class.getResourceAsStream(filePath); BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "ASCII"))) {
             String strLine;
             while ((strLine = reader.readLine()) != null) {
                 if (!strLine.isEmpty()) {
@@ -28,17 +22,12 @@ public final class ConstellationLineListLoader implements Serializable {
                     for (int i = 0; i < 2; i++) {
                         Point2D coord = new Point2D.Double();
                         coord.setLocation(Double.parseDouble(values[(2 * i)]) / 1000.0, Double.parseDouble(values[(2 * i + 1)]) / 100.0);
-                        this.constellationLineList.add(coord);
+                        constellationLineList.add(coord);
                     }
                 }
             }
-        } finally {
-            reader.close();
         }
-        inputStream.close();
-    }
 
-    public List<Point2D> getConstellationLineList() {
         return constellationLineList;
     }
 }
