@@ -28,16 +28,16 @@ public class PlanisphereTest {
         options.setConstellationLabelsOptions(0);
         options.setCoordsRADec(true);
         options.setDayLightSavingTimeScale(true);
-        options.setLocaleValue("en|EN");
+        options.setLocaleValue("it|IT");
 
         List<String> templateList = new LinkedList<>();
-        //templateList.add("printDefault_01.svg");
-        //templateList.add("printDefault_02.svg");
-        templateList.add("screenWaves.svg");
+        templateList.add("printDefault_01.svg");
+        templateList.add("printDefault_02.svg");
+        //templateList.add("screenWaves.svg");
 
-        //createPDF(templateList, "D:/vystup-multi.pdf", options);
+        createPDF(templateList, "D:/vystup-multi.pdf", options);
         //createSVG("screenBlue.svg", "D:/test_plan.svg", options);
-        createSVG("printDefault_02.svg", "D:/test_plan.svg", options);
+        //createSVG("printDefault_02.svg", "D:/test_plan.svg", options);
 /*
          try {
          List<InputStream> inputStreamList = new ArrayList<InputStream>();
