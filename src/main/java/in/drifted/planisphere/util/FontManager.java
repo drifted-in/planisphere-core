@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import org.apache.commons.codec.binary.Base64;
+import javax.xml.bind.DatatypeConverter;
 import org.apache.commons.io.IOUtils;
 
 public class FontManager {
@@ -75,7 +75,7 @@ public class FontManager {
         fontInfo.append(fontFormat);
         fontInfo.append(";base64,");
         InputStream fontData = FontManager.class.getResourceAsStream(fontPath);
-        fontInfo.append(new String(Base64.encodeBase64(IOUtils.toByteArray(fontData)), "ISO-8859-1"));
+        fontInfo.append(DatatypeConverter.printBase64Binary(IOUtils.toByteArray(fontData)));
 
         return fontInfo.toString();
     }
