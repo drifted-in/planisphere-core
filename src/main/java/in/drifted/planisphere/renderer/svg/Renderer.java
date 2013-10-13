@@ -1,7 +1,5 @@
 package in.drifted.planisphere.renderer.svg;
 
-import com.ctc.wstx.api.ReaderConfig;
-import com.ctc.wstx.dom.WstxDOMWrappingReader;
 import com.seisw.util.geom.Poly;
 import com.seisw.util.geom.PolyDefault;
 import in.drifted.planisphere.Options;
@@ -39,7 +37,6 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.Characters;
@@ -49,7 +46,6 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
-import org.codehaus.stax2.ri.dom.DOMWrappingReader;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
@@ -247,47 +243,47 @@ public final class Renderer {
                     break;
                 case XMLStreamConstants.END_ELEMENT:
                     if (isUsed) {
-                        writer.writeEndElement();
-                    } else {
-                        isUsed = true;
-                    }
+                    writer.writeEndElement();
+                } else {
+                    isUsed = true;
+                }
                     break;
                 case XMLStreamConstants.CHARACTERS:
                     if (isUsed) {
-                        characters = (Characters) event;
-                        String text = characters.getData();
-                        if (!(text.trim().isEmpty())) {
-                            writer.writeCharacters(localizationUtil.translate(text, latitude));
-                        }
+                    characters = (Characters) event;
+                    String text = characters.getData();
+                    if (!(text.trim().isEmpty())) {
+                        writer.writeCharacters(localizationUtil.translate(text, latitude));
                     }
+                }
                     break;
                 case XMLStreamConstants.CDATA:
                     if (isUsed) {
-                        characters = (Characters) event;
-                        writer.writeCData(fontManager.translate(characters.getData()));
-                    }
+                    characters = (Characters) event;
+                    writer.writeCData(fontManager.translate(characters.getData()));
+                }
                     break;
                 case XMLStreamConstants.PROCESSING_INSTRUCTION:
                     if (isUsed) {
-                        ProcessingInstruction pi = (ProcessingInstruction) event;
-                        if (pi.getTarget().equals("mouseEventsScript")) {
-                            writer.writeStartElement("script");
-                            writer.writeAttribute("type", "application/ecmascript");
+                    ProcessingInstruction pi = (ProcessingInstruction) event;
+                    if (pi.getTarget().equals("mouseEventsScript")) {
+                        writer.writeStartElement("script");
+                        writer.writeAttribute("type", "application/ecmascript");
 
-                            StringWriter cdata = new StringWriter();
-                            InputStream is = getClass().getResourceAsStream(Settings.RESOURCE_BASE_PATH + "templates/resources/js/mouseEvents.js");
+                        StringWriter cdata = new StringWriter();
+                        InputStream is = getClass().getResourceAsStream(Settings.RESOURCE_BASE_PATH + "templates/resources/js/mouseEvents.js");
 
-                            try (Reader reader = new InputStreamReader(is, "UTF-8")) {
-                                char[] buffer = new char[1024];
-                                int n;
-                                while ((n = reader.read(buffer)) >= 0) {
-                                    cdata.write(buffer, 0, n);
-                                }
+                        try (Reader reader = new InputStreamReader(is, "UTF-8")) {
+                            char[] buffer = new char[1024];
+                            int n;
+                            while ((n = reader.read(buffer)) >= 0) {
+                                cdata.write(buffer, 0, n);
                             }
-                            writer.writeCData(cdata.toString());
-                            writer.writeEndElement();
                         }
+                        writer.writeCData(cdata.toString());
+                        writer.writeEndElement();
                     }
+                }
                     break;
 
                 default:
@@ -1254,7 +1250,11 @@ public final class Renderer {
 
     private void writeElementContent(Element element) throws XMLStreamException {
 
-        XMLEventReader parser = inputFactory.createXMLEventReader(elementToStreamReader(element));
+        //http://stackoverflow.com/questions/7257508/convert-java-w3c-document-to-xmlstreamreader
+        //http://bugs.sun.com/view_bug.do?bug_id=6631274
+        DOMSource domSource = new DOMSource(element);
+        XMLEventReader parser = inputFactory.createXMLEventReader(domSource);
+
         StartElement startElement;
         Characters characters;
         while (parser.hasNext()) {
@@ -1459,12 +1459,5 @@ public final class Renderer {
 
             cardinalPointList.add(cardinalPoint);
         }
-    }
-
-    private XMLStreamReader elementToStreamReader(Element element) throws XMLStreamException {
-        DOMSource domSource = new DOMSource(element);
-        ReaderConfig config = ReaderConfig.createFullDefaults();
-        DOMWrappingReader wrappingReader = WstxDOMWrappingReader.createFrom(domSource, config);
-        return wrappingReader;
     }
 }
