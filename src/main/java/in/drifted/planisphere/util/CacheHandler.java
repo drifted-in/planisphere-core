@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class CacheHandler implements Serializable {
+public final class CacheHandler implements Serializable {
 
     private HashMap cache;
 

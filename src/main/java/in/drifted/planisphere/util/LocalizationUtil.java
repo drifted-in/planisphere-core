@@ -8,7 +8,7 @@ import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-public class LocalizationUtil implements Serializable {
+public final class LocalizationUtil implements Serializable {
 
     private static final String LOCALE_BUNDLE = "in.drifted.planisphere.resources.localizations.messages";
     private ResourceBundle resources;
@@ -53,20 +53,21 @@ public class LocalizationUtil implements Serializable {
             return content;
         }
         List<String> chunkList = new LinkedList<>();
-        for (int c = 0; c < chunksRaw.length; c++) {
-            if (!chunksRaw[c].contains("}")) {
-                if (chunksRaw[c].length() > 0) {
-                    chunkList.add(chunksRaw[c]);
+        for (String chunk : chunksRaw) {
+            if (!chunk.contains("}")) {
+                if (chunk.length() > 0) {
+                    chunkList.add(chunk);
                 }
             } else {
-                int index = chunksRaw[c].indexOf("}");
-                String key = chunksRaw[c].substring(0, index);
+                int index = chunk.indexOf("}");
+                String key = chunk.substring(0, index);
                 chunkList.add(getValue(key, latitude));
-                if (index != chunksRaw[c].length() - 1) {
-                    chunkList.add(chunksRaw[c].substring(index + 1));
+                if (index != chunk.length() - 1) {
+                    chunkList.add(chunk.substring(index + 1));
                 }
             }
         }
+
         StringBuilder contentUpdated = new StringBuilder();
         for (String chunk : chunkList) {
             contentUpdated.append(chunk);

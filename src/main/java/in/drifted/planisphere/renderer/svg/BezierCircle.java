@@ -8,8 +8,8 @@ import java.util.List;
 
 public final class BezierCircle {
 
-    private List<Point2D> pointList = new LinkedList<>();
     private static final Double KAPPA = 0.5522847498;
+    private final List<Point2D> pointList = new LinkedList<>();
 
     public BezierCircle(Double radius) {
         this(new Point2D.Double(0, 0), radius, 0d);

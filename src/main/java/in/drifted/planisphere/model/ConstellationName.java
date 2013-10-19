@@ -3,7 +3,7 @@ package in.drifted.planisphere.model;
 import java.awt.geom.Point2D;
 import java.io.Serializable;
 
-public class ConstellationName implements Serializable {
+public final class ConstellationName implements Serializable {
 
     private String id;
     private String abbreviation;

@@ -9,7 +9,7 @@ import java.util.Locale;
 
 public final class CoordUtil implements Serializable {
 
-    private static NumberFormat numberFormat = new DecimalFormat("###.##", new DecimalFormatSymbols(Locale.ENGLISH));
+    private static final NumberFormat NUMBER_FORMAT = new DecimalFormat("###.##", new DecimalFormatSymbols(Locale.ENGLISH));
 
     public static Boolean convert(Double RA, Double Dec, Point2D result, Double latitude, Double scale) {
         Double RAInRads = RA * Math.PI / 12.0;
@@ -46,7 +46,7 @@ public final class CoordUtil implements Serializable {
     }
 
     public static String format(Double number) {
-        return numberFormat.format(number);
+        return NUMBER_FORMAT.format(number);
     }
 
     public static String getCoordsChunk(Point2D coord) {

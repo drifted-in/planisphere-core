@@ -3,7 +3,7 @@ package in.drifted.planisphere;
 import java.io.Serializable;
 import java.util.Locale;
 
-public class Options implements Serializable {
+public final class Options implements Serializable {
 
     private String localeValue = "en";
     private Locale currentLocale;

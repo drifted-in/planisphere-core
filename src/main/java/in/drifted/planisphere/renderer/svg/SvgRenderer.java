@@ -18,6 +18,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
+import java.io.Serializable;
 import java.io.StringWriter;
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
@@ -49,22 +50,22 @@ import javax.xml.transform.dom.DOMSource;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-public final class Renderer {
+public final class SvgRenderer implements Serializable {
 
     // the MAGNITUDE_RANGE should be calculated during the star import
     private static final Integer MAGNITUDE_RANGE = 8;
-    private CacheHandler cacheHandler;
+    private final CacheHandler cacheHandler;
     private XMLStreamWriter writer;
-    private XMLInputFactory inputFactory;
-    private XMLOutputFactory outputFactory;
-    private DocumentBuilder documentBuilder;
-    private List<Point2D.Double> mapAreaPointList = new LinkedList<>();
-    private List<CardinalPoint> cardinalPointList = new ArrayList<>();
+    private final XMLInputFactory inputFactory;
+    private final XMLOutputFactory outputFactory;
+    private final DocumentBuilder documentBuilder;
+    private final List<Point2D.Double> mapAreaPointList = new LinkedList<>();
+    private final List<CardinalPoint> cardinalPointList = new ArrayList<>();
     private LocalizationUtil localizationUtil;
     private Double latitude;
     private Double scale;
 
-    public Renderer(CacheHandler cacheHandler) throws ParserConfigurationException {
+    public SvgRenderer(CacheHandler cacheHandler) throws ParserConfigurationException {
         this.cacheHandler = cacheHandler;
         inputFactory = XMLInputFactory.newInstance();
         inputFactory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
@@ -78,6 +79,7 @@ public final class Renderer {
         try (InputStream input = getClass().getResourceAsStream(Settings.RESOURCE_BASE_PATH + "templates/core/" + resourcePath)) {
             createFromTemplate(input, options);
         }
+        writer.flush();
         writer.close();
     }
 
@@ -290,7 +292,7 @@ public final class Renderer {
             }
         }
         parser.close();
-        close();
+        writer.writeEndDocument();
     }
 
     private Element getParamElement(XMLEventReader parser, XMLEvent event) throws XMLStreamException {
@@ -334,12 +336,6 @@ public final class Renderer {
 
     private void writeGroupEnd() throws XMLStreamException {
         writer.writeEndElement();
-    }
-
-    public void close() throws XMLStreamException {
-        writer.writeEndDocument();
-        writer.flush();
-        writer.close();
     }
 
     private void renderMapBackground() throws XMLStreamException {
@@ -449,8 +445,7 @@ public final class Renderer {
     private void renderConstellationNames(Integer mode) throws XMLStreamException, IOException {
         Point2D coordRaw;
         Point2D coord = new Point2D.Double();
-        for (Iterator<ConstellationName> i = cacheHandler.getConstellationNameList().iterator(); i.hasNext();) {
-            ConstellationName constellationName = i.next();
+        for (ConstellationName constellationName : cacheHandler.getConstellationNameList()) {
             String name = "";
             switch (mode) {
                 case 0:

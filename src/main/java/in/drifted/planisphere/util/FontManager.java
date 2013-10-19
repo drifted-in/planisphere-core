@@ -9,11 +9,11 @@ import java.util.ResourceBundle;
 import javax.xml.bind.DatatypeConverter;
 import org.apache.commons.io.IOUtils;
 
-public class FontManager {
+public final class FontManager {
 
     private static final String FONT_BASE_PATH = "/in/drifted/planisphere/resources/fonts/";
-    private ResourceBundle resources;
-    private String country;
+    private final ResourceBundle resources;
+    private final String country;
 
     public FontManager(Locale locale) {
         resources = ResourceBundle.getBundle("in.drifted.planisphere.resources.fonts.mapping");
@@ -26,21 +26,21 @@ public class FontManager {
             return content;
         }
         List<String> chunkList = new LinkedList<>();
-        for (int c = 0; c < chunksRaw.length; c++) {
-            if (!chunksRaw[c].contains("}")) {
-                if (chunksRaw[c].length() > 0) {
-                    chunkList.add(chunksRaw[c]);
+        for (String chunk : chunksRaw) {
+            if (!chunk.contains("}")) {
+                if (chunk.length() > 0) {
+                    chunkList.add(chunk);
                 }
             } else {
-                int index = chunksRaw[c].indexOf("}");
-                String key = chunksRaw[c].substring(0, index);
+                int index = chunk.indexOf("}");
+                String key = chunk.substring(0, index);
                 if (key.contains(".name")) {
                     chunkList.add(getValue(key.replace(".name", "")).replace(".ttf", ""));
                 } else {
                     chunkList.add(getFontBase64Encoded(getValue(key)));
                 }
-                if (index != chunksRaw[c].length() - 1) {
-                    chunkList.add(chunksRaw[c].substring(index + 1));
+                if (index != chunk.length() - 1) {
+                    chunkList.add(chunk.substring(index + 1));
                 }
             }
         }

@@ -13,8 +13,11 @@ public final class ConstellationLineListLoader {
     public static List<Point2D> getConstellationLineList(String filePath) throws IOException {
 
         List<Point2D> constellationLineList = new LinkedList<>();
-        
-        try (InputStream inputStream = ConstellationLineListLoader.class.getResourceAsStream(filePath); BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "ASCII"))) {
+
+        try (
+                InputStream inputStream = ConstellationLineListLoader.class.getResourceAsStream(filePath);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "ASCII"))) {
+
             String strLine;
             while ((strLine = reader.readLine()) != null) {
                 if (!strLine.isEmpty()) {
