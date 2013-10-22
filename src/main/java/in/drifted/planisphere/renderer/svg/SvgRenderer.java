@@ -64,6 +64,9 @@ public final class SvgRenderer implements Serializable {
     private LocalizationUtil localizationUtil;
     private Double latitude;
     private Double scale;
+    private Double scaleFixed;
+    private Double scaleFixedMapArea;
+    private Boolean isEquatorial;
 
     public SvgRenderer(CacheHandler cacheHandler) throws ParserConfigurationException {
         this.cacheHandler = cacheHandler;
@@ -86,6 +89,7 @@ public final class SvgRenderer implements Serializable {
     private void createFromTemplate(InputStream input, Options options) throws XMLStreamException, IOException {
 
         latitude = options.getLatitude();
+        isEquatorial = Math.abs(latitude) < 35.0;
         Locale locale = options.getCurrentLocale();
         localizationUtil = new LocalizationUtil(locale);
         FontManager fontManager = new FontManager(locale);
@@ -232,7 +236,9 @@ public final class SvgRenderer implements Serializable {
                         }
                     } else if (elementName.equals("svg")) {
                         String[] values = startElement.getAttributeByName(new QName("viewBox")).getValue().split(" ");
-                        scale = Math.min(Double.valueOf(values[2]) / 2, Double.valueOf(values[3]) / 2);
+                        scaleFixed = Math.min(Double.valueOf(values[2]) / 2, Double.valueOf(values[3]) / 2);
+                        scaleFixedMapArea = isEquatorial ? scaleFixed * 0.8 : scaleFixed;
+                        scale = isEquatorial ? scaleFixedMapArea * 2 : scaleFixedMapArea;
                         createMapAreaPointList();
                         createCardinalPointList();
                         writer.writeStartElement(elementName);
@@ -339,7 +345,7 @@ public final class SvgRenderer implements Serializable {
     }
 
     private void renderMapBackground() throws XMLStreamException {
-        renderPath(renderCircle(1.0), null, "mapBackground");
+        renderPath(renderCircle(1.0 * scaleFixed), null, "mapBackground");
     }
 
     private void renderStars() throws XMLStreamException, IOException {
@@ -772,7 +778,7 @@ public final class SvgRenderer implements Serializable {
         }
 
         for (Double i = 112.5; i >= -120; i = i - 15) {
-            String strTranslate = CoordUtil.format(0.9 * scale);
+            String strTranslate = CoordUtil.format(0.9 * scaleFixed);
             renderDefsInstance("dialHoursMarkerHalf", 0d, 0d, "translate(0,-" + strTranslate + ") rotate(" + i + ",0," + strTranslate + ")", null);
         }
     }
@@ -787,10 +793,10 @@ public final class SvgRenderer implements Serializable {
 
         StringBuilder pathData = new StringBuilder();
         Double angle = Math.toRadians(30d);
-        Double x1 = Math.cos(angle) * 0.9 * scale;
-        Double y1 = Math.sin(angle) * 0.9 * scale;
-        Double x2 = Math.cos(angle) * scale;
-        Double y2 = Math.sin(angle) * scale;
+        Double x1 = Math.cos(angle) * 0.9 * scaleFixed;
+        Double y1 = Math.sin(angle) * 0.9 * scaleFixed;
+        Double x2 = Math.cos(angle) * scaleFixed;
+        Double y2 = Math.sin(angle) * scaleFixed;
 
         // inner arc
         pathData.append("M");
@@ -799,10 +805,10 @@ public final class SvgRenderer implements Serializable {
         pathData.append(CoordUtil.format(y1));
         pathData.append("A");
         // rx
-        pathData.append(CoordUtil.format(0.9 * scale));
+        pathData.append(CoordUtil.format(0.9 * scaleFixed));
         pathData.append(" ");
         // ry
-        pathData.append(CoordUtil.format(0.9 * scale));
+        pathData.append(CoordUtil.format(0.9 * scaleFixed));
         // rotation, large arc flag, sweep flag
         pathData.append(" 0 1 1 ");
         pathData.append(CoordUtil.format(x1));
@@ -816,9 +822,9 @@ public final class SvgRenderer implements Serializable {
 
         // outer arc
         pathData.append("A");
-        pathData.append(CoordUtil.format(scale));
+        pathData.append(CoordUtil.format(scaleFixed));
         pathData.append(" ");
-        pathData.append(CoordUtil.format(scale));
+        pathData.append(CoordUtil.format(scaleFixed));
         pathData.append(" 0 1 0 ");
         pathData.append(CoordUtil.format(-x2));
         pathData.append(" ");
@@ -916,7 +922,7 @@ public final class SvgRenderer implements Serializable {
     private void renderSpacer() throws XMLStreamException {
         StringBuilder pathData = new StringBuilder();
         Double angle = Math.toRadians(210d);
-        Double ratio = 1.03 * scale;
+        Double ratio = 1.03 * scaleFixed;
         String strRadius = CoordUtil.format(ratio);
 
         // main arc
@@ -938,19 +944,19 @@ public final class SvgRenderer implements Serializable {
         pathData.append(CoordUtil.format(-Math.sin(angle) * ratio));
 
         List<Point2D.Double> coords = new ArrayList<>();
-        double dy = Math.tan(Math.toRadians(30d)) * scale;
-        coords.add(new Point2D.Double(scale, dy));
-        coords.add(new Point2D.Double(scale, 1.12 * scale));
-        coords.add(new Point2D.Double(-scale, 1.12 * scale));
-        coords.add(new Point2D.Double(-scale, dy));
+        double dy = Math.tan(Math.toRadians(30d)) * scaleFixed;
+        coords.add(new Point2D.Double(scaleFixed, dy));
+        coords.add(new Point2D.Double(scaleFixed, 1.12 * scaleFixed));
+        coords.add(new Point2D.Double(-scaleFixed, 1.12 * scaleFixed));
+        coords.add(new Point2D.Double(-scaleFixed, dy));
 
         renderPath(pathData + getPathData(coords, true), "spacer", null);
     }
 
     private void renderCover() throws XMLStreamException {
         StringBuilder pathData = new StringBuilder();
-        Double x1 = Math.cos(Math.toRadians(30d)) * 0.9 * scale;
-        Double y1 = Math.sin(Math.toRadians(30d)) * 0.9 * scale;
+        Double x1 = Math.cos(Math.toRadians(30d)) * 0.9 * scaleFixed;
+        Double y1 = Math.sin(Math.toRadians(30d)) * 0.9 * scaleFixed;
         // main arc
         pathData.append("M");
         pathData.append(CoordUtil.format(-x1));
@@ -958,10 +964,10 @@ public final class SvgRenderer implements Serializable {
         pathData.append(CoordUtil.format(y1));
         pathData.append("A");
         // rx
-        pathData.append(CoordUtil.format(0.9 * scale));
+        pathData.append(CoordUtil.format(0.9 * scaleFixed));
         pathData.append(" ");
         // ry
-        pathData.append(CoordUtil.format(0.9 * scale));
+        pathData.append(CoordUtil.format(0.9 * scaleFixed));
         // rotation, large arc flag, sweep flag
         pathData.append(" 0 1 1 ");
         pathData.append(CoordUtil.format(x1));
@@ -969,20 +975,20 @@ public final class SvgRenderer implements Serializable {
         pathData.append(CoordUtil.format(y1));
 
         // joiners
-        Double y2 = Math.tan(Math.toRadians(30d)) * scale;
-        Double height = 1.12 * scale - y2;
+        Double y2 = Math.tan(Math.toRadians(30d)) * scaleFixed;
+        Double height = 1.12 * scaleFixed - y2;
         Double y3 = y2 + 2 * height;
         Double y4 = y3 + (y2 - y1);
-        Double x5 = Math.cos(Math.toRadians(340d)) * 0.9 * scale;
-        Double y5 = 2.24 * scale + Math.sin(Math.toRadians(20d)) * 0.9 * scale;
+        Double x5 = Math.cos(Math.toRadians(340d)) * 0.9 * scaleFixed;
+        Double y5 = 2.24 * scaleFixed + Math.sin(Math.toRadians(20d)) * 0.9 * scaleFixed;
 
         // right side
         pathData.append("L");
-        pathData.append(CoordUtil.format(scale));
+        pathData.append(CoordUtil.format(scaleFixed));
         pathData.append(" ");
         pathData.append(CoordUtil.format(y2));
         pathData.append("L");
-        pathData.append(CoordUtil.format(scale));
+        pathData.append(CoordUtil.format(scaleFixed));
         pathData.append(" ");
         pathData.append(CoordUtil.format(y3));
         pathData.append("L");
@@ -991,10 +997,10 @@ public final class SvgRenderer implements Serializable {
         pathData.append(CoordUtil.format(y4));
         pathData.append("A");
         // rx
-        pathData.append(CoordUtil.format(0.9 * scale));
+        pathData.append(CoordUtil.format(0.9 * scaleFixed));
         pathData.append(" ");
         // ry
-        pathData.append(CoordUtil.format(0.9 * scale));
+        pathData.append(CoordUtil.format(0.9 * scaleFixed));
         // rotation, large arc flag, sweep flag
         pathData.append(" 0 0 1 ");
         pathData.append(CoordUtil.format(x5));
@@ -1008,21 +1014,21 @@ public final class SvgRenderer implements Serializable {
         pathData.append(CoordUtil.format(y5));
         pathData.append("A");
         // rx
-        pathData.append(CoordUtil.format(0.9 * scale));
+        pathData.append(CoordUtil.format(0.9 * scaleFixed));
         pathData.append(" ");
         // ry
-        pathData.append(CoordUtil.format(0.9 * scale));
+        pathData.append(CoordUtil.format(0.9 * scaleFixed));
         // rotation, large arc flag, sweep flag
         pathData.append(" 0 0 1 ");
         pathData.append(CoordUtil.format(-x1));
         pathData.append(" ");
         pathData.append(CoordUtil.format(y4));
         pathData.append("L");
-        pathData.append(CoordUtil.format(-scale));
+        pathData.append(CoordUtil.format(-scaleFixed));
         pathData.append(" ");
         pathData.append(CoordUtil.format(y3));
         pathData.append("L");
-        pathData.append(CoordUtil.format(-scale));
+        pathData.append(CoordUtil.format(-scaleFixed));
         pathData.append(" ");
         pathData.append(CoordUtil.format(y2));
         pathData.append("L");
@@ -1037,14 +1043,14 @@ public final class SvgRenderer implements Serializable {
 
     private void renderBendLine() throws XMLStreamException {
         StringBuilder pathData = new StringBuilder();
-        Double y = 1.12 * scale;
+        Double y = 1.12 * scaleFixed;
 
         pathData.append("M");
-        pathData.append(CoordUtil.format(-scale));
+        pathData.append(CoordUtil.format(-scaleFixed));
         pathData.append(" ");
         pathData.append(CoordUtil.format(y));
         pathData.append("L");
-        pathData.append(CoordUtil.format(scale));
+        pathData.append(CoordUtil.format(scaleFixed));
         pathData.append(" ");
         pathData.append(CoordUtil.format(y));
 
@@ -1053,10 +1059,10 @@ public final class SvgRenderer implements Serializable {
 
     private void renderPinMark(Integer mode) throws XMLStreamException {
         StringBuilder pathData = new StringBuilder();
-        Double size = 0.02 * scale;
+        Double size = 0.02 * scaleFixed;
         Double dy = 0d;
         if (mode > 0) {
-            dy = 2.24 * scale;
+            dy = 2.24 * scaleFixed;
         }
         pathData.append("M");
         pathData.append(CoordUtil.format(-size));
@@ -1139,20 +1145,20 @@ public final class SvgRenderer implements Serializable {
         Double Dec = latitude > 0 ? latitude - 90 : latitude + 90;
         for (Double RA = 0.0; RA <= 24; RA = RA + 0.5) {
             Point2D coord = new Point2D.Double();
-            CoordUtil.convertWithoutCheck(RA, Dec, coord, latitude, scale);
+            CoordUtil.convertWithoutCheck(RA, Dec, coord, latitude, scaleFixedMapArea);
             contour.add(coord);
         }
         return contour;
     }
 
     private void renderDefsDialMonthsLabelMajorPath() throws XMLStreamException {
-        renderPath(renderCircle(0.95), "dialMonthsLabelMajorPath", null);
-        renderPath(renderCircle(new Point2D.Double(0, 0), 0.95 * scale, 0d), "dialMonthsLabelMajorPathShifted", null);
+        renderPath(renderCircle(0.95 * scaleFixed), "dialMonthsLabelMajorPath", null);
+        renderPath(renderCircle(new Point2D.Double(0, 0), 0.95 * scaleFixed, 0d), "dialMonthsLabelMajorPathShifted", null);
     }
 
     private void renderDefsDialMonthsLabelMinorPath() throws XMLStreamException {
-        renderPath(renderCircle(0.92), "dialMonthsLabelMinorPath", null);
-        renderPath(renderCircle(new Point2D.Double(0, 0), 0.92 * scale, 0d), "dialMonthsLabelMinorPathShifted", null);
+        renderPath(renderCircle(0.92 * scaleFixed), "dialMonthsLabelMinorPath", null);
+        renderPath(renderCircle(new Point2D.Double(0, 0), 0.92 * scaleFixed, 0d), "dialMonthsLabelMinorPathShifted", null);
     }
 
     private String[] getMonthNames(Locale locale) {
@@ -1226,10 +1232,10 @@ public final class SvgRenderer implements Serializable {
     }
 
     private String renderDialMonthsTick(Double angle, Double radius) {
-        return "M" + CoordUtil.format(Math.cos(angle) * 0.89 * scale)
-                + " " + CoordUtil.format(-Math.sin(angle) * 0.89 * scale)
-                + "L" + CoordUtil.format(Math.cos(angle) * radius * scale)
-                + " " + CoordUtil.format(-Math.sin(angle) * radius * scale);
+        return "M" + CoordUtil.format(Math.cos(angle) * 0.89 * scaleFixed)
+                + " " + CoordUtil.format(-Math.sin(angle) * 0.89 * scaleFixed)
+                + "L" + CoordUtil.format(Math.cos(angle) * radius * scaleFixed)
+                + " " + CoordUtil.format(-Math.sin(angle) * radius * scaleFixed);
     }
 
     private Element replaceTextElementContent(Element element, String originalText, String newText) {
@@ -1306,7 +1312,7 @@ public final class SvgRenderer implements Serializable {
     }
 
     private void renderDialHoursMarker(Element mark, Double angle, String style) throws XMLStreamException {
-        String strTranslate = CoordUtil.format(0.9 * scale);
+        String strTranslate = CoordUtil.format(0.9 * scaleFixed);
         writer.writeStartElement("g");
         writer.writeAttribute("class", style);
         writer.writeAttribute("transform", "translate(0,-" + strTranslate + ") rotate(" + angle + ",0," + strTranslate + ")");
@@ -1334,7 +1340,7 @@ public final class SvgRenderer implements Serializable {
 
     private String renderCircle(Double radius) {
 
-        BezierCircle circle = new BezierCircle(radius * scale);
+        BezierCircle circle = new BezierCircle(radius);
         return circle.render();
     }
 
@@ -1404,12 +1410,15 @@ public final class SvgRenderer implements Serializable {
         Double Dec;
 
         mapAreaPointList.clear();
-        for (double RA = 0.0; RA <= 24; RA = RA + 0.2) {
+        Double step = isEquatorial ? 0.2 : 0.2;
+        Double shift = isEquatorial ? 6.0 : -6.0;
+        for (double RA = 0.0; Math.abs(RA) <= 24; RA = RA + step) {
             Point2D.Double coord = new Point2D.Double();
 
-            Dec = Math.toDegrees(Math.atan(Math.cos(RA * Math.PI / 12d) * Math.cos(latitudeInRads) / Math.sin(latitudeInRads)));
+            Dec = Math.toDegrees(Math.atan(Math.cos(RA * Math.PI / 12.0) * Math.cos(latitudeInRads) / Math.sin(latitudeInRads)));
 
-            CoordUtil.convertWithoutCheck(RA - 6d, Dec, coord, latitude, scale);
+            CoordUtil.convertWithoutCheck(RA + shift, Dec, coord, latitude, scaleFixedMapArea);
+            //coord.setLocation(coord.getX(), -coord.getY());
             mapAreaPointList.add(coord);
         }
     }

@@ -11,45 +11,57 @@ public final class CoordUtil implements Serializable {
 
     private static final NumberFormat NUMBER_FORMAT = new DecimalFormat("###.##", new DecimalFormatSymbols(Locale.ENGLISH));
 
-    public static Boolean convert(Double RA, Double Dec, Point2D result, Double latitude, Double scale) {
+    public static final Boolean convert(Double RA, Double Dec, Point2D result, Double latitude, Double scale) {
         Double RAInRads = RA * Math.PI / 12.0;
         Double radius;
 
-        if (latitude > 0.0D) {
-            if (Dec < latitude - 90.0D) {
+        if (latitude > 30.0) {
+            if (Dec < latitude - 90.0) {
                 return false;
             }
-            radius = scale * 0.89D * (90.0D - Dec) / (180.0D - latitude);
+            radius = scale * 0.89 * (90.0 - Dec) / (180.0 - latitude);
+            result.setLocation(Math.cos(RAInRads) * radius, Math.sin(RAInRads) * radius);
+        } else if (latitude < -30.0) {
+            if (Dec > latitude + 90.0) {
+                return false;
+            }
+            radius = scale * 0.89 * (90.0 + Dec) / (180.0 + latitude);
+            result.setLocation(-Math.cos(RAInRads) * radius, Math.sin(RAInRads) * radius);
+        } else if (latitude > 0.0) {
+            if (Dec < 0.0) {
+                return false;
+            }
+            radius = scale * 0.89 * (90.0 - Dec) / (180.0 - latitude);
             result.setLocation(Math.cos(RAInRads) * radius, Math.sin(RAInRads) * radius);
         } else {
-            if (Dec > latitude + 90.0D) {
+            if (Dec > 0.0) {
                 return false;
             }
-            radius = scale * 0.89D * (90.0D + Dec) / (180.0D + latitude);
+            radius = scale * 0.89 * (90.0 + Dec) / (180.0 + latitude);
             result.setLocation(-Math.cos(RAInRads) * radius, Math.sin(RAInRads) * radius);
         }
 
         return true;
     }
 
-    public static void convertWithoutCheck(Double RA, Double Dec, Point2D result, Double latitude, Double scale) {
+    public static final void convertWithoutCheck(Double RA, Double Dec, Point2D result, Double latitude, Double scale) {
         Double RAInRads = RA * Math.PI / 12.0;
         Double radius;
 
-        if (latitude > 0.0D) {
-            radius = scale * 0.89D * (90.0D - Dec) / (180.0D - latitude);
+        if (latitude > 0.0) {
+            radius = scale * 0.89 * (90.0 - Dec) / (180.0 - latitude);
             result.setLocation(Math.cos(RAInRads) * radius, Math.sin(RAInRads) * radius);
         } else {
-            radius = scale * 0.89D * (90.0D + Dec) / (180.0D + latitude);
+            radius = scale * 0.89 * (90.0 + Dec) / (180.0 + latitude);
             result.setLocation(-Math.cos(RAInRads) * radius, Math.sin(RAInRads) * radius);
         }
     }
 
-    public static String format(Double number) {
+    public static final String format(Double number) {
         return NUMBER_FORMAT.format(number);
     }
 
-    public static String getCoordsChunk(Point2D coord) {
+    public static final String getCoordsChunk(Point2D coord) {
         return format(Double.valueOf(coord.getX())) + " " + format(Double.valueOf(coord.getY()));
     }
 }
