@@ -29,6 +29,7 @@ public final class HtmlRenderer implements Serializable {
             writer.append("<html><head>");
             writer.append("<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\">");
             writer.append("<title>" + l10n.getValue("applicationName") + "</title>");
+            writer.append("<style type=\"text/css\">@page {size: auto; margin:0mm}</style>");
             writer.append("</head><body style=\"margin:0;\">");
 
             for (String template : templateList) {

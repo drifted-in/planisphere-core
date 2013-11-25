@@ -22,7 +22,7 @@ public class PlanisphereTest {
     @Before
     public void setUp() {
 
-        options.setLatitude(55d);
+        options.setLatitude(40d);
         options.setConstellationBoundaries(true);
         options.setConstellationLines(true);
         options.setConstellationLabels(true);
@@ -31,16 +31,17 @@ public class PlanisphereTest {
         options.setConstellationLabelsOptions(0);
         options.setCoordsRADec(true);
         options.setDayLightSavingTimeScale(true);
-        options.setLocaleValue("cs|CZ");
+        options.setLocaleValue("en|EN");
     }
 
     @Test
     public void generateSVG() throws Exception {
 
         createSVG("screenBlue.svg", "D:/planisphere_screenBlue.svg", options);
+        createSVG("printDefault_01.svg", "D:/planisphere_printDefault_01.svg", options);
     }
 
-    @Test
+    //@Test
     public void generateHTML() throws Exception {
 
         List<String> templateList = new LinkedList<>();
@@ -50,7 +51,7 @@ public class PlanisphereTest {
         createHTML(templateList, "D:/planisphere_printDefault.html", options);
     }
 
-    @Test
+    //@Test
     public void generatePDF() throws Exception {
 
         List<String> templateList = new LinkedList<>();
