@@ -25,10 +25,12 @@ import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -53,13 +55,11 @@ import org.w3c.dom.NodeList;
 
 public final class SvgRenderer implements Serializable {
 
-    // the MAGNITUDE_RANGE should be calculated during the star import
-    private static final Integer MAGNITUDE_RANGE = 8;
-    private transient XMLStreamWriter writer;
-    private transient CacheHandler cacheHandler;
     private transient XMLInputFactory inputFactory;
     private transient XMLOutputFactory outputFactory;
+    private transient XMLStreamWriter writer;
     private transient DocumentBuilder documentBuilder;
+    private transient CacheHandler cacheHandler;
     private final List<Point2D.Double> mapAreaPointList = new LinkedList<>();
     private final List<CardinalPoint> cardinalPointList = new ArrayList<>();
     private LocalizationUtil localizationUtil;
@@ -364,26 +364,30 @@ public final class SvgRenderer implements Serializable {
     }
 
     private void renderStars() throws XMLStreamException, IOException {
-        Point2D coord = new Point2D.Double();
-        StringBuilder[] path = new StringBuilder[MAGNITUDE_RANGE];
-        String coordsChunk;
-        Integer magnitudeIndex;
 
-        for (Integer i = 0; i < MAGNITUDE_RANGE; i++) {
-            path[i] = new StringBuilder();
-        }
+        Point2D coord = new Point2D.Double();
+        Map<Integer, StringBuilder> pathMap = new HashMap<>();
+
         for (Star star : cacheHandler.getStarList()) {
             if (CoordUtil.convert(star.getRA(), star.getDec(), coord, latitude, scale)) {
-                coordsChunk = CoordUtil.getCoordsChunk(coord);
-                magnitudeIndex = Math.round(star.getMag().floatValue() + 1);
-                path[magnitudeIndex].append("M");
-                path[magnitudeIndex].append(coordsChunk);
-                path[magnitudeIndex].append("L");
-                path[magnitudeIndex].append(coordsChunk);
+                String coordsChunk = CoordUtil.getCoordsChunk(coord);
+
+                StringBuilder path = new StringBuilder();
+                path.append("M");
+                path.append(coordsChunk);
+                path.append("L");
+                path.append(coordsChunk);
+
+                Integer magnitudeIndex = Math.round(star.getMag().floatValue() + 1);
+                if (pathMap.containsKey(magnitudeIndex)) {
+                    pathMap.get(magnitudeIndex).append(path);
+                } else {
+                    pathMap.put(magnitudeIndex, path);
+                }
             }
         }
-        for (Integer i = 0; i < MAGNITUDE_RANGE; i++) {
-            renderPath(path[i].toString(), null, "star level" + i);
+        for (Map.Entry<Integer, StringBuilder> entry : pathMap.entrySet()) {
+            renderPath(entry.getValue().toString(), null, "star level" + entry.getKey());
         }
     }
 
