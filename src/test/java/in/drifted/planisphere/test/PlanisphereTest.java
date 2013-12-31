@@ -22,7 +22,7 @@ public class PlanisphereTest {
     @Before
     public void setUp() {
 
-        options.setLatitude(40d);
+        options.setLatitude(30d);
         options.setConstellationBoundaries(true);
         options.setConstellationLines(true);
         options.setConstellationLabels(true);
@@ -38,17 +38,18 @@ public class PlanisphereTest {
     public void generateSVG() throws Exception {
 
         createSVG("screenBlue.svg", "D:/planisphere_screenBlue.svg", options);
-        createSVG("printDefault_01.svg", "D:/planisphere_printDefault_01.svg", options);
+        //createSVG("printDefault_01.svg", "D:/planisphere_printDefault_01.svg", options);
+        //createSVG("printDefault_02.svg", "D:/planisphere_printDefault_02.svg", options);
     }
 
-    //@Test
+    @Test
     public void generateHTML() throws Exception {
 
         List<String> templateList = new LinkedList<>();
         templateList.add("printDefault_01.svg");
-        templateList.add("printDefault_02.svg");
+        //templateList.add("printDefault_02.svg");
 
-        createHTML(templateList, "D:/planisphere_printDefault.html", options);
+        //createHTML(templateList, "D:/planisphere_printDefault.html", options);
     }
 
     //@Test
@@ -63,7 +64,7 @@ public class PlanisphereTest {
 
     private void createSVG(String template, String outputPath, Options options) throws Exception {
 
-        SvgRenderer svg = new SvgRenderer(new CacheHandler());
+        SvgRenderer svg = new SvgRenderer();
         try (OutputStream outputStream = new FileOutputStream(outputPath)) {
             svg.createFromTemplate(template, outputStream, options);
         }
@@ -71,7 +72,7 @@ public class PlanisphereTest {
 
     private void createHTML(List<String> templateList, String outputPath, Options options) throws Exception {
 
-        SvgRenderer svg = new SvgRenderer(new CacheHandler());
+        SvgRenderer svg = new SvgRenderer();
         HtmlRenderer html = new HtmlRenderer(svg);
         html.createFromTemplateList(templateList, outputPath, options);
     }
@@ -80,7 +81,7 @@ public class PlanisphereTest {
 
         List<InputStream> inputStreamList = new LinkedList<>();
 
-        SvgRenderer svg = new SvgRenderer(new CacheHandler());
+        SvgRenderer svg = new SvgRenderer();
 
         for (String template : templateList) {
             try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {

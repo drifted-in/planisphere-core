@@ -16,6 +16,7 @@ import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Serializable;
@@ -54,11 +55,11 @@ public final class SvgRenderer implements Serializable {
 
     // the MAGNITUDE_RANGE should be calculated during the star import
     private static final Integer MAGNITUDE_RANGE = 8;
-    private final CacheHandler cacheHandler;
-    private XMLStreamWriter writer;
-    private final XMLInputFactory inputFactory;
-    private final XMLOutputFactory outputFactory;
-    private final DocumentBuilder documentBuilder;
+    private transient XMLStreamWriter writer;
+    private transient CacheHandler cacheHandler;
+    private transient XMLInputFactory inputFactory;
+    private transient XMLOutputFactory outputFactory;
+    private transient DocumentBuilder documentBuilder;
     private final List<Point2D.Double> mapAreaPointList = new LinkedList<>();
     private final List<CardinalPoint> cardinalPointList = new ArrayList<>();
     private LocalizationUtil localizationUtil;
@@ -68,13 +69,27 @@ public final class SvgRenderer implements Serializable {
     private Double scaleFixedMapArea;
     private Boolean isEquatorial;
 
-    public SvgRenderer(CacheHandler cacheHandler) throws ParserConfigurationException {
-        this.cacheHandler = cacheHandler;
+    public SvgRenderer() {
+        initRenderer();
+    }
+
+    private void initRenderer() {
         inputFactory = XMLInputFactory.newInstance();
         inputFactory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
         inputFactory.setProperty(XMLInputFactory.IS_VALIDATING, false);
         outputFactory = XMLOutputFactory.newInstance();
-        documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        try {
+            documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        } catch (ParserConfigurationException e) {
+            // LOGGER
+        }
+        cacheHandler = CacheHandler.getInstance();
+    }
+
+    // init of all transient objects after deserialization
+    private void readObject(ObjectInputStream inputStream) throws IOException, ClassNotFoundException {
+        inputStream.defaultReadObject();
+        initRenderer();
     }
 
     public void createFromTemplate(String resourcePath, OutputStream output, Options options) throws XMLStreamException, IOException {
@@ -283,7 +298,7 @@ public final class SvgRenderer implements Serializable {
 
                         try (Reader reader = new InputStreamReader(is, "UTF-8")) {
                             char[] buffer = new char[1024];
-                            int n;
+                            Integer n;
                             while ((n = reader.read(buffer)) >= 0) {
                                 cdata.write(buffer, 0, n);
                             }
@@ -304,7 +319,7 @@ public final class SvgRenderer implements Serializable {
     private Element getParamElement(XMLEventReader parser, XMLEvent event) throws XMLStreamException {
         Element paramElement = documentBuilder.newDocument().createElement("g");
         XMLEventWriter xmlWriter = outputFactory.createXMLEventWriter(new DOMResult(paramElement));
-        int level = 1;
+        Integer level = 1;
         XMLEvent paramEvent = event;
         while (!(parser.hasNext() && paramEvent.getEventType() == XMLStreamConstants.END_ELEMENT && level == 0)) {
             paramEvent = parser.nextEvent();
@@ -354,7 +369,7 @@ public final class SvgRenderer implements Serializable {
         String coordsChunk;
         Integer magnitudeIndex;
 
-        for (int i = 0; i < MAGNITUDE_RANGE; i++) {
+        for (Integer i = 0; i < MAGNITUDE_RANGE; i++) {
             path[i] = new StringBuilder();
         }
         for (Star star : cacheHandler.getStarList()) {
@@ -402,7 +417,7 @@ public final class SvgRenderer implements Serializable {
                         Double Dec = coordStartRaw.getY();
                         Point2D coordTemp = new Point2D.Double();
 
-                        for (int j = 0; j <= bDiv; j++) {
+                        for (Integer j = 0; j <= bDiv; j++) {
                             CoordUtil.convert(startRA + j * incRA / bDiv, Dec, coordTemp, latitude, scale);
                             if (j == 0) {
                                 pathData.append("M");
@@ -487,7 +502,7 @@ public final class SvgRenderer implements Serializable {
 
         Point2D coord = new Point2D.Double();
 
-        for (int i = 0; i <= 360; i = i + 2) {
+        for (Integer i = 0; i <= 360; i = i + 2) {
             lambda = Math.toRadians(i);
             RA = (Math.atan2(Math.sin(lambda) * Math.cos(epsilon), Math.cos(lambda))) * 12 / Math.PI;
             Dec = Math.toDegrees(Math.asin(Math.sin(epsilon) * Math.sin(lambda)));
@@ -637,7 +652,7 @@ public final class SvgRenderer implements Serializable {
 
     private void renderDefsCardinalPointLabelPaths() throws XMLStreamException {
 
-        int cq = 2;
+        Integer cq = 2;
         if (Math.abs(latitude) > 78) {
             cq = 0;
         } else if (Math.abs(latitude) > 70) {
@@ -683,7 +698,7 @@ public final class SvgRenderer implements Serializable {
         String[] cardinalPointLabels = new String[points.size()];
         points.toArray(cardinalPointLabels);
 
-        int cq = 2;
+        Integer cq = 2;
         if (Math.abs(latitude) > 78) {
             cq = 0;
         } else if (Math.abs(latitude) > 70) {
@@ -738,45 +753,49 @@ public final class SvgRenderer implements Serializable {
         Element markMinor = paramElements.get(1);
         //Element markHalf = paramElements.get(2);
 
-        int q = 8;
-        int qq = 7;
+        Integer rangeMajor = 8;
+        Integer rangeMinor = 7;
         Double latitudeAbs = Math.abs(latitude);
 
         if (latitudeAbs > 76) {
-            q = 5;
+            rangeMajor = 5;
         } else if (latitudeAbs > 70) {
-            q = 6;
-            qq = 5;
+            rangeMajor = 6;
+            rangeMinor = 5;
         } else if (latitudeAbs > 60) {
-            q = 7;
-            qq = 5;
+            rangeMajor = 7;
+            rangeMinor = 5;
         }
 
         // default labels
-        Integer c;
+        Integer hour;
 
-        for (int i = -q; i <= q; i++) {
-            c = latitude < 0 ? i : -i;
-            if (c < 0) {
-                c = c + 24;
+        for (Integer i = -rangeMajor; i <= rangeMajor; i++) {
+            hour = latitude < 0 ? i : -i;
+            if (hour < 0) {
+                hour = hour + 24;
             }
-            renderDialHoursMarker(replaceTextElementContent(markMajor, "#", c.toString()), i * 15.0, "dialHoursMarkerMajor");
+            renderDialHoursMarker(replaceTextElementContent(markMajor, "#", hour.toString()), i * 15.0, "dialHoursMarkerMajor");
         }
 
         // summer time labels
         if (isDayLightSavingTimeScale && latitudeAbs <= 75) {
-            for (int i = -qq; i <= qq; i++) {
-                c = latitude < 0 ? i + 1 : -i + 1;
-                if (c < 0) {
-                    c = c + 24;
+            for (Integer i = -rangeMinor; i <= rangeMinor; i++) {
+                hour = latitude < 0 ? i + 1 : -i + 1;
+                if (hour < 0) {
+                    hour = hour + 24;
                 }
-                if (c > 23) {
-                    c = c - 24;
+                if (hour > 23) {
+                    hour = hour - 24;
                 }
-                renderDialHoursMarker(replaceTextElementContent(markMinor, "#", c.toString()), i * 15.0, "dialHoursMarkerMinor");
+                renderDialHoursMarker(replaceTextElementContent(markMinor, "#", hour.toString()), i * 15.0, "dialHoursMarkerMinor");
             }
         }
 
+        /*
+         renderDialHoursMarker(replaceTextElementContent(markMinor, "#", "0"), 1 * 15.0, "dialHoursMarkerMinor");
+         renderDefsInstance("dialHoursMarkerHalf", 0d, 0d, "translate(0,-378) rotate(-100,0,378)", null);
+         */
         for (Double i = 112.5; i >= -120; i = i - 15) {
             String strTranslate = CoordUtil.format(0.9 * scaleFixed);
             renderDefsInstance("dialHoursMarkerHalf", 0d, 0d, "translate(0,-" + strTranslate + ") rotate(" + i + ",0," + strTranslate + ")", null);
@@ -944,7 +963,7 @@ public final class SvgRenderer implements Serializable {
         pathData.append(CoordUtil.format(-Math.sin(angle) * ratio));
 
         List<Point2D.Double> coords = new ArrayList<>();
-        double dy = Math.tan(Math.toRadians(30d)) * scaleFixed;
+        Double dy = Math.tan(Math.toRadians(30d)) * scaleFixed;
         coords.add(new Point2D.Double(scaleFixed, dy));
         coords.add(new Point2D.Double(scaleFixed, 1.12 * scaleFixed));
         coords.add(new Point2D.Double(-scaleFixed, 1.12 * scaleFixed));
@@ -1168,11 +1187,11 @@ public final class SvgRenderer implements Serializable {
 
         if (localizationUtil.getValue("january").equals("january")) {
             monthNames = new DateFormatSymbols(locale).getMonths();
-            for (int i = 0; i < 12; i++) {
+            for (Integer i = 0; i < 12; i++) {
                 monthNames[i] = monthNames[i].substring(0, 1).toUpperCase(locale) + monthNames[i].substring(1);
             }
         } else {
-            for (int i = 0; i < 12; i++) {
+            for (Integer i = 0; i < 12; i++) {
                 monthNames[i] = localizationUtil.getValue(monthNamesEn[i].toLowerCase(Locale.ENGLISH));
             }
         }
@@ -1192,16 +1211,16 @@ public final class SvgRenderer implements Serializable {
         }
 
         Double sign = Math.signum(latitude);
-        double angleInPercent;
+        Double angleInPercent;
 
-        double angle = 90 - (19 + 60);
-        for (int month = 0; month < 12; month++) {
+        Double angle = 90.0 - (19 + 60);
+        for (Integer month = 0; month < 12; month++) {
             String monthName = monthNames[month];
             angleInPercent = normalizePercent(100d * (sign * (angle + daysInMonth[month] / 2d)) / 360d);
             angle = angle + daysInMonth[month] * 360d / daysInYear;
             // december
             if (month == 11) {
-                double percent = normalizePercent(angleInPercent - 50);
+                Double percent = normalizePercent(angleInPercent - 50);
                 writeGroupStart(null);
                 writer.writeAttribute("transform", "rotate(180)");
                 renderTextOnPath("dialMonthsLabelMajorPath", percent, monthName, "dialMonthsLabelMajor");
@@ -1211,14 +1230,14 @@ public final class SvgRenderer implements Serializable {
             }
         }
 
-        angle = 90 - (19 + 60);
-        for (int month = 0; month < 12; month++) {
+        angle = 90.0 - (19 + 60);
+        for (Integer month = 0; month < 12; month++) {
             for (Integer day = 0; day < daysInMonth[month]; day++) {
                 angleInPercent = normalizePercent(100d * (sign * angle) / 360d);
                 angle = angle + 360d / daysInYear;
                 if (day != 0 && day % 5 == 0) {
                     if (month == 11) {
-                        double percent = normalizePercent(angleInPercent - 50);
+                        Double percent = normalizePercent(angleInPercent - 50);
                         writeGroupStart(null);
                         writer.writeAttribute("transform", "rotate(180)");
                         renderTextOnPath("dialMonthsLabelMinorPath", percent, day.toString(), "dialMonthsLabelMinor");
@@ -1241,7 +1260,7 @@ public final class SvgRenderer implements Serializable {
     private Element replaceTextElementContent(Element element, String originalText, String newText) {
         Element resultElement = (Element) element.cloneNode(true);
         NodeList textNodes = resultElement.getElementsByTagName("text");
-        for (int i = 0; i < textNodes.getLength(); i++) {
+        for (Integer i = 0; i < textNodes.getLength(); i++) {
             if (textNodes.item(i).getTextContent().contains(originalText)) {
                 textNodes.item(i).setTextContent(newText);
             }
@@ -1371,28 +1390,28 @@ public final class SvgRenderer implements Serializable {
 
     }
 
-    private double normalizePercent(double percent) {
+    private Double normalizePercent(Double percent) {
         double tmp = 100d * (percent / 100d - (int) (percent / 100d));
         return tmp < 0 ? tmp + 100 : tmp;
     }
 
-    private void findCircle(double ax, double ay, double bx, double by, double cx, double cy, Point2D intersection) {
+    private void findCircle(Double ax, Double ay, Double bx, Double by, Double cx, Double cy, Point2D intersection) {
         // Get the perpendicular bisector of (x1, y1) and (x2, y2)
-        double x1, y1, dx1, dy1;
+        Double x1, y1, dx1, dy1;
         x1 = (bx + ax) / 2d;
         y1 = (by + ay) / 2d;
         dy1 = bx - ax;
         dx1 = -(by - ay);
 
         // Get the perpendicular bisector of (x2, y2) and (x3, y3)
-        double x2, y2, dx2, dy2;
+        Double x2, y2, dx2, dy2;
         x2 = (cx + bx) / 2d;
         y2 = (cy + by) / 2d;
         dy2 = cx - bx;
         dx2 = -(cy - by);
 
         // See where the lines intersect
-        double ox, oy;
+        Double ox, oy;
         ox = (y1 * dx1 * dx2 + x2 * dx1 * dy2 - x1 * dy1 * dx2 - y2 * dx1 * dx2)
                 / (dx1 * dy2 - dy1 * dx2);
         oy = (ox - x1) * dy1 / dx1 + y1;
@@ -1412,7 +1431,7 @@ public final class SvgRenderer implements Serializable {
         mapAreaPointList.clear();
         Double step = isEquatorial ? 0.2 : 0.2;
         Double shift = isEquatorial ? 6.0 : -6.0;
-        for (double RA = 0.0; Math.abs(RA) <= 24; RA = RA + step) {
+        for (Double RA = 0.0; Math.abs(RA) <= 24; RA = RA + step) {
             Point2D.Double coord = new Point2D.Double();
 
             Dec = Math.toDegrees(Math.atan(Math.cos(RA * Math.PI / 12.0) * Math.cos(latitudeInRads) / Math.sin(latitudeInRads)));
@@ -1425,7 +1444,7 @@ public final class SvgRenderer implements Serializable {
 
     private void createCardinalPointList() {
 
-        double ax, ay, bx, by, cx, cy, dx, dy, sx, sy, radius, delta;
+        Double ax, ay, bx, by, cx, cy, dx, dy, sx, sy, radius, delta;
         Point2D intersection = new Point2D.Double();
 
         cardinalPointList.clear();

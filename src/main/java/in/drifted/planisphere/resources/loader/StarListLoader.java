@@ -14,17 +14,15 @@ public final class StarListLoader {
 
         List<Star> starList = new ArrayList<>();
 
-        try (InputStream inputStream = StarListLoader.class.getResourceAsStream(filePath); BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "ASCII"))) {
+        try (
+                InputStream inputStream = StarListLoader.class.getResourceAsStream(filePath);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "ASCII"))) {
 
             String strLine;
             while ((strLine = reader.readLine()) != null) {
                 if (!strLine.isEmpty()) {
-                    Star star = new Star();
                     String[] values = strLine.split(",");
-                    star.setRA(Double.parseDouble(values[0]) / 1000.0);
-                    star.setDec(Double.parseDouble(values[1]) / 100.0);
-                    star.setMag(Double.parseDouble(values[2]) / 100.0);
-                    starList.add(star);
+                    starList.add(new Star(Double.parseDouble(values[0]) / 1000.0, Double.parseDouble(values[1]) / 100.0, Double.parseDouble(values[2]) / 100.0));
                 }
             }
         }
