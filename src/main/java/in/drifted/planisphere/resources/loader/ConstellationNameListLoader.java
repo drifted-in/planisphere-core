@@ -15,7 +15,10 @@ public final class ConstellationNameListLoader {
 
         List<ConstellationName> constellationNameList = new ArrayList<>();
 
-        try (InputStream inputStream = ConstellationNameListLoader.class.getResourceAsStream(filePath); BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"))) {
+        try (
+                InputStream inputStream = ConstellationNameListLoader.class.getResourceAsStream(filePath);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"))) {
+
             String strLine;
             while ((strLine = reader.readLine()) != null) {
                 if (!strLine.isEmpty()) {

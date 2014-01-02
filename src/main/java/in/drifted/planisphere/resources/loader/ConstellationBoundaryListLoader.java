@@ -14,14 +14,17 @@ public final class ConstellationBoundaryListLoader {
         
         List<Point2D> constellationBoundaryList = new ArrayList<>();
         
-        try (InputStream inputStream = ConstellationBoundaryListLoader.class.getResourceAsStream(filePath); BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "ASCII"))) {
+        try (
+                InputStream inputStream = ConstellationBoundaryListLoader.class.getResourceAsStream(filePath); 
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "ASCII"))) {
+            
             Point2D coordLast = new Point2D.Double();
             String strLine;
             while ((strLine = reader.readLine()) != null) {
                 if (!strLine.isEmpty()) {
                     String[] values = strLine.split("\t");
                     Point2D coord = new Point2D.Double();
-                    coord.setLocation(Double.parseDouble(values[1]) / 1000.0D, Double.parseDouble(values[2]) / 100.0D);
+                    coord.setLocation(Double.parseDouble(values[1]) / 1000.0, Double.parseDouble(values[2]) / 100.0);
                     if (values[0].equals("1")) {
                         constellationBoundaryList.add(coordLast);
                         constellationBoundaryList.add(coord);
