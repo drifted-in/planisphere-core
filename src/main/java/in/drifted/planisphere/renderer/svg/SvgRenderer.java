@@ -63,11 +63,11 @@ public final class SvgRenderer implements Serializable {
     private final List<Point2D.Double> mapAreaPointList = new LinkedList<>();
     private final List<CardinalPoint> cardinalPointList = new ArrayList<>();
     private LocalizationUtil localizationUtil;
+    private Double latitudeFixed;
     private Double latitude;
-    private Double scale;
-    private Double scaleFixed;
-    private Double scaleFixedMapArea;
-    private Boolean isEquatorial;
+    private Double scaleFixed; // cover and main layout
+    private Double scale; // map content
+    private Boolean isDoubleSided;
 
     public SvgRenderer() {
         initRenderer();
@@ -103,14 +103,15 @@ public final class SvgRenderer implements Serializable {
 
     private void createFromTemplate(InputStream input, Options options) throws XMLStreamException, IOException {
 
-        latitude = options.getLatitude();
-        isEquatorial = Math.abs(latitude) < 35.0;
+        latitudeFixed = options.getLatitude();
+        isDoubleSided = Math.abs(latitudeFixed) < 35.0;
+        latitude = isDoubleSided ? 65.0 : latitudeFixed;
         Locale locale = options.getCurrentLocale();
         localizationUtil = new LocalizationUtil(locale);
         FontManager fontManager = new FontManager(locale);
         XMLEventReader parser = inputFactory.createXMLEventReader(input);
 
-        List<Element> paramElements = new ArrayList<>();
+        Map<String, Element> paramMap = new HashMap<>();
 
         Boolean isUsed = true;
         StartElement startElement;
@@ -137,9 +138,11 @@ public final class SvgRenderer implements Serializable {
                             case "monthsView":
                                 renderDefsMonthsView();
                                 break;
-                            case "dialHoursMarkerMajor":
-                            case "dialHoursMarkerMinor":
-                                paramElements.add(getParamElement(parser, event));
+                            case "dialHoursMarkerMajorSingle":
+                            case "dialHoursMarkerMajorDouble":
+                            case "dialHoursMarkerMinorSingle":
+                            case "dialHoursMarkerMinorDouble":
+                                paramMap.put(id, getParamElement(parser, event));
                                 break;
                             case "dialMonthsLabelMajorPath":
                                 renderDefsDialMonthsLabelMajorPath();
@@ -186,7 +189,7 @@ public final class SvgRenderer implements Serializable {
                                 break;
                             case "scales":
                                 writeGroupStart("scales");
-                                renderDialHours(paramElements, options.getDayLightSavingTimeScale());
+                                renderDialHours(paramMap, options.getDayLightSavingTimeScale());
                                 renderCardinalPointsTicks();
                                 renderCardinalPointsLabels();
                                 writeGroupEnd();
@@ -252,8 +255,8 @@ public final class SvgRenderer implements Serializable {
                     } else if (elementName.equals("svg")) {
                         String[] values = startElement.getAttributeByName(new QName("viewBox")).getValue().split(" ");
                         scaleFixed = Math.min(Double.valueOf(values[2]) / 2, Double.valueOf(values[3]) / 2);
-                        scaleFixedMapArea = isEquatorial ? scaleFixed * 0.8 : scaleFixed;
-                        scale = isEquatorial ? scaleFixedMapArea * 2 : scaleFixedMapArea;
+                        // the 'scale' for a map is set to maximum by default, but if an extra space on cover is needed, the map can be smaller
+                        scale = 1.0 * scaleFixed;
                         createMapAreaPointList();
                         createCardinalPointList();
                         writer.writeStartElement(elementName);
@@ -276,7 +279,7 @@ public final class SvgRenderer implements Serializable {
                     characters = (Characters) event;
                     String text = characters.getData();
                     if (!(text.trim().isEmpty())) {
-                        writer.writeCharacters(localizationUtil.translate(text, latitude));
+                        writer.writeCharacters(localizationUtil.translate(text, latitudeFixed));
                     }
                 }
                     break;
@@ -751,15 +754,15 @@ public final class SvgRenderer implements Serializable {
         }
     }
 
-    private void renderDialHours(List<Element> paramElements, Boolean isDayLightSavingTimeScale) throws XMLStreamException {
+    private void renderDialHours(Map<String, Element> paramMap, Boolean isDayLightSavingTimeScale) throws XMLStreamException {
 
-        Element markMajor = paramElements.get(0);
-        Element markMinor = paramElements.get(1);
-        //Element markHalf = paramElements.get(2);
+        Element markMajor = isDoubleSided ? paramMap.get("dialHoursMarkerMajorDouble") : paramMap.get("dialHoursMarkerMajorSingle");
+        Element markMinor = isDoubleSided ? paramMap.get("dialHoursMarkerMinorDouble") : paramMap.get("dialHoursMarkerMinorSingle");
 
         Integer rangeMajor = 8;
         Integer rangeMinor = 7;
         Double latitudeAbs = Math.abs(latitude);
+        Double shiftAngle = isDoubleSided ? 180.0 : 0.0;
 
         if (latitudeAbs > 76) {
             rangeMajor = 5;
@@ -779,7 +782,7 @@ public final class SvgRenderer implements Serializable {
             if (hour < 0) {
                 hour = hour + 24;
             }
-            renderDialHoursMarker(replaceTextElementContent(markMajor, "#", hour.toString()), i * 15.0, "dialHoursMarkerMajor");
+            renderDialHoursMarker(replaceTextElementContent(markMajor, "#", hour.toString()), i * 15.0 + shiftAngle, "dialHoursMarkerMajor");
         }
 
         // summer time labels
@@ -792,17 +795,13 @@ public final class SvgRenderer implements Serializable {
                 if (hour > 23) {
                     hour = hour - 24;
                 }
-                renderDialHoursMarker(replaceTextElementContent(markMinor, "#", hour.toString()), i * 15.0, "dialHoursMarkerMinor");
+                renderDialHoursMarker(replaceTextElementContent(markMinor, "#", hour.toString()), i * 15.0 + shiftAngle, "dialHoursMarkerMinor");
             }
         }
 
-        /*
-         renderDialHoursMarker(replaceTextElementContent(markMinor, "#", "0"), 1 * 15.0, "dialHoursMarkerMinor");
-         renderDefsInstance("dialHoursMarkerHalf", 0d, 0d, "translate(0,-378) rotate(-100,0,378)", null);
-         */
         for (Double i = 112.5; i >= -120; i = i - 15) {
             String strTranslate = CoordUtil.format(0.9 * scaleFixed);
-            renderDefsInstance("dialHoursMarkerHalf", 0d, 0d, "translate(0,-" + strTranslate + ") rotate(" + i + ",0," + strTranslate + ")", null);
+            renderDefsInstance("dialHoursMarkerHalf", 0d, 0d, "translate(0,-" + strTranslate + ") rotate(" + (i + shiftAngle) + ",0," + strTranslate + ")", null);
         }
     }
 
@@ -814,13 +813,22 @@ public final class SvgRenderer implements Serializable {
 
     private void renderDefsMonthsView() throws XMLStreamException {
 
-        StringBuilder pathData = new StringBuilder();
         Double angle = Math.toRadians(30d);
         Double x1 = Math.cos(angle) * 0.9 * scaleFixed;
         Double y1 = Math.sin(angle) * 0.9 * scaleFixed;
+        String sweep1 = "1";
         Double x2 = Math.cos(angle) * scaleFixed;
         Double y2 = Math.sin(angle) * scaleFixed;
+        String sweep2 = "0";
 
+        if (isDoubleSided) {
+            y1 = -y1;
+            y2 = -y2;
+            sweep1 = "0";
+            sweep2 = "1";
+        }
+
+        StringBuilder pathData = new StringBuilder();
         // inner arc
         pathData.append("M");
         pathData.append(CoordUtil.format(-x1));
@@ -833,7 +841,9 @@ public final class SvgRenderer implements Serializable {
         // ry
         pathData.append(CoordUtil.format(0.9 * scaleFixed));
         // rotation, large arc flag, sweep flag
-        pathData.append(" 0 1 1 ");
+        pathData.append(" 0 1 ");
+        pathData.append(sweep1);
+        pathData.append(" ");
         pathData.append(CoordUtil.format(x1));
         pathData.append(" ");
         pathData.append(CoordUtil.format(y1));
@@ -848,7 +858,9 @@ public final class SvgRenderer implements Serializable {
         pathData.append(CoordUtil.format(scaleFixed));
         pathData.append(" ");
         pathData.append(CoordUtil.format(scaleFixed));
-        pathData.append(" 0 1 0 ");
+        pathData.append(" 0 1 ");
+        pathData.append(sweep2);
+        pathData.append(" ");
         pathData.append(CoordUtil.format(-x2));
         pathData.append(" ");
         pathData.append(CoordUtil.format(y2));
@@ -856,7 +868,6 @@ public final class SvgRenderer implements Serializable {
         pathData.append("Z");
 
         renderPath(pathData.toString(), "monthsView", "null");
-
     }
 
     private void renderMonthsViewBorder() throws XMLStreamException {
@@ -1168,20 +1179,20 @@ public final class SvgRenderer implements Serializable {
         Double Dec = latitude > 0 ? latitude - 90 : latitude + 90;
         for (Double RA = 0.0; RA <= 24; RA = RA + 0.5) {
             Point2D coord = new Point2D.Double();
-            CoordUtil.convertWithoutCheck(RA, Dec, coord, latitude, scaleFixedMapArea);
+            CoordUtil.convertWithoutCheck(RA, Dec, coord, latitude, scale);
             contour.add(coord);
         }
         return contour;
     }
 
-    private void renderDefsDialMonthsLabelMajorPath() throws XMLStreamException {
-        renderPath(renderCircle(0.95 * scaleFixed), "dialMonthsLabelMajorPath", null);
-        renderPath(renderCircle(new Point2D.Double(0, 0), 0.95 * scaleFixed, 0d), "dialMonthsLabelMajorPathShifted", null);
+    private void renderDefsDialMonthsLabelMajorPath() throws XMLStreamException {        
+        String pathData = isDoubleSided ? renderCircleInv(new Point2D.Double(0.0, 0.0), 0.985 * scaleFixed) : renderCircle(0.95 * scaleFixed);
+        renderPath(pathData, "dialMonthsLabelMajorPath", null);
     }
 
     private void renderDefsDialMonthsLabelMinorPath() throws XMLStreamException {
-        renderPath(renderCircle(0.92 * scaleFixed), "dialMonthsLabelMinorPath", null);
-        renderPath(renderCircle(new Point2D.Double(0, 0), 0.92 * scaleFixed, 0d), "dialMonthsLabelMinorPathShifted", null);
+        String pathData = isDoubleSided ? renderCircleInv(new Point2D.Double(0.0, 0.0), 0.94 * scaleFixed) : renderCircle(0.92 * scaleFixed);
+        renderPath(pathData, "dialMonthsLabelMinorPath", null);
     }
 
     private String[] getMonthNames(Locale locale) {
@@ -1217,11 +1228,13 @@ public final class SvgRenderer implements Serializable {
         Double sign = Math.signum(latitude);
         Double angleInPercent;
 
-        Double angle = 90.0 - (19 + 60);
+        Double startAngle = (daysInMonth[0] + daysInMonth[1] + 21) * 360.0 / daysInYear;
+        
+        Double angle = 90.0 - startAngle;
         for (Integer month = 0; month < 12; month++) {
             String monthName = monthNames[month];
-            angleInPercent = normalizePercent(100d * (sign * (angle + daysInMonth[month] / 2d)) / 360d);
-            angle = angle + daysInMonth[month] * 360d / daysInYear;
+            angleInPercent = normalizePercent(100.0 * (sign * (angle + daysInMonth[month] / 2.0)) / 360.0);
+            angle = angle + daysInMonth[month] * 360.0 / daysInYear;
             // december
             if (month == 11) {
                 Double percent = normalizePercent(angleInPercent - 50);
@@ -1234,7 +1247,7 @@ public final class SvgRenderer implements Serializable {
             }
         }
 
-        angle = 90.0 - (19 + 60);
+        angle = 90.0 - startAngle;
         for (Integer month = 0; month < 12; month++) {
             for (Integer day = 0; day < daysInMonth[month]; day++) {
                 angleInPercent = normalizePercent(100d * (sign * angle) / 360d);
@@ -1433,14 +1446,14 @@ public final class SvgRenderer implements Serializable {
         Double Dec;
 
         mapAreaPointList.clear();
-        Double step = isEquatorial ? 0.2 : 0.2;
-        Double shift = isEquatorial ? 6.0 : -6.0;
+        Double step = isDoubleSided ? 0.2 : 0.2;
+        Double shift = isDoubleSided ? 6.0 : -6.0;
         for (Double RA = 0.0; Math.abs(RA) <= 24; RA = RA + step) {
             Point2D.Double coord = new Point2D.Double();
 
             Dec = Math.toDegrees(Math.atan(Math.cos(RA * Math.PI / 12.0) * Math.cos(latitudeInRads) / Math.sin(latitudeInRads)));
 
-            CoordUtil.convertWithoutCheck(RA + shift, Dec, coord, latitude, scaleFixedMapArea);
+            CoordUtil.convertWithoutCheck(RA + shift, Dec, coord, latitude, scale);
             //coord.setLocation(coord.getX(), -coord.getY());
             mapAreaPointList.add(coord);
         }

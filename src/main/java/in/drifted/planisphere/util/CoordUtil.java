@@ -15,26 +15,14 @@ public final class CoordUtil implements Serializable {
         Double RAInRads = RA * Math.PI / 12.0;
         Double radius;
 
-        if (latitude > 30.0) {
+        if (latitude > 0.0) {
             if (Dec < latitude - 90.0) {
                 return false;
             }
             radius = scale * 0.89 * (90.0 - Dec) / (180.0 - latitude);
             result.setLocation(Math.cos(RAInRads) * radius, Math.sin(RAInRads) * radius);
-        } else if (latitude < -30.0) {
-            if (Dec > latitude + 90.0) {
-                return false;
-            }
-            radius = scale * 0.89 * (90.0 + Dec) / (180.0 + latitude);
-            result.setLocation(-Math.cos(RAInRads) * radius, Math.sin(RAInRads) * radius);
-        } else if (latitude > 0.0) {
-            if (Dec < 0.0) {
-                return false;
-            }
-            radius = scale * 0.89 * (90.0 - Dec) / (180.0 - latitude);
-            result.setLocation(Math.cos(RAInRads) * radius, Math.sin(RAInRads) * radius);
         } else {
-            if (Dec > 0.0) {
+            if (Dec > latitude + 90.0) {
                 return false;
             }
             radius = scale * 0.89 * (90.0 + Dec) / (180.0 + latitude);
