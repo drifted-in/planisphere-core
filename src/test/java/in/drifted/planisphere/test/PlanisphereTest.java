@@ -3,7 +3,6 @@ package in.drifted.planisphere.test;
 import in.drifted.planisphere.Options;
 import in.drifted.planisphere.renderer.html.HtmlRenderer;
 import in.drifted.planisphere.renderer.svg.SvgRenderer;
-import in.drifted.planisphere.util.CacheHandler;
 import in.drifted.util.pdf.MultiPageSvgToPdfTranscoder;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -22,7 +21,7 @@ public class PlanisphereTest {
     @Before
     public void setUp() {
 
-        options.setLatitude(30d);
+        options.setLatitude(30.0);
         options.setConstellationBoundaries(true);
         options.setConstellationLines(true);
         options.setConstellationLabels(true);
@@ -31,7 +30,7 @@ public class PlanisphereTest {
         options.setConstellationLabelsOptions(0);
         options.setCoordsRADec(true);
         options.setDayLightSavingTimeScale(true);
-        options.setLocaleValue("en|EN");
+        options.setLocaleValue("cs|CZ");
     }
 
     @Test
@@ -42,7 +41,7 @@ public class PlanisphereTest {
         //createSVG("printDefault_02.svg", "D:/planisphere_printDefault_02.svg", options);
     }
 
-    @Test
+    //@Test
     public void generateHTML() throws Exception {
 
         List<String> templateList = new LinkedList<>();
