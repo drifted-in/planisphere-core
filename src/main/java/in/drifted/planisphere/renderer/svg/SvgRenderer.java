@@ -60,7 +60,7 @@ public final class SvgRenderer implements Serializable {
     private transient XMLStreamWriter writer;
     private transient DocumentBuilder documentBuilder;
     private transient CacheHandler cacheHandler;
-    private final List<Point2D.Double> mapAreaPointList = new LinkedList<>();
+    private final List<Point2D> mapAreaPointList = new LinkedList<>();
     private final List<CardinalPoint> cardinalPointList = new LinkedList<>();
     private LocalizationUtil localizationUtil;
     private Double latitudeFixed;
@@ -151,11 +151,13 @@ public final class SvgRenderer implements Serializable {
                             case "dialMonthsLabelMinorPath":
                                 renderDefsDialMonthsLabelMinorPath();
                                 break;
-                            case "cardinalPointLabelPaths":
-                                writeGroupStart("cardinalPointLabelPaths");
-                                renderDefsCardinalPointLabelPaths();
-                                writeGroupEnd();
-                                break;
+                            /*
+                             case "cardinalPointLabelPaths":
+                             writeGroupStart("cardinalPointLabelPaths");
+                             renderDefsCardinalPointLabelPaths();
+                             writeGroupEnd();
+                             break;
+                             */
                             case "coordLabelPaths":
                                 writeGroupStart("coordLabelPaths");
                                 renderDefsCoordLabelPaths();
@@ -640,6 +642,7 @@ public final class SvgRenderer implements Serializable {
             path.append("L");
             path.append(CoordUtil.getCoordsChunk((Point2D) iter.next()));
         }
+        path.append("z");
         renderPath(path.toString(), "mapView", null);
     }
 
@@ -650,140 +653,86 @@ public final class SvgRenderer implements Serializable {
     private void renderCardinalPointsTicks() throws XMLStreamException {
         StringBuilder path = new StringBuilder();
         for (CardinalPoint cardinalPoint : cardinalPointList) {
-            path.append("M");
-            path.append(CoordUtil.getCoordsChunk(cardinalPoint.getTickStart()));
-            path.append("L");
-            path.append(CoordUtil.getCoordsChunk(cardinalPoint.getTickEnd()));
+            if (cardinalPoint.getLabel() != null) {
+                path.append("M");
+                path.append(CoordUtil.getCoordsChunk(cardinalPoint.getTickStart()));
+                path.append("L");
+                path.append(CoordUtil.getCoordsChunk(cardinalPoint.getTickEnd()));
+            }
         }
         renderPath(path.toString(), null, "cardinalPointTick");
     }
 
-    private void renderDefsCardinalPointLabelPaths() throws XMLStreamException {
-
-        String pathID;
-        CardinalPoint cardinalPoint;
-
-        Double gap = scale * 0.006;
-        Double letterHeight = scale * 0.032;
-
-        if (isDoubleSided) {
-            for (Integer i = 0; i < 3; i++) {
-                pathID = "cid" + i;
-                cardinalPoint = cardinalPointList.get(i);
-                renderPath(renderCircleInv(cardinalPoint.getCenter(), cardinalPoint.getRadius() + gap + letterHeight), pathID, null);
-            }
-
-        } else {
-
-            Integer cq = 2;
-            if (Math.abs(latitude) > 78) {
-                cq = 0;
-            } else if (Math.abs(latitude) > 70) {
-                cq = 1;
-            }
-
-            for (Integer i = 0; i <= cq; i++) {
-                pathID = "cid" + i;
-                cardinalPoint = cardinalPointList.get(i);
-                renderPath(renderCircle(cardinalPoint.getCenter(), cardinalPoint.getRadius() + gap), pathID, null);
-            }
-            for (Integer i = 3; i <= 5; i++) {
-                pathID = "cid" + i;
-                cardinalPoint = cardinalPointList.get(i);
-                renderPath(renderCircleInv(cardinalPoint.getCenter(), cardinalPoint.getRadius() + gap + letterHeight), pathID, null);
-            }
-            if (Math.abs(latitude) < 78) {
-                for (Integer i = 8 - cq; i <= 7; i++) {
-                    pathID = "cid" + i;
-                    cardinalPoint = cardinalPointList.get(i);
-                    renderPath(renderCircle(cardinalPoint.getCenter(), cardinalPoint.getRadius() + gap), pathID, null);
-                }
-            }
-        }
-    }
-
     private void renderCardinalPointsLabels() throws XMLStreamException {
 
-        List<String> points = new LinkedList<>();
-        points.add(localizationUtil.getValue("cardinalPointNorth"));
-        points.add(localizationUtil.getValue("cardinalPointNorthWest"));
-        points.add(localizationUtil.getValue("cardinalPointWest"));
-        points.add(localizationUtil.getValue("cardinalPointSouthWest"));
-        points.add(localizationUtil.getValue("cardinalPointSouth"));
-        points.add(localizationUtil.getValue("cardinalPointSouthEast"));
-        points.add(localizationUtil.getValue("cardinalPointEast"));
-        points.add(localizationUtil.getValue("cardinalPointNorthEast"));
-
-        String[] cardinalPointLabels = new String[points.size()];
-        points.toArray(cardinalPointLabels);
-
-        if (latitude < 0) {
-            String tmp;
-            tmp = cardinalPointLabels[0];
-            cardinalPointLabels[0] = cardinalPointLabels[4];
-            cardinalPointLabels[4] = tmp;
-            tmp = cardinalPointLabels[1];
-            cardinalPointLabels[1] = cardinalPointLabels[3];
-            cardinalPointLabels[3] = tmp;
-            tmp = cardinalPointLabels[5];
-            cardinalPointLabels[5] = cardinalPointLabels[7];
-            cardinalPointLabels[7] = tmp;
-        }
-
-        String pathID;
-        CardinalPoint cardinalPoint;
+        Double gap = scale * 0.006;
+        Double tickLength = scale * 0.03;
+        Double letterHeight = scale * 0.032;
+        Double textLineLength = scale * 0.25;
+        Double horizontalLineShift = gap + letterHeight + tickLength;
 
         if (isDoubleSided) {
-            for (Integer i = 0; i < 3; i++) {
-                pathID = "cid" + i;
-                Integer j = 0;
-                switch (i) {
-                    case 0:
-                        j = 2;
-                        break;
-                    case 1:
-                        j = 4;
-                        break;
-                    case 2:
-                        j = 6;
-                        break;
+
+            int index = 0;
+            for (CardinalPoint cardinalPoint : cardinalPointList) {
+                if (cardinalPoint.getLabel() != null) {
+
+                    String pathId = "cid" + index;
+
+                    if (latitudeFixed == 0) {
+                        Point2D point = cardinalPoint.getTickStart();
+                        Point2D center = new Point2D.Double(point.getX(), point.getY() + horizontalLineShift);
+                        renderPath(renderLineHorizontal(center, textLineLength), pathId, "invisible");
+                        renderTextOnPath(pathId, 50.0, cardinalPoint.getLabel(), "cardinalPointLabel");
+
+                    } else {
+                        if (doubleSidedSign > 0) {
+                            renderPath(renderCircleInv(cardinalPoint.getCenter(), cardinalPoint.getRadius() + gap + letterHeight), pathId, "invisible");
+                            renderTextOnPath(pathId, 100.0 - cardinalPoint.getStartOffset(), cardinalPoint.getLabel(), "cardinalPointLabel");
+                        } else {
+                            renderPath(renderCircle(cardinalPoint.getCenter(), cardinalPoint.getRadius() - (gap + letterHeight + 2 * tickLength)), pathId, "invisible");
+                            if (index == 2) {
+                                writeGroupStart(null);
+                                writer.writeAttribute("transform", "rotate(180, " + cardinalPoint.getCenter().getX() + "," + cardinalPoint.getCenter().getY() + ")");
+                                renderTextOnPath(pathId, 50.0, cardinalPoint.getLabel(), "cardinalPointLabel");
+                                writeGroupEnd();
+                            } else {
+                                renderTextOnPath(pathId, normalizePercent(cardinalPoint.getStartOffset() - 50.0), cardinalPoint.getLabel(), "cardinalPointLabel");
+                            }
+                        }
+                    }
                 }
-                cardinalPoint = cardinalPointList.get(i);
-                renderTextOnPath(pathID, cardinalPoint.getStartOffset(), cardinalPointLabels[j], "cardinalPointLabel");
+                index++;
             }
 
         } else {
 
-            Integer cq = 2;
-            if (Math.abs(latitude) > 78) {
-                cq = 0;
-            } else if (Math.abs(latitude) > 70) {
-                cq = 1;
-            }
+            int index = 0;
 
-            for (Integer i = 0; i <= cq; i++) {
-                pathID = "cid" + i;
-                cardinalPoint = cardinalPointList.get(i);
-                if (i.intValue() == 0) {
-                    writeGroupStart(null);
-                    writer.writeAttribute("transform", "rotate(180, " + cardinalPoint.getCenter().getX() + "," + cardinalPoint.getCenter().getY() + ")");
-                    renderTextOnPath(pathID, 50.0, cardinalPointLabels[i], "cardinalPointLabel");
-                    writeGroupEnd();
-                } else {
-                    renderTextOnPath(pathID, cardinalPoint.getStartOffset(), cardinalPointLabels[i], "cardinalPointLabel");
+            for (CardinalPoint cardinalPoint : cardinalPointList) {
+
+                if (cardinalPoint.getLabel() != null) {
+
+                    String pathId = "cid" + index;
+                    Boolean isInner = index > 0 && index < 4;
+
+                    if (isInner) {
+                        renderPath(renderCircleInv(cardinalPoint.getCenter(), cardinalPoint.getRadius() + gap + letterHeight), pathId, "invisible");
+                        renderTextOnPath(pathId, 100.0 - cardinalPoint.getStartOffset(), cardinalPoint.getLabel(), "cardinalPointLabel");
+
+                    } else {
+                        renderPath(renderCircle(cardinalPoint.getCenter(), cardinalPoint.getRadius() + gap), pathId, "invisible");
+                        if (index == 6) {
+                            writeGroupStart(null);
+                            writer.writeAttribute("transform", "rotate(180, " + cardinalPoint.getCenter().getX() + "," + cardinalPoint.getCenter().getY() + ")");
+                            renderTextOnPath(pathId, 50.0, cardinalPoint.getLabel(), "cardinalPointLabel");
+                            writeGroupEnd();
+                        } else {
+                            renderTextOnPath(pathId, cardinalPoint.getStartOffset(), cardinalPoint.getLabel(), "cardinalPointLabel");
+                        }
+                    }
                 }
-            }
-            for (Integer i = 3; i <= 5; i++) {
-                pathID = "cid" + i;
-                cardinalPoint = cardinalPointList.get(i);
-                renderTextOnPath(pathID, 100 - cardinalPoint.getStartOffset(), cardinalPointLabels[i], "cardinalPointLabel");
-            }
-            if (Math.abs(latitude) < 78) {
-                for (Integer i = 8 - cq; i <= 7; i++) {
-                    pathID = "cid" + i;
-                    cardinalPoint = cardinalPointList.get(i);
-                    renderTextOnPath(pathID, cardinalPoint.getStartOffset(), cardinalPointLabels[i], "cardinalPointLabel");
-                }
+                index++;
             }
         }
     }
@@ -1428,7 +1377,6 @@ public final class SvgRenderer implements Serializable {
 
         BezierCircle circle = new BezierCircle(center, radius, angle);
         return circle.render();
-
     }
 
     public String renderCircleForConstellationName(Point2D coord) {
@@ -1442,13 +1390,23 @@ public final class SvgRenderer implements Serializable {
 
         BezierCircle circle = new BezierCircle(center, radius);
         return circle.renderInv();
+    }
 
+    private String renderLineHorizontal(Point2D center, Double length) {
+
+        StringBuilder path = new StringBuilder();
+        path.append("M");
+        path.append(CoordUtil.format(center.getX() - length / 2.0));
+        path.append(" ");
+        path.append(CoordUtil.format(center.getY()));
+        path.append("h");
+        path.append(length);
+
+        return path.toString();
     }
 
     private Double normalizePercent(Double percent) {
-        // Why not use % instead?
-        double tmp = 100.0 * (percent / 100.0 - (int) (percent / 100.0));
-        return tmp < 0 ? tmp + 100 : tmp;
+        return (100.0 + percent % 100.0) % 100.0;
     }
 
     private Point2D getIntersection(Double ax, Double ay, Double bx, Double by, Double cx, Double cy) {
@@ -1493,9 +1451,8 @@ public final class SvgRenderer implements Serializable {
             Double scaleFix = scale * (180.0 - latitudeFixedAbs) / (180.0 - latitudeAbs);
 
             if (latitudeFixedAbs == 0.0) {
-                // TODO: FIXME
-                scaleFix = 1.0;
-
+                // just starting point
+                mapAreaPointList.add(getMapAreaPoint(-90.0, latitudeAbs, latitudeInRads, scale, false));
             } else {
                 for (Double Az = -90.0; Az < 90.0; Az = Az + step) {
                     mapAreaPointList.add(getMapAreaPoint(Az, latitudeFixedAbs, latitudeFixedInRads, scaleFix, true));
@@ -1507,13 +1464,13 @@ public final class SvgRenderer implements Serializable {
 
         } else {
 
-            for (Double Az = -90.0; Az < 270.0; Az = Az + step) {
+            for (Double Az = 90.0; Az < 450.0; Az = Az + step) {
                 mapAreaPointList.add(getMapAreaPoint(Az, latitudeAbs, latitudeInRads, scale, false));
             }
         }
     }
 
-    private Point2D.Double getMapAreaPoint(Double Az, Double latitudeInDegs, Double latitudeInRads, Double mapAreaScale, Boolean useDoubleSidedSign) {
+    private Point2D getMapAreaPoint(Double Az, Double latitudeInDegs, Double latitudeInRads, Double mapAreaScale, Boolean useDoubleSidedSign) {
 
         Double shift = isDoubleSided ? 6.0 : -6.0;
         Double AzInRads = Math.toRadians(Az);
@@ -1533,64 +1490,98 @@ public final class SvgRenderer implements Serializable {
 
         Point2D pointA, pointB, pointC;
 
+        Double latitudeAbs = Math.abs(latitude);
+        List<String> cardinalPointLabelList = getCardinalPointLabelList();
+
         cardinalPointList.clear();
 
         if (isDoubleSided) {
 
+            //Double latitudeInRads = Math.toRadians(latitudeAbs);
             Double latitudeFixedAbs = Math.abs(latitudeFixed);
             Double latitudeFixedInRads = Math.toRadians(latitudeFixedAbs);
-            Double scaleFix = scale * (180.0 - latitudeFixedAbs) / (180.0 - Math.abs(latitude));
+            Double scaleFix = scale * (180.0 - latitudeFixedAbs) / (180.0 - latitudeAbs);
 
-            // right edge
-            Point2D pointOutsideRight = getMapAreaPoint(-10.0, latitudeFixedAbs, latitudeFixedInRads, scaleFix, true);
-            cardinalPointList.add(getCardinalPoint(pointOutsideRight, mapAreaPointList.get(0), mapAreaPointList.get(10)));
+            if (latitudeFixed == 0) {
 
-            for (int i = 15; i <= 45; i = i + 15) {
+                Point2D pointRight = mapAreaPointList.get(0);
+                Point2D pointLeft = mapAreaPointList.get(1);
+                Double x0 = pointRight.getX();
+                Double y0 = pointRight.getY();
+                Double step = pointRight.distance(pointLeft) / 4.0;
 
-                pointA = mapAreaPointList.get(i - 10);
-                pointB = mapAreaPointList.get(i);
-                pointC = mapAreaPointList.get(i + 10);
+                for (int i = 0; i <= 4; i++) {
 
-                cardinalPointList.add(getCardinalPoint(pointA, pointB, pointC));
+                    Double x = x0 - i * step;
+                    CardinalPoint cardinalPoint = new CardinalPoint();
+                    cardinalPoint.setTickStart(new Point2D.Double(x, y0));
+                    cardinalPoint.setTickEnd(new Point2D.Double(x, y0 + scale * 0.03));
+                    cardinalPoint.setLabel(cardinalPointLabelList.get(i));
+                    cardinalPointList.add(cardinalPoint);
+                }
+
+            } else {
+
+                // right edge
+                Point2D pointOutsideRight = getMapAreaPoint(-10.0, latitudeFixedAbs, latitudeFixedInRads, scaleFix, true);
+                cardinalPointList.add(getCardinalPoint(pointOutsideRight, mapAreaPointList.get(0), mapAreaPointList.get(10), cardinalPointLabelList.get(0)));
+
+                for (int i = 1; i <= 3; i++) {
+
+                    Integer index = i * 15;
+                    pointA = mapAreaPointList.get(index - 10);
+                    pointB = mapAreaPointList.get(index);
+                    pointC = mapAreaPointList.get(index + 10);
+
+                    cardinalPointList.add(getCardinalPoint(pointA, pointB, pointC, cardinalPointLabelList.get(i)));
+                }
+
+                // left edge
+                Point2D pointOutsideLeft = getMapAreaPoint(100.0, latitudeFixedAbs, latitudeFixedInRads, scaleFix, true);
+                cardinalPointList.add(getCardinalPoint(mapAreaPointList.get(50), mapAreaPointList.get(60), pointOutsideLeft, cardinalPointLabelList.get(4)));
             }
 
-            // left edge
-            Point2D pointOutsideLeft = getMapAreaPoint(100.0, latitudeFixedAbs, latitudeFixedInRads, scaleFix, true);
-            cardinalPointList.add(getCardinalPoint(mapAreaPointList.get(50), mapAreaPointList.get(60), pointOutsideLeft));
+            for (int i = 0; i < 3; i++) {
+                cardinalPointList.add(new CardinalPoint());
+            }
 
         } else {
 
-            // map area consists of 120 points
-            for (int i = 0; i <= 105; i = i + 15) {
+            for (int i = 0; i < 8; i++) {
 
-                pointA = mapAreaPointList.get((i - 10 + 120) % 120);
-                pointB = mapAreaPointList.get(i);
-                pointC = mapAreaPointList.get(i + 10);
+                if (((i == 0 || i == 4) && latitudeAbs > 70) || ((i == 5 || i == 7) && latitude > 78)) {
+                    cardinalPointList.add(new CardinalPoint());
 
-                cardinalPointList.add(getCardinalPoint(pointA, pointB, pointC));
+                } else {
+
+                    Integer index = i * 15;
+                    pointA = mapAreaPointList.get((index - 10 + 120) % 120);
+                    pointB = mapAreaPointList.get(index);
+                    pointC = mapAreaPointList.get(index + 10);
+
+                    cardinalPointList.add(getCardinalPoint(pointA, pointB, pointC, cardinalPointLabelList.get(i)));
+                }
             }
         }
     }
 
-    private CardinalPoint getCardinalPoint(Point2D pointA, Point2D pointB, Point2D pointC) {
+    private CardinalPoint getCardinalPoint(Point2D pointA, Point2D pointB, Point2D pointC, String label) {
 
-        Double ax, ay, bx, by, cx, cy, dx, dy, radius, delta;
-        Double sign = isDoubleSided ? doubleSidedSign : 1.0;
-
-        ax = pointA.getX();
-        ay = pointA.getY();
-        bx = pointB.getX();
-        by = pointB.getY();
-        cx = pointC.getX();
-        cy = pointC.getY();
+        Double ax = pointA.getX();
+        Double ay = pointA.getY();
+        Double bx = pointB.getX();
+        Double by = pointB.getY();
+        Double cx = pointC.getX();
+        Double cy = pointC.getY();
 
         Point2D intersection = getIntersection(ax, ay, bx, by, cx, cy);
-        radius = intersection.distance(pointB);
+        Double radius = intersection.distance(pointB);
 
-        delta = -sign * Math.PI / 2.0 + Math.atan2(bx - intersection.getX(), by - intersection.getY());
+        Double sign = isDoubleSided ? doubleSidedSign : 1.0;
+        Double delta = -sign * Math.PI / 2.0 + Math.atan2(bx - intersection.getX(), by - intersection.getY());
 
-        dx = bx + scale * 0.03 * Math.cos(delta);
-        dy = by - scale * 0.03 * Math.sin(delta);
+        Double dx = bx + scale * 0.03 * Math.cos(delta);
+        Double dy = by - scale * 0.03 * Math.sin(delta);
 
         CardinalPoint cardinalPoint = new CardinalPoint();
         cardinalPoint.setTickStart(pointB);
@@ -1598,7 +1589,36 @@ public final class SvgRenderer implements Serializable {
         cardinalPoint.setRadius(radius + scale * 0.03);
         cardinalPoint.setStartOffset(normalizePercent(100.0 * (90.0 - Math.toDegrees(delta)) / 360.0));
         cardinalPoint.setCenter(intersection);
+        cardinalPoint.setLabel(label);
 
         return cardinalPoint;
+    }
+
+    private List<String> getCardinalPointLabelList() {
+
+        List<String> cardinalPointLabelList = new LinkedList<>();
+        cardinalPointLabelList.add(localizationUtil.getValue("cardinalPointWest"));
+        cardinalPointLabelList.add(localizationUtil.getValue("cardinalPointSouthWest"));
+        cardinalPointLabelList.add(localizationUtil.getValue("cardinalPointSouth"));
+        cardinalPointLabelList.add(localizationUtil.getValue("cardinalPointSouthEast"));
+        cardinalPointLabelList.add(localizationUtil.getValue("cardinalPointEast"));
+        cardinalPointLabelList.add(localizationUtil.getValue("cardinalPointNorthEast"));
+        cardinalPointLabelList.add(localizationUtil.getValue("cardinalPointNorth"));
+        cardinalPointLabelList.add(localizationUtil.getValue("cardinalPointNorthWest"));
+
+        if (latitude < 0) {
+            String tmp;
+            tmp = cardinalPointLabelList.get(0);
+            cardinalPointLabelList.set(0, cardinalPointLabelList.get(4));
+            cardinalPointLabelList.set(4, tmp);
+            tmp = cardinalPointLabelList.get(1);
+            cardinalPointLabelList.set(1, cardinalPointLabelList.get(3));
+            cardinalPointLabelList.set(3, tmp);
+            tmp = cardinalPointLabelList.get(5);
+            cardinalPointLabelList.set(5, cardinalPointLabelList.get(7));
+            cardinalPointLabelList.set(7, tmp);
+        }
+
+        return cardinalPointLabelList;
     }
 }

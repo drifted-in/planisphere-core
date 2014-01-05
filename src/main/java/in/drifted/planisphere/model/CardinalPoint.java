@@ -10,6 +10,7 @@ public final class CardinalPoint implements Serializable {
     private Point2D center;
     private Point2D tickStart;
     private Point2D tickEnd;
+    private String label;
 
     public Point2D getCenter() {
         return this.center;
@@ -49,5 +50,13 @@ public final class CardinalPoint implements Serializable {
 
     public void setTickStart(Point2D tickStart) {
         this.tickStart = tickStart;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
     }
 }
