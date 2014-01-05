@@ -68,7 +68,7 @@ public final class SvgRenderer implements Serializable {
     private Double scaleFixed; // cover and main layout
     private Double scale; // map content
     private Boolean isDoubleSided;
-    private Integer doubleSidedSign = 1;
+    private Integer doubleSidedSign = -1; // 1/-1 .. north/south side
 
     public SvgRenderer() {
         initRenderer();
@@ -220,17 +220,22 @@ public final class SvgRenderer implements Serializable {
                                 break;
                             case "guide":
                             case "worldmap":
-                            case "buttonMoreInfo":
+                            case "buttonFlip":
                             case "buttonSettings":
                             case "buttonExport":
+                            case "buttonMoreInfo":
+                                if (id.equals("buttonFlip") && !isDoubleSided) {
+                                // ignore
+                            } else {
                                 writer.writeStartElement("g");
-                                if (id.equals("buttonMoreInfo") || id.equals("buttonSettings") || id.equals("buttonExport")) {
+                                if (id.contains("button")) {
                                     writer.writeStartElement("title");
                                     writer.writeCharacters(localizationUtil.getValue(id));
                                     writer.writeEndElement();
                                 }
                                 renderSymbol(id);
                                 writer.writeEndElement();
+                            }
                                 break;
                             case "latitudeMarker":
                                 writer.writeStartElement(elementName);
@@ -669,7 +674,8 @@ public final class SvgRenderer implements Serializable {
         Double tickLength = scale * 0.03;
         Double letterHeight = scale * 0.032;
         Double textLineLength = scale * 0.25;
-        Double horizontalLineShift = gap + letterHeight + tickLength;
+        Double outerOffset = tickLength + gap;
+        Double innerOffset = outerOffset + letterHeight;
 
         if (isDoubleSided) {
 
@@ -681,16 +687,16 @@ public final class SvgRenderer implements Serializable {
 
                     if (latitudeFixed == 0) {
                         Point2D point = cardinalPoint.getTickStart();
-                        Point2D center = new Point2D.Double(point.getX(), point.getY() + horizontalLineShift);
+                        Point2D center = new Point2D.Double(point.getX(), point.getY() + innerOffset);
                         renderPath(renderLineHorizontal(center, textLineLength), pathId, "invisible");
                         renderTextOnPath(pathId, 50.0, cardinalPoint.getLabel(), "cardinalPointLabel");
 
                     } else {
-                        if (doubleSidedSign > 0) {
-                            renderPath(renderCircleInv(cardinalPoint.getCenter(), cardinalPoint.getRadius() + gap + letterHeight), pathId, "invisible");
+                        if (latitudeFixed * doubleSidedSign > 0) {
+                            renderPath(renderCircleInv(cardinalPoint.getCenter(), cardinalPoint.getRadius() + innerOffset), pathId, "invisible");
                             renderTextOnPath(pathId, 100.0 - cardinalPoint.getStartOffset(), cardinalPoint.getLabel(), "cardinalPointLabel");
                         } else {
-                            renderPath(renderCircle(cardinalPoint.getCenter(), cardinalPoint.getRadius() - (gap + letterHeight + 2 * tickLength)), pathId, "invisible");
+                            renderPath(renderCircle(cardinalPoint.getCenter(), cardinalPoint.getRadius() - innerOffset), pathId, "invisible");
                             if (index == 2) {
                                 writeGroupStart(null);
                                 writer.writeAttribute("transform", "rotate(180, " + cardinalPoint.getCenter().getX() + "," + cardinalPoint.getCenter().getY() + ")");
@@ -717,11 +723,11 @@ public final class SvgRenderer implements Serializable {
                     Boolean isInner = index > 0 && index < 4;
 
                     if (isInner) {
-                        renderPath(renderCircleInv(cardinalPoint.getCenter(), cardinalPoint.getRadius() + gap + letterHeight), pathId, "invisible");
+                        renderPath(renderCircleInv(cardinalPoint.getCenter(), cardinalPoint.getRadius() + innerOffset), pathId, "invisible");
                         renderTextOnPath(pathId, 100.0 - cardinalPoint.getStartOffset(), cardinalPoint.getLabel(), "cardinalPointLabel");
 
                     } else {
-                        renderPath(renderCircle(cardinalPoint.getCenter(), cardinalPoint.getRadius() + gap), pathId, "invisible");
+                        renderPath(renderCircle(cardinalPoint.getCenter(), cardinalPoint.getRadius() + outerOffset), pathId, "invisible");
                         if (index == 6) {
                             writeGroupStart(null);
                             writer.writeAttribute("transform", "rotate(180, " + cardinalPoint.getCenter().getX() + "," + cardinalPoint.getCenter().getY() + ")");
@@ -1480,7 +1486,7 @@ public final class SvgRenderer implements Serializable {
         Point2D.Double mapAreaPoint = new Point2D.Double();
         CoordUtil.convertWithoutCheck(Math.toDegrees(RA) / 15.0 + shift, Math.toDegrees(Dec), mapAreaPoint, latitudeInDegs, mapAreaScale);
         if (useDoubleSidedSign) {
-            mapAreaPoint.setLocation(mapAreaPoint.getX(), doubleSidedSign * mapAreaPoint.getY());
+            mapAreaPoint.setLocation(mapAreaPoint.getX(), Math.signum(latitudeFixed) * doubleSidedSign * mapAreaPoint.getY());
         }
 
         return mapAreaPoint;
@@ -1516,7 +1522,8 @@ public final class SvgRenderer implements Serializable {
                     CardinalPoint cardinalPoint = new CardinalPoint();
                     cardinalPoint.setTickStart(new Point2D.Double(x, y0));
                     cardinalPoint.setTickEnd(new Point2D.Double(x, y0 + scale * 0.03));
-                    cardinalPoint.setLabel(cardinalPointLabelList.get(i));
+                    Integer labelIndex = doubleSidedSign < 0 ? i : (i + 4) % 8;
+                    cardinalPoint.setLabel(cardinalPointLabelList.get(labelIndex));
                     cardinalPointList.add(cardinalPoint);
                 }
 
@@ -1577,7 +1584,7 @@ public final class SvgRenderer implements Serializable {
         Point2D intersection = getIntersection(ax, ay, bx, by, cx, cy);
         Double radius = intersection.distance(pointB);
 
-        Double sign = isDoubleSided ? doubleSidedSign : 1.0;
+        Double sign = isDoubleSided ? doubleSidedSign * Math.signum(latitudeFixed) : 1.0;
         Double delta = -sign * Math.PI / 2.0 + Math.atan2(bx - intersection.getX(), by - intersection.getY());
 
         Double dx = bx + scale * 0.03 * Math.cos(delta);
@@ -1586,7 +1593,7 @@ public final class SvgRenderer implements Serializable {
         CardinalPoint cardinalPoint = new CardinalPoint();
         cardinalPoint.setTickStart(pointB);
         cardinalPoint.setTickEnd(new Point2D.Double(dx, dy));
-        cardinalPoint.setRadius(radius + scale * 0.03);
+        cardinalPoint.setRadius(radius);
         cardinalPoint.setStartOffset(normalizePercent(100.0 * (90.0 - Math.toDegrees(delta)) / 360.0));
         cardinalPoint.setCenter(intersection);
         cardinalPoint.setLabel(label);
@@ -1606,7 +1613,9 @@ public final class SvgRenderer implements Serializable {
         cardinalPointLabelList.add(localizationUtil.getValue("cardinalPointNorth"));
         cardinalPointLabelList.add(localizationUtil.getValue("cardinalPointNorthWest"));
 
-        if (latitude < 0) {
+        Boolean toBeSwapped = isDoubleSided ? (doubleSidedSign > 0) && (latitudeFixed != 0) : latitude < 0;
+
+        if (toBeSwapped) {
             String tmp;
             tmp = cardinalPointLabelList.get(0);
             cardinalPointLabelList.set(0, cardinalPointLabelList.get(4));
