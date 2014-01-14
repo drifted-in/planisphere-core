@@ -16,10 +16,8 @@ import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
 import java.io.OutputStream;
 import java.io.Reader;
-import java.io.Serializable;
 import java.io.StringWriter;
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
@@ -53,7 +51,7 @@ import javax.xml.transform.dom.DOMSource;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-public final class SvgRenderer implements Serializable {
+public final class SvgRenderer {
 
     private transient XMLInputFactory inputFactory;
     private transient XMLOutputFactory outputFactory;
@@ -68,7 +66,7 @@ public final class SvgRenderer implements Serializable {
     private Double scaleFixed; // cover and main layout
     private Double scale; // map content
     private Boolean isDoubleSided;
-    private Integer doubleSidedSign = -1; // 1/-1 .. north/south side
+    private Integer doubleSidedSign;
 
     public SvgRenderer() {
         initRenderer();
@@ -87,12 +85,6 @@ public final class SvgRenderer implements Serializable {
         cacheHandler = CacheHandler.getInstance();
     }
 
-    // init of all transient objects after deserialization
-    private void readObject(ObjectInputStream inputStream) throws IOException, ClassNotFoundException {
-        inputStream.defaultReadObject();
-        initRenderer();
-    }
-
     public void createFromTemplate(String resourcePath, OutputStream output, Options options) throws XMLStreamException, IOException {
         writer = outputFactory.createXMLStreamWriter(output);
         try (InputStream input = getClass().getResourceAsStream(Settings.RESOURCE_BASE_PATH + "templates/core/" + resourcePath)) {
@@ -105,7 +97,8 @@ public final class SvgRenderer implements Serializable {
     private void createFromTemplate(InputStream input, Options options) throws XMLStreamException, IOException {
 
         latitudeFixed = options.getLatitude();
-        isDoubleSided = Math.abs(latitudeFixed) < 35.0;
+        isDoubleSided = options.getDoubleSided();
+        doubleSidedSign = (int) (options.getDoubleSidedSign() * Math.signum(latitudeFixed)) ;
         latitude = isDoubleSided ? doubleSidedSign * 65.0 : latitudeFixed;
         Locale locale = options.getCurrentLocale();
         localizationUtil = new LocalizationUtil(locale);
@@ -1379,12 +1372,6 @@ public final class SvgRenderer implements Serializable {
         return circle.render();
     }
 
-    private String renderCircle(Point2D center, Double radius, Double angle) {
-
-        BezierCircle circle = new BezierCircle(center, radius, angle);
-        return circle.render();
-    }
-
     public String renderCircleForConstellationName(Point2D coord) {
         Double radius = coord.distance(0.0, 0.0);
         Double angle = 90.0 + Math.toDegrees(Math.atan2(coord.getY(), coord.getX()));
@@ -1613,19 +1600,30 @@ public final class SvgRenderer implements Serializable {
         cardinalPointLabelList.add(localizationUtil.getValue("cardinalPointNorth"));
         cardinalPointLabelList.add(localizationUtil.getValue("cardinalPointNorthWest"));
 
-        Boolean toBeSwapped = isDoubleSided ? (doubleSidedSign > 0) && (latitudeFixed != 0) : latitude < 0;
-
-        if (toBeSwapped) {
-            String tmp;
-            tmp = cardinalPointLabelList.get(0);
-            cardinalPointLabelList.set(0, cardinalPointLabelList.get(4));
-            cardinalPointLabelList.set(4, tmp);
-            tmp = cardinalPointLabelList.get(1);
-            cardinalPointLabelList.set(1, cardinalPointLabelList.get(3));
-            cardinalPointLabelList.set(3, tmp);
-            tmp = cardinalPointLabelList.get(5);
-            cardinalPointLabelList.set(5, cardinalPointLabelList.get(7));
-            cardinalPointLabelList.set(7, tmp);
+        if (isDoubleSided) {
+            if (doubleSidedSign > 0 && latitudeFixed != 0) {
+                List<String> copyList = new LinkedList<>();
+                for (int i = 0; i < 4; i++) {
+                    copyList.add(i, cardinalPointLabelList.get(i + 4));
+                }
+                for (int i = 0; i < 4; i++) {
+                    copyList.add(i + 4, cardinalPointLabelList.get(i));
+                }
+                cardinalPointLabelList = copyList;
+            }
+        } else {
+            if (latitude < 0) {
+                String tmp;
+                tmp = cardinalPointLabelList.get(0);
+                cardinalPointLabelList.set(0, cardinalPointLabelList.get(4));
+                cardinalPointLabelList.set(4, tmp);
+                tmp = cardinalPointLabelList.get(1);
+                cardinalPointLabelList.set(1, cardinalPointLabelList.get(3));
+                cardinalPointLabelList.set(3, tmp);
+                tmp = cardinalPointLabelList.get(5);
+                cardinalPointLabelList.set(5, cardinalPointLabelList.get(7));
+                cardinalPointLabelList.set(7, tmp);
+            }
         }
 
         return cardinalPointLabelList;

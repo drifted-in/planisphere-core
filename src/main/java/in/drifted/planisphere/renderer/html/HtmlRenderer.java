@@ -5,26 +5,27 @@ import in.drifted.planisphere.renderer.svg.SvgRenderer;
 import in.drifted.planisphere.util.LocalizationUtil;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
-import java.io.Serializable;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.List;
 import javax.xml.bind.DatatypeConverter;
+import javax.xml.stream.XMLStreamException;
 
-public final class HtmlRenderer implements Serializable {
+public final class HtmlRenderer {
 
     private final SvgRenderer svgRenderer;
-    
+
     public HtmlRenderer(SvgRenderer svgRenderer) {
         this.svgRenderer = svgRenderer;
     }
-    
-    public void createFromTemplateList(List<String> templateList, String outputPath, Options options) throws Exception {
+
+    public void createFromTemplateList(List<String> templateList, Path outputPath, Options options) throws XMLStreamException, IOException {
 
         LocalizationUtil l10n = new LocalizationUtil(options.getCurrentLocale());
 
-        try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(outputPath), StandardCharsets.UTF_8)) {
+        try (BufferedWriter writer = Files.newBufferedWriter(outputPath, StandardCharsets.UTF_8)) {
 
             writer.append("<html><head>");
             writer.append("<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\">");

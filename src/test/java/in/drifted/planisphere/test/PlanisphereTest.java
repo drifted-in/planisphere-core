@@ -9,6 +9,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Path;
 import java.util.LinkedList;
 import java.util.List;
 import org.junit.Before;
@@ -21,7 +22,7 @@ public class PlanisphereTest {
     @Before
     public void setUp() {
 
-        options.setLatitude(30.0);
+        options.setLatitude(0.0);
         options.setConstellationBoundaries(true);
         options.setConstellationLines(true);
         options.setConstellationLabels(true);
@@ -30,7 +31,9 @@ public class PlanisphereTest {
         options.setConstellationLabelsOptions(0);
         options.setCoordsRADec(true);
         options.setDayLightSavingTimeScale(true);
-        options.setLocaleValue("cs|CZ");
+        //options.setLocaleValue("fi|FI");
+        options.setLocaleValue("en|EN");
+        options.setDoubleSidedSign(-1);
     }
 
     @Test
@@ -69,7 +72,7 @@ public class PlanisphereTest {
         }
     }
 
-    private void createHTML(List<String> templateList, String outputPath, Options options) throws Exception {
+    private void createHTML(List<String> templateList, Path outputPath, Options options) throws Exception {
 
         SvgRenderer svg = new SvgRenderer();
         HtmlRenderer html = new HtmlRenderer(svg);
