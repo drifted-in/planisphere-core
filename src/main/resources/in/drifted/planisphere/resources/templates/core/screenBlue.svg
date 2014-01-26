@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1024px" height="768px" viewBox="521.317 233.188 1024 768" enable-background="new 521.317 233.188 1024 768" xml:space="preserve" onload="startup(evt)">
+    <?mouseEventsScript?>
+    <defs>
+        <style type="text/css">
+            <![CDATA[
+            @font-face {font-family: "Droid Sans"; src: url(${screen.droid-sans});}
+            svg {
+                margin: auto;
+                background: #4d4d4d; 
+                font-family: Droid Sans;
+                -moz-user-select: none;
+                -webkit-user-select: none;
+                -ms-user-select: none;                
+            }
+            #cursorPreloader {
+                cursor: url(../closedhand.cur), crosshair;
+            }
+            #designer {
+                font-size: 12px;
+                fill: silver;
+            }
+            .mapBackground {
+                fill: #003e61; 
+            } 
+            .maskBlack {
+                fill: black;
+            } 
+            .maskWhite {
+                fill: white;
+            } 
+            .dummyRectBlue {
+                fill: #4d4d4d;
+            }
+            .eventsTarget {
+                fill: white;
+                opacity: 0;
+            } 
+            .dialHoursMarkerMajor path {
+                fill: #FA9600;
+            }
+            .dialHoursMarkerMajor text {
+                fill: #DD4500;
+                text-anchor: middle;
+                font-weight: bold;
+                font-size: 16px;
+            }
+            .dialHoursMarkerMinor text {
+                fill: #DD4500;
+                text-anchor: middle;
+                font-weight: bold;
+                font-size: 12px;
+            }
+            .dialHoursMarkerHalf {
+                fill: #FFD43F;
+            }
+            .monthsViewBorder {
+                fill: none; 
+                stroke: green; 
+                stroke-width: 2;
+            } 
+            .dialMonthsTick {
+                fill: none;
+                stroke: white;
+                stroke-width: 2;
+            }
+            .dialMonthsLabelMajor {
+                font-size: 18px;
+                fill: white;
+                text-anchor: middle;
+            } 
+            .dialMonthsLabelMinor {
+                font-size: 10px;
+                fill: white;
+                text-anchor: middle;
+            } 
+            .cardinalPointLabel {
+                font-size: 18px;
+                fill: orange;
+                stroke: none;
+                text-anchor: middle;
+            }
+            .cardinalPointTick,
+            .mapViewBorder {
+                fill: none;
+                stroke: green;
+                stroke-width: 3;
+            }
+            .coordLabelRa {
+                font-size: 9px;
+                fill: #2abacf;
+                text-anchor: start;
+            }
+            .coordLabelDec {
+                font-size: 9px;
+                fill: #2abacf;
+                text-anchor: end;
+            }
+            .constellationNames {
+                fill: white;
+                font-size: 9px;
+                text-anchor: middle;
+            }
+            .constellationNamesPath {
+                fill: none;
+                stroke: none;
+            }
+            .constellationBoundaries {
+                fill: none;   
+                stroke-width: 1;   
+                stroke: grey;   
+                stroke-dasharray: 5 3;
+            }
+            .constellationLines {   
+                fill: none;   
+                stroke-width: 1.2;   
+                stroke: #9a9a9a;
+            }
+            .ecliptic {   
+                fill: none;   
+                stroke-width: 0.7;
+                stroke: #2abacf;
+            }
+            .coords {
+                fill: none;   
+                stroke-width: 0.7;   
+                stroke: grey;
+            }
+            .milkyWayBright {
+                fill: #004e75;
+                stroke: none;
+            }
+            .milkyWayDark {
+                fill: #00466b;
+                stroke: none;
+            }
+            .star {   
+                stroke-linecap: round;   
+                stroke: yellow;
+            }
+            .level0 {   
+                stroke-width: 8;
+            }
+            .level1 {   
+                stroke-width: 7;
+            }
+            .level2 {   
+                stroke-width: 6;
+            }
+            .level3 {   
+                stroke-width: 5;
+            }
+            .level4 {   
+                stroke-width: 4;
+            }
+            .level5 {   
+                stroke-width: 3;
+            }
+            .level6 {   
+                stroke-width: 2;
+            }
+            .level7 {   
+                stroke-width: 1;
+            }
+            .invisible {
+                fill: none;
+                stroke: none;
+            }
+
+            /* buttons */
+            #commandButtons {
+                cursor: pointer;
+            }
+            #buttonFlip:hover .gradientUp,            
+            #buttonMoreInfo:hover .gradientUp,
+            #buttonSettings:hover .gradientUp,
+            #buttonExport:hover .gradientUp {
+                stop-color: #922c26;
+            }
+            #buttonFlip:hover .buttonBorder,
+            #buttonMoreInfo:hover .buttonBorder,
+            #buttonSettings:hover .buttonBorder,
+            #buttonExport:hover .buttonBorder {
+                fill: #922c26;
+            }
+            #buttonFlip:hover .gradientDown,
+            #buttonMoreInfo:hover .gradientDown,
+            #buttonSettings:hover .gradientDown,
+            #buttonExport:hover .gradientDown {
+                stop-color: #ff6561;
+            }
+            #buttonFlip:hover .reflection,
+            #buttonMoreInfo:hover .reflection,
+            #buttonSettings:hover .reflection,
+            #buttonExport:hover .reflection {
+                fill: #ff6a66;
+            }
+            #buttonFlip .gradientUp,
+            #buttonMoreInfo .gradientUp,
+            #buttonSettings .gradientUp,
+            #buttonExport .gradientUp {
+                stop-color: #4a89a8;
+            }
+            #buttonFlip .buttonBorder,
+            #buttonMoreInfo .buttonBorder,
+            #buttonSettings .buttonBorder,
+            #buttonExport .buttonBorder {
+                fill: #4a89a8;
+            }
+            #buttonFlip .gradientDown,
+            #buttonMoreInfo .gradientDown,
+            #buttonSettings .gradientDown,
+            #buttonExport .gradientDown {
+                stop-color: #71a3bb;
+            }
+            #buttonFlip .reflection,
+            #buttonMoreInfo .reflection,
+            #buttonSettings .reflection,
+            #buttonExport .reflection {
+                fill: #97bdce;
+            }
+            .arrowBottom,
+            .moreInfo,
+            .gearLarge,
+            .planisphere {
+                fill: #FA9600;
+            }
+            .arrowTop,
+            .gearSmall,
+            .scissors {
+                fill: #14648c;
+            }
+            ]]>
+        </style>
+        <path id="cursorPreloader" d="M0 0"/>
+        <rect id="fullArea" x="0" y="0" width="1024.0" height="768.0"/>
+        <path id="mapView" d=""/>
+        <path id="monthsView" d=""/>
+        <path id="dialMonthsLabelMajorPath" d=""/>
+        <path id="dialMonthsLabelMinorPath" d=""/>
+        <g id="dialHoursMarkerMajorSingle" class="dialHoursMarkerMajor">
+            <path d="M0 0L-22.17 38.4H22.17Z" stroke="none"/>
+            <text y="30" x="0">#</text>
+        </g>
+        <g id="dialHoursMarkerMajorDouble" class="dialHoursMarkerMajor">
+            <path d="M0 0L-22.17 38.4H22.17Z" stroke="none"/>
+            <g transform="rotate(180)">
+                <text y="-20" x="0">#</text>
+            </g>
+        </g>
+        <g id="dialHoursMarkerMinorSingle" class="dialHoursMarkerMinor">
+            <text y="56" x="0">#</text>
+        </g>
+        <g id="dialHoursMarkerMinorDouble" class="dialHoursMarkerMinor">
+            <g transform="rotate(180)">
+                <text y="-45" x="0">#</text>
+            </g>    
+        </g>
+        <g id="dialHoursMarkerHalf" class="dialHoursMarkerHalf">
+            <path d="M0 0L-4.434 7.68H4.434Z" stroke="none"/>
+        </g>
+        <g id="coordLabelPaths"/>
+        <mask id="maskWheel">
+            <use xlink:href="#mapView" class="maskWhite"/>
+            <use xlink:href="#monthsView" class="maskWhite"/>
+        </mask>
+        <radialGradient id="gradient_01" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+        <stop offset="0" style="stop-color:#C8DEE8"/>
+            <stop offset="1" style="stop-color:#14648C"/>
+        </radialGradient>
+        <radialGradient id="gradient_02" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+            <stop offset="0" style="stop-color:#14648C"/>
+            <stop offset="1" style="stop-color:#C8DEE8"/>
+        </radialGradient>
+        <clipPath id="clip">
+            <rect x="521.317" y="233.188" width="1024" height="768"/>
+        </clipPath>
+
+    </defs>
+
+    <g id="contentImported" clip-path="url(#clip)">
+        <g id="background">
+            <rect x="521.317" y="233.188" fill="url(#gradient_01)" width="1024" height="768"/>
+        </g>
+        <g fill-opacity="0.5">
+        <path fill="url(#gradient_02)" d="M1274.6,1046.9c-175.4,102-387.8-7.7-474.5-245
+                c-86.7-237.3-14.8-512.4,160.6-614.4c175.4-102,387.8,7.7,474.5,245C1521.9,669.8,1450,944.9,1274.6,1046.9z"/>
+        <path fill="url(#gradient_02)" d="M1355.081,1136.511c-176.848,58.916-381.071-76.01-456.146-301.364
+                c-75.075-225.355,7.428-455.801,184.274-514.717c176.851-58.917,381.073,76.01,456.148,301.363
+                C1614.431,847.15,1531.928,1077.595,1355.081,1136.511z"/>
+        <path fill="url(#gradient_02)" d="M1292.758,1195.408c-103.133,63.794-317.147-95.317-478.012-355.384
+                c-160.866-260.067-207.667-522.606-104.534-586.4c103.134-63.795,317.147,95.316,478.013,355.383
+                C1349.088,869.074,1395.89,1131.614,1292.758,1195.408z"/>
+        <path fill="url(#gradient_02)" d="M229.177,770.335C14.458,598.295-63.194,338.503,55.735,190.07
+                C174.661,41.639,445.134,60.776,659.855,232.813C874.574,404.849,952.228,664.642,833.3,813.075
+                C714.371,961.507,443.896,942.373,229.177,770.335z"/>
+        <path fill="url(#gradient_02)" d="M333.843,903.016c-144.779-116-165.734-330.365-46.804-478.799
+                c118.926-148.432,332.703-174.721,477.481-58.723c144.78,115.999,165.735,330.365,46.806,478.798
+                C692.398,992.722,478.621,1019.016,333.843,903.016z"/>
+        <path fill="url(#gradient_02)" d="M1726.376,917.574c-49.079,180.274-321.447,263.095-608.345,184.985
+                c-286.901-78.108-479.693-287.568-430.614-467.842c49.079-180.274,321.445-263.093,608.347-184.986
+                C1582.665,527.841,1775.457,737.3,1726.376,917.574z"/>
+        <path fill="url(#gradient_02)" d="M1689.909,551.019c79.941,172.741-107.882,429.692-419.514,573.913
+                c-311.636,144.22-629.073,121.1-709.018-51.642c-79.944-172.743,107.884-429.692,419.516-573.916
+                C1292.527,355.154,1609.965,378.274,1689.909,551.019z"/>
+        <path fill="url(#gradient_02)" d="M1530.887,1030.421c-97.455,163.504-350.739,192.17-565.728,64.029
+                C750.171,966.307,654.892,729.883,752.345,566.378c97.454-163.504,350.74-192.167,565.73-64.028
+                C1533.061,630.492,1628.343,866.919,1530.887,1030.421z"/>
+        <path fill="url(#gradient_02)" d="M1199.001,1273.066c-103.133,63.794-292.257-55.08-422.42-265.511
+                C646.418,797.124,624.506,574.822,727.64,511.028c103.134-63.793,292.258,55.079,422.421,265.511
+                C1280.223,986.97,1302.135,1209.273,1199.001,1273.066z"/>
+        <path fill="url(#gradient_02)" d="M1524.833,1035.885c-49.806,110.569-347.598,84.251-665.133-58.784
+                c-317.54-143.032-534.58-348.618-484.773-459.185c49.805-110.571,347.596-84.252,665.134,58.782
+                C1357.597,719.731,1574.637,925.318,1524.833,1035.885z"/>
+        <path fill="url(#gradient_02)" d="M1280.063,1045.108c-175.054,111.205-460.046-23.886-636.553-301.73
+                s-177.688-593.233-2.636-704.436c175.053-111.205,460.044,23.886,636.551,301.73
+                C1453.93,618.517,1455.113,933.904,1280.063,1045.108z"/>
+        </g>
+    </g>
+
+    <g transform="translate(521.317, 233.188)">
+        <g id="contentGenerated" transform="translate(512, 384)">
+            <g mask="url(#maskWheel)">
+                <g id="wheel"/>
+            </g>
+            <g id="mouseAreas">
+                <g id="passive" transform="translate(-512, -384)" onmousemove="wheelMouseMove(evt)" onmouseup="wheelMouseUp(evt)">
+                    <use xlink:href="#fullArea" class="eventsTarget"/>
+                </g>
+                <g id="active" style="cursor: url(../openhand.cur), pointer;" onmousedown="wheelMouseDown(evt)" onmousemove="wheelMouseMove(evt)" onmouseup="wheelMouseUp(evt)">
+                    <use xlink:href="#mapView" class="eventsTarget"/>
+                    <use xlink:href="#monthsView" class="eventsTarget"/>
+                </g>
+            </g>
+            <g id="frontGraphics">
+                <g id="scales"/>
+                <g id="monthsViewBorder"/>
+                <g id="mapViewBorder"/>
+            </g>
+        </g>
+        <g id="commandButtons">
+            <g transform="translate(715, 0)" onclick="synchronize(evt);">
+                <g id="buttonFlip"/>
+            </g>
+            <g transform="translate(785, 0)" onclick="top.settingsDialog.show();">
+                <g id="buttonSettings"/>
+            </g>
+            <g transform="translate(855, 0)" onclick="top.document.getElementById('exportHTML').click();">
+                <g id="buttonExport"/>
+            </g>
+            <g transform="translate(925, 0)">
+                <a xlink:href="http://drifted.in/planisphere/" target="_blank">
+                    <g id="buttonMoreInfo"/>
+                </a>
+            </g>
+        </g>
+        <g id="designer" transform="translate(30, 760)">
+            <text>Design: © Jan Tošovský, 2011</text>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,719 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1024px" height="768px" viewBox="0 0 1024 768" enable-background="new 0 0 1024 768" xml:space="preserve" onload="startup(evt)">
+    <?mouseEventsScript?>
+    <defs>
+        <style type="text/css">
+            <![CDATA[
+            @font-face {font-family: "Droid Sans"; src: url(${screen.droid-sans});}
+            svg {
+                margin: auto;
+                background: #4d4d4d; 
+                font-family: Droid Sans;
+                -moz-user-select: none;
+                -webkit-user-select: none;
+                -ms-user-select: none;
+            }
+            #cursorPreloader {
+                cursor: url(../closedhand.cur), crosshair;
+            }
+            #designer {
+                font-size: 12px;
+                fill: silver;
+            }
+            .mapBackground {
+                fill: #003e61; 
+            } 
+            .maskBlack {
+                fill: black;
+            } 
+            .maskWhite {
+                fill: white;
+            } 
+            .dummyRectBlue {
+                fill: #4d4d4d;
+            }
+            .eventsTarget {
+                fill: white;
+                opacity: 0;
+            } 
+            .dialHoursMarkerMajor path {
+                fill: #FA9600;
+            }
+            .dialHoursMarkerMajor text {
+                fill: #DD4500;
+                text-anchor: middle;
+                font-weight: bold;
+                font-size: 16px;
+            }
+            .dialHoursMarkerMinor text {
+                fill: #DD4500;
+                text-anchor: middle;
+                font-weight: bold;
+                font-size: 12px;
+            }
+            .dialHoursMarkerHalf {
+                fill: #FFD43F;
+            }
+            .monthsViewBorder {
+                fill: none; 
+                stroke: green; 
+                stroke-width: 2;
+            } 
+            .dialMonthsTick {
+                fill: none;
+                stroke: white;
+                stroke-width: 2;
+            }
+            .dialMonthsLabelMajor {
+                font-size: 18px;
+                fill: white;
+                text-anchor: middle;
+            } 
+            .dialMonthsLabelMinor {
+                font-size: 10px;
+                fill: white;
+                text-anchor: middle;
+            } 
+            .cardinalPointLabel {
+                font-size: 18px;
+                fill: orange;
+                stroke: none;
+                text-anchor: middle;
+            }
+            .cardinalPointTick,
+            .mapViewBorder {
+                fill: none;
+                stroke: green;
+                stroke-width: 3;
+            }
+            .coordLabelRa {
+                font-size: 9px;
+                fill: #2abacf;
+                text-anchor: start;
+            }
+            .coordLabelDec {
+                font-size: 9px;
+                fill: #2abacf;
+                text-anchor: end;
+            }
+            .constellationNames {
+                fill: white;
+                font-size: 9px;
+                text-anchor: middle;
+            }
+            .constellationNamesPath {
+                fill: none;
+                stroke: none;
+            }
+            .constellationBoundaries {
+                fill: none;   
+                stroke-width: 1;   
+                stroke: grey;   
+                stroke-dasharray: 5 3;
+            }
+            .constellationLines {   
+                fill: none;   
+                stroke-width: 1.2;   
+                stroke: #9a9a9a;
+            }
+            .ecliptic {   
+                fill: none;   
+                stroke-width: 0.7;
+                stroke: #2abacf;
+            }
+            .coords {
+                fill: none;   
+                stroke-width: 0.7;   
+                stroke: grey;
+            }
+            .milkyWayBright {
+                fill: #004e75;
+                stroke: none;
+            }
+            .milkyWayDark {
+                fill: #00466b;
+                stroke: none;
+            }
+            .star {   
+                stroke-linecap: round;   
+                stroke: yellow;
+            }
+            .level0 {   
+                stroke-width: 8;
+            }
+            .level1 {   
+                stroke-width: 7;
+            }
+            .level2 {   
+                stroke-width: 6;
+            }
+            .level3 {   
+                stroke-width: 5;
+            }
+            .level4 {   
+                stroke-width: 4;
+            }
+            .level5 {   
+                stroke-width: 3;
+            }
+            .level6 {   
+                stroke-width: 2;
+            }
+            .level7 {   
+                stroke-width: 1;
+            }
+
+            /* fill colors */
+
+            .color1a,
+            #shades_c1,
+            #stars_large_c1,
+            #stars_medium_c1 {    	  	
+                fill: #DD4500;
+            }
+            #lines_c1 {
+                stroke: #FF4A69; 
+            }
+            .color1b,
+            #circles_c1,
+            #stars_twinkle_c1 {
+                fill: #FF4A69;
+            }
+            .color2a,
+            #shades_c2,
+            #stars_medium_c2,
+            #stars_large_c2 {
+                fill: #FA9600;
+            }
+            #lines_c2 {
+                stroke: #FFD43F;
+            }
+            .color2b,
+            #circles_c2,
+            #stars_twinkle_c2 {
+                fill: #FFD43F;
+            }
+
+            /*
+            .color1a,
+            #shades_c1,
+            #stars_large_c1,
+            #stars_medium_c1 {    	  	
+                fill: #880045;
+            }
+            #lines_c1 {
+                stroke: #D2006B; 
+            }
+            .color1b,
+            #circles_c1,
+            #stars_twinkle_c1 {
+                fill: #D2006B;
+            }
+            .color2a,
+            #shades_c2,
+            #stars_medium_c2,
+            #stars_large_c2 {
+                fill: #3BDA00;
+            }
+            #lines_c2 {
+                stroke: #D2F700;
+            }
+            .color2b,
+            #circles_c2,
+            #stars_twinkle_c2 {
+                fill: #D2F700;
+            }
+            */
+
+            /* opacity */
+
+            #shades_c1 {
+                fill-opacity: 0.15;
+            }
+            #shades_c2 {
+                fill-opacity: 0.25;
+            }
+            #circles_c1,
+            #circles_c2 {
+                fill-opacity: 0.2
+            }
+            #stars_large_c1,
+            #stars_large_c2,
+            #stars_medium_c1,
+            #stars_medium_c2 {    	
+                fill-opacity: 0.75;
+            }
+
+            /* buttons */
+            #commandButtons {
+                cursor: pointer;
+            }
+            #buttonMoreInfo:hover .gradientUp,
+            #buttonSettings:hover .gradientUp,
+            #buttonExport:hover .gradientUp {
+                stop-color: #922c26;
+            }
+            #buttonMoreInfo:hover .buttonBorder,
+            #buttonSettings:hover .buttonBorder,
+            #buttonExport:hover .buttonBorder {
+                fill: #922c26;
+            }
+            #buttonMoreInfo:hover .gradientDown,
+            #buttonSettings:hover .gradientDown,
+            #buttonExport:hover .gradientDown {
+                stop-color: #ff6561;
+            }
+            #buttonMoreInfo:hover .reflection,
+            #buttonSettings:hover .reflection,
+            #buttonExport:hover .reflection {
+                fill: #ff6a66;
+            }
+            #buttonMoreInfo .gradientUp,
+            #buttonSettings .gradientUp,
+            #buttonExport .gradientUp {
+                stop-color: #641e15;
+            }
+            #buttonMoreInfo .buttonBorder,
+            #buttonSettings .buttonBorder,
+            #buttonExport .buttonBorder {
+                fill: #641e15;
+            }
+            #buttonMoreInfo .gradientDown,
+            #buttonSettings .gradientDown,
+            #buttonExport .gradientDown {
+                stop-color: #9f3026;
+            }
+            #buttonMoreInfo .reflection,
+            #buttonSettings .reflection,
+            #buttonExport .reflection {
+                fill: #c83e05;
+            }
+            .moreInfo,
+            .gearLarge,
+            .planisphere {
+                fill: #FA9600;
+            }
+            .gearSmall,
+            .scissors {
+                fill: #FF4A69;
+            }
+            ]]></style>
+        <path id="cursorPreloader" d="M0 0"/>
+        <rect id="fullArea" x="0" y="0" width="1024.0" height="768.0"/>
+        <path id="mapView" d=""/>
+        <path id="monthsView" d=""/>
+        <path id="dialMonthsLabelMajorPath" d=""/>
+        <path id="dialMonthsLabelMinorPath" d=""/>
+        <g id="dialHoursMarkerMajor" class="dialHoursMarkerMajor">
+            <path d="M0 0L-22.17 38.4H22.17Z" stroke="none"/>
+            <text y="30" x="0">#</text>
+        </g>
+        <g id="dialHoursMarkerMinor" class="dialHoursMarkerMinor">
+            <text y="56" x="0">#</text>
+        </g>
+        <g id="dialHoursMarkerHalf" class="dialHoursMarkerHalf">
+            <path d="M0 0L-4.434 7.68H4.434Z" stroke="none"/>
+        </g>			
+        <g id="cardinalPointLabelPaths"/>
+        <g id="coordLabelPaths"/>
+        <mask id="maskWheel">
+            <use xlink:href="#mapView" class="maskWhite"/>
+            <use xlink:href="#monthsView" class="maskWhite"/>
+        </mask>
+        <polygon id="star_twinkle1" points="2,2 0,30 -2,2 -30,0 -2,-2 0,-30 2,-2 30,0 ">
+            <animateTransform attributeName="transform" dur="2.9s" type="scale" values="1.8;0.6;1.8" repeatCount="indefinite"/>
+        </polygon>
+        <polygon id="star_twinkle2" points="2,2 0,30 -2,2 -30,0 -2,-2 0,-30 2,-2 30,0 ">
+            <animateTransform attributeName="transform" dur="2.3s" type="scale" values="1.5;0.6;1.5" repeatCount="indefinite"/>
+        </polygon>
+        <clipPath id="clip">
+            <rect x="0" y="0" width="1024" height="768"/>
+        </clipPath>
+    </defs>
+
+    <g id="contentImported" clip-path="url(#clip)">
+        <g id="background">
+            <rect width="1024" height="768"/>
+        </g>
+        <g id="shades_c1">
+            <path d="M428.702,241.585c-222.836-16.738-264.39-45.549-302.974-61.843
+                    C89.965,164.641,34.141,130.292-0.415,11.216v195.338c27.22,22.068,77.12,54.636,150.986,72.893
+                    c139.832,34.562,323.026,51.75,377.998,55.674c74.731,5.335,253.873,45.393,322.394,100.052
+                    c57.455,45.833,139.805,133.402,172.622,234.717V407.804c-22.472-19.768-73.24-59.792-144.386-88.519
+                    C781.232,279.728,651.538,258.324,428.702,241.585z"/>
+            <path d="M879.666,328.854c-102.219-42.754-191.072-65.585-507.712-87.374
+                    c-81.5-5.608-210.752-37.462-257.616-64.459C58.378,144.783,23.994,100.328-0.415,12.546v194.008
+                    c27.22,22.068,77.12,54.636,150.986,72.893c139.832,34.562,323.026,51.75,377.998,55.674
+                    c74.731,5.335,253.873,45.393,322.394,100.052c57.455,45.833,139.805,133.402,172.622,234.717v-244.56
+                    C1006.107,406.687,958.669,361.897,879.666,328.854z"/>
+            <path d="M930.447,406.315c-62.157-44.59-196.343-102.468-363.259-123.085
+                    c-166.917-20.618-329.342-37.769-407.032-71.893C90.271,180.641,37.974,159.674-0.415,28.408v178.146
+                    c27.22,22.068,77.12,54.636,150.986,72.893c139.832,34.562,323.026,51.75,377.998,55.674
+                    c74.731,5.335,253.873,45.393,322.394,100.052c57.455,45.833,139.805,133.402,172.622,234.717V500.906
+                    C1006.181,477.507,972.492,436.478,930.447,406.315z"/>
+            <path d="M410.783,221.903c-94.297-6.741-233.912-29.32-275.095-51.131
+                    C96.575,150.057,41.018,128.936-0.415,13.473v193.082c27.22,22.068,77.12,54.636,150.986,72.893
+                    c139.832,34.562,323.026,51.75,377.998,55.674c74.731,5.335,253.873,45.393,322.394,100.052
+                    c57.455,45.833,139.805,133.402,172.622,234.717V327.568c-41.242-18.184-120.31-50.133-199.808-66.303
+                    C717.737,239.697,505.08,228.645,410.783,221.903z"/>
+            <path d="M638.622,242.484c-74.055-5.417-344.39-20.865-445.258-49.69
+                    c-78.738-22.501-127.826-54.949-151.795-90.621C23.629,75.477,6.878,25.094-0.415,1.432v205.123
+                    c27.22,22.068,77.12,54.636,150.986,72.893c139.832,34.562,323.026,51.75,377.998,55.674
+                    c74.731,5.335,253.873,45.393,322.394,100.052c57.455,45.833,139.805,133.402,172.622,234.717V336.684
+                    c-35.517-17.578-106.414-49.504-177.19-62.961C746.229,254.678,712.677,247.902,638.622,242.484z"/>
+            <path d="M772.074,357.021c-99.714-36.391-201.564-57.224-333.979-76.425
+                    c-132.415-19.201-234.518-39.518-303.395-73.033C27.375,155.34,11.77,57.042-0.415,0l0,0v206.554
+                    c27.22,22.068,77.12,54.636,150.986,72.893c139.832,34.562,323.026,51.75,377.998,55.674
+                    c74.731,5.335,253.873,45.393,322.394,100.052c57.455,45.833,139.805,133.402,172.622,234.717v-95.407
+                    c-10.371-21.646-32.048-63.376-55.088-86.477C936.442,455.867,871.789,393.412,772.074,357.021z"/>
+            <path d="M767.53,358.388c-99.714-36.391-201.563-57.224-333.979-76.425
+                    c-132.415-19.201-234.518-39.518-303.395-73.033C35.349,162.798,12.114,80.71-0.415,22.869v183.685
+                    c27.22,22.068,77.12,54.636,150.986,72.893c139.832,34.562,323.026,51.75,377.998,55.674
+                    c74.731,5.335,253.873,45.393,322.394,100.052c57.455,45.833,139.805,133.402,172.622,234.717v-84.307
+                    c-6.905-15.226-32.308-68.815-59.632-96.21C931.898,457.234,867.245,394.779,767.53,358.388z"/>
+            <path d="M757.712,362.262c-99.715-36.391-201.564-57.224-333.979-76.425
+                    c-132.415-19.201-234.727-39.102-303.396-73.032C34.39,170.336,12.779,81.282-0.415,20.513v186.042
+                    c27.22,22.068,77.12,54.636,150.986,72.893c139.832,34.562,323.026,51.75,377.998,55.674
+                    c74.731,5.335,253.873,45.393,322.394,100.052c57.455,45.833,139.805,133.402,172.622,234.717v-45.159
+                    c-12.823-31.583-42.776-101.126-69.45-131.484C924.199,459.178,857.427,398.653,757.712,362.262z"/>
+            <path d="M749.857,370.01c-99.715-36.391-198.849-55.166-331.264-74.366
+                    c-132.415-19.201-260.587-59.605-329.255-93.535C24.843,170.241,6.136,116.985-0.415,68.912v137.643
+                    c27.22,22.068,77.12,54.636,150.986,72.893c139.832,34.562,323.026,51.75,377.998,55.674
+                    c74.731,5.335,253.873,45.393,322.394,100.052c57.455,45.833,139.805,133.402,172.622,234.717v-21.266
+                    c-14.267-35.468-52.927-125.858-90.039-162.228C901.12,454.621,849.572,406.4,749.857,370.01z"/>
+        </g>
+        <g id="shades_c2">
+            <path d="M792.326,386.016c-50.776-25.649-193.079-60.703-265.068-69.067
+                    c-71.824-8.344-303.012-42.752-417.614-78.112C55.497,222.13,20.961,203.532-0.415,188.558v160.898
+                    c61.487,13.214,104.146,22.538,174.529,28.483c71.686,6.056,171.671,12.454,184.921,13.229c13.25,0.775,130.348,8.121,164.24,11.76
+                    c33.892,3.639,133.232,16.217,177.447,29.362c44.215,13.146,140.359,44.546,194.948,95.912
+                    c54.59,51.366,83.563,82.301,98.391,149.478c12.068,54.676,8.157,73.231,6.284,90.32h23.239v-97.738
+                    C1002.997,529.652,834.686,407.413,792.326,386.016z"/>
+            <path d="M792.326,386.016c-50.776-25.649-193.079-60.703-265.068-69.067
+                    c-71.824-8.344-303.012-42.752-417.614-78.112C55.497,222.13,20.961,203.532-0.415,188.558v151.1
+                    c35.999,7.491,127.541,25.843,181.183,30.347c40.993,3.442,381.692,23.178,473.173,45.699s244.454,65.185,308.421,180.454
+                    c38.808,69.931,33.651,68.579,60.234,171.843h0.989v-97.738C1002.997,529.652,834.686,407.413,792.326,386.016z"/>
+            <path d="M792.326,386.016c-50.776-25.649-193.079-60.703-265.068-69.067
+                    c-71.824-8.344-303.012-42.752-417.614-78.112C55.497,222.13,20.961,203.532-0.415,188.558v122.767
+                    c32.905,10.858,82.689,23.031,156.127,32.305c182.143,23.002,363.36,25.542,497.85,57.585
+                    c134.49,32.043,207.638,78.07,241.603,107.034c35.382,30.174,114.033,109.137,128.42,214.97v-52.956
+                    C1002.997,529.652,834.686,407.413,792.326,386.016z"/>
+            <path d="M792.326,386.016c-50.776-25.649-193.079-60.703-265.068-69.067
+                    c-71.824-8.344-303.012-42.752-417.614-78.112C55.497,222.13,20.961,203.532-0.415,188.558v102.891
+                    c38.173,10.557,97.265,25.751,142.131,32.069c72.005,10.139,370.447,39.484,427.088,49.558
+                    c56.641,10.074,223.071,44.238,302.699,104.616c63.575,48.206,128.729,126.604,152.082,213.431v-20.86
+                    C1002.997,529.652,834.686,407.413,792.326,386.016z"/>
+            <path d="M792.326,386.016c-50.776-25.649-193.079-60.703-265.068-69.067
+                    c-71.824-8.344-303.012-42.752-417.614-78.112C55.497,222.13,20.961,203.532-0.415,188.558v75.78
+                    c39.231,14.708,114.232,41.618,157.664,49.416c89.565,16.081,328.542,43.114,401.432,53.895
+                    c74.414,11.005,314.067,63.277,381.309,158.009c38.537,54.293,66.091,105.639,83.596,151.594v-6.989
+                    C1002.997,529.652,834.686,407.413,792.326,386.016z"/>
+            <path d="M935.541,504.494c43.6,55.387,68.863,106.075,83.514,143.47
+                    c-13.838-53.879-47.828-104.304-85.872-146.421C933.97,502.522,934.757,503.498,935.541,504.494z"/>
+            <path d="M527.258,316.949c-71.824-8.344-303.012-42.752-417.614-78.112
+                    C55.497,222.13,20.961,203.532-0.415,188.558v27.755c25.157,11.963,81.524,37.501,121.244,46.006
+                    c52.547,11.252,223.95,38.429,251.367,42.06c27.417,3.631,280.738,38.622,341.61,61.712
+                    c34.666,13.149,88.016,26.121,143.302,64.221c-28.005-22.358-52.068-37.874-64.782-44.296
+                    C741.55,360.366,599.247,325.313,527.258,316.949z"/>
+            <path d="M792.326,386.016c-50.776-25.649-193.079-60.703-265.068-69.067
+                    c-71.824-8.344-303.012-42.752-417.614-78.112C55.497,222.13,20.961,203.532-0.415,188.558v17.997
+                    c27.22,22.068,77.12,54.636,150.986,72.893c139.832,34.562,323.026,51.75,377.998,55.674
+                    c74.731,5.335,253.873,45.393,322.394,100.052c57.387,45.779,139.607,133.196,172.503,234.359
+                    C1002.405,529.231,834.612,407.376,792.326,386.016z"/>
+            <path d="M792.326,386.016c-50.776-25.649-193.079-60.703-265.068-69.067
+                    c-71.824-8.344-303.012-42.752-417.614-78.112c-42.955-13.254-73.558-27.695-95.05-40.576
+                    c27.535,24.791,87.287,67.425,185.619,83.679c125.71,20.779,373.974,54.947,394.698,58.966
+                    c54.096,10.489,241.303,39.543,326.396,152.532c54.643,72.555,88.024,167.329,102.277,214.061v-37.236
+                    C1003,529.672,834.668,407.404,792.326,386.016z"/>
+        </g>
+        <g id="lines_c1" fill="none">
+            <path stroke-width="4" d="M-28.269,164c0,0,20.936,31.902,108.736,65
+                    c175.079,66,418.365,68.343,609.539,119.615c150.921,40.476,271.958,171.183,306.386,242.308
+                    c30.656,63.334,58.154,139.649,58.154,139.649"/>
+            <path stroke-width="3" d="M-27.453,122c0,0-19.989,42.941,138,99
+                    c163.321,57.952,416.765,61.75,581.41,119.553c66.866,23.476,265.686,96.948,353.965,366.945"/>
+            <path stroke-width="2" d="M-12.453,68.912c-1.769-6.218,25.814,87.974,118.065,134.198
+                    C252.901,276.91,567.669,276.288,721.547,316c124,32,256.877,91,320.438,239"/>
+        </g>
+        <g id="lines_c2" fill="none">
+            <path stroke-width="4" d="M-66.916,159.231c0,0,58.625,44.233,144.661,82.449
+                    c66.761,29.654,209.583,52.016,410.404,75.68c185.395,21.846,234.669,48.019,283.597,69.84
+                    c70.013,31.226,241.375,175.854,260.874,303.922"/>
+            <path stroke-width="3" d="M-22.918,188.558c0,0,87.537,117.654,200.618,143.71
+                    c123.086,28.361,319.95,40.082,431.308,59.646c96.122,16.888,145.353,22.363,222.597,60.966
+                    c115.107,57.524,191.98,171.852,201.016,286.12"/>
+            <path stroke-width="2" d="M-40.453,221c0,0,128.123,80.595,223.973,96.222
+                    c137.199,22.369,355.212,21.229,466.967,45.564c129.592,28.22,259.065,100.993,325.633,202.974
+                    c75.42,115.543,65.428,229.24,65.428,229.24"/>
+            <path d="M-40.453,229c0,0,128.123,80.595,223.973,96.222
+                    c137.199,22.369,369.864,19.844,481.619,44.179c129.592,28.22,244.413,102.378,310.98,204.358
+                    c75.42,115.543,65.428,229.24,65.428,229.24"/>
+        </g>
+        <g id="circles_c1">
+            <circle cx="396.594" cy="238.558" r="100"/>
+            <circle cx="976.119" cy="455.889" r="100"/>
+            <circle cx="984.766" cy="288.558" r="100"/>
+            <circle cx="33.084" cy="111.216" r="100"/>
+            <circle cx="372.766" cy="288.557" r="50"/>
+            <circle cx="857.108" cy="429.045" r="50"/>
+            <circle cx="202.766" cy="129.176" r="50"/>
+            <circle cx="799.094" cy="755" r="100"/>
+            <circle cx="184.594" cy="434" r="100"/>
+        </g>
+        <g id="circles_c2">
+            <circle cx="64.594" cy="384" r="50"/>
+            <circle cx="160.766" cy="354.869" r="50"/>
+            <circle cx="334.594" cy="463.779" r="50"/>
+            <circle cx="396.594" cy="425.176" r="50"/>
+            <circle cx="244.594" cy="188.557" r="50"/>
+            <circle cx="446.594" cy="463.779" r="50"/>
+            <circle cx="191.594" cy="438.84" r="50"/>
+            <circle cx="110.766" cy="463.779" r="50"/>
+            <circle cx="272.766" cy="311.81" r="100"/>
+            <circle cx="60.766" cy="354.87" r="100"/>
+            <circle cx="64.594" cy="288.557" r="100"/>
+            <circle cx="994.547" cy="624.6" r="100"/>
+            <circle cx="844.766" cy="655" r="100"/>
+            <circle cx="876.119" cy="604.869" r="100"/>
+            <circle cx="727.547" cy="508" r="100"/>
+            <circle cx="454.851" cy="211.81" r="50"/>
+            <circle cx="-22.918" cy="122" r="50"/>
+        </g>
+        <g id="stars_large_c1">
+            <circle cx="933.183" cy="279.096" r="5"/>
+            <circle cx="911.129" cy="364.401" r="5"/>
+            <circle cx="976.119" cy="409.749" r="5"/>
+            <circle cx="822.633" cy="311.809" r="5"/>
+            <circle cx="261.784" cy="176.084" r="5"/>
+            <circle cx="58.275" cy="51.139" r="5"/>
+            <circle cx="62.971" cy="109.621" r="5"/>
+            <circle cx="133.255" cy="163.714" r="5"/>
+            <circle cx="28.083" cy="161.804" r="5"/>
+            <circle cx="178.142" cy="200.918" r="5"/>
+            <circle cx="85.135" cy="174.726" r="5"/>
+            <circle cx="226.829" cy="141.607" r="5"/>
+            <circle cx="107.317" cy="27" r="5"/>
+            <circle cx="69.794" cy="269.067" r="5"/>
+        </g>
+        <g id="stars_medium_c1">
+            <circle cx="299.547" cy="211" r="3.5"/>
+            <circle cx="342.047" cy="218" r="3.5"/>
+            <circle cx="72.171" cy="76.5" r="3.5"/>
+            <circle cx="237.547" cy="83.75" r="3.5"/>
+            <circle cx="92.171" cy="99.5" r="3.5"/>
+            <circle cx="198.594" cy="63.75" r="3.5"/>
+            <circle cx="258.957" cy="179.176" r="3.5"/>
+            <circle cx="142.667" cy="112" r="3.5"/>
+            <circle cx="184.047" cy="25" r="3.5"/>
+            <circle cx="152.667" cy="87.25" r="3.5"/>
+            <circle cx="173.547" cy="288" r="3.5"/>
+            <circle cx="262.457" cy="294.5" r="3.5"/>
+            <circle cx="318.547" cy="281" r="3.5"/>
+            <circle cx="196.165" cy="135" r="3.5"/>
+            <circle cx="241.547" cy="249" r="3.5"/>
+            <circle cx="127.547" cy="238" r="3.5"/>
+            <circle cx="285.047" cy="196" r="3.5"/>
+            <circle cx="99.669" cy="135" r="3.5"/>
+            <circle cx="362.547" cy="252.5" r="3.5"/>
+            <circle cx="368.047" cy="326.5" r="3.5"/>
+            <circle cx="176.547" cy="90.75" r="3.5"/>
+            <circle cx="196.165" cy="225" r="3.5"/>
+            <circle cx="872.619" cy="225.5" r="3.5"/>
+            <circle cx="988.266" cy="188.558" r="3.5"/>
+            <circle cx="1005.047" cy="331" r="3.5"/>
+            <circle cx="1005.047" cy="256.481" r="3.5"/>
+            <circle cx="964.119" cy="259.981" r="3.5"/>
+            <circle cx="967.619" cy="320.309" r="3.5"/>
+            <circle cx="998.047" cy="292.057" r="3.5"/>
+            <circle cx="778.047" cy="309.435" r="3.5"/>
+            <circle cx="795.547" cy="259.981" r="3.5"/>
+            <circle cx="869.119" cy="388.557" r="3.5"/>
+            <circle cx="919.629" cy="429.045" r="3.5"/>
+            <circle cx="817.633" cy="364.401" r="3.5"/>
+            <circle cx="926.047" cy="304" r="3.5"/>
+            <circle cx="716.547" cy="263.481" r="3.5"/>
+            <circle cx="720.047" cy="371.401" r="3.5"/>
+            <circle cx="876.119" cy="292.057" r="3.5"/>
+            <circle cx="938.183" cy="467.279" r="3.5"/>
+            <circle cx="1014.547" cy="430.312" r="3.5"/>
+            <circle cx="37.094" cy="150.857" r="3.5"/>
+            <circle cx="128.594" cy="185.338" r="3.5"/>
+            <circle cx="132.094" cy="245.666" r="3.5"/>
+            <circle cx="90.522" cy="229.357" r="3.5"/>
+            <circle cx="40.594" cy="217.414" r="3.5"/>
+            <circle cx="790.619" cy="392.436" r="3.5"/>
+            <circle cx="882.119" cy="426.916" r="3.5"/>
+            <circle cx="885.619" cy="487.244" r="3.5"/>
+            <circle cx="838.119" cy="447.286" r="3.5"/>
+            <circle cx="794.119" cy="458.992" r="3.5"/>
+            <circle cx="76.547" cy="253.096" r="3.5"/>
+            <circle cx="168.047" cy="287.577" r="3.5"/>
+            <circle cx="171.547" cy="347.904" r="3.5"/>
+            <circle cx="129.975" cy="331.596" r="3.5"/>
+            <circle cx="80.047" cy="319.653" r="3.5"/>
+            <circle cx="24.232" cy="51.375" r="3.5"/>
+            <circle cx="34.232" cy="26.625" r="3.5"/>
+            <circle cx="76.112" cy="41.125" r="3.5"/>
+            <circle cx="966.326" cy="466.661" r="3.5"/>
+            <circle cx="976.326" cy="441.911" r="3.5"/>
+            <circle cx="1003.205" cy="455.411" r="3.5"/>
+            <circle cx="135.594" cy="26.625" r="3.5"/>
+            <circle cx="230.547" cy="159.231" r="3.5"/>
+            <circle cx="118.109" cy="56" r="3.5"/>
+            <circle cx="285.047" cy="135" r="3.5"/>
+            <circle cx="318.547" cy="149.231" r="3.5"/>
+            <circle cx="241.667" cy="138.25" r="3.5"/>
+            <circle cx="275.547" cy="151.75" r="3.5"/>
+        </g>
+        <g id="stars_large_c2">
+            <circle cx="999.624" cy="508" r="5"/>
+            <circle cx="763.186" cy="541.525" r="5"/>
+            <circle cx="804.095" cy="583.58" r="5"/>
+            <circle cx="892.729" cy="580.431" r="5"/>
+            <circle cx="810.496" cy="646.024" r="5"/>
+            <circle cx="951.03" cy="580.466" r="5"/>
+            <circle cx="862.684" cy="619.598" r="5"/>
+            <circle cx="950.713" cy="503.731" r="5"/>
+            <circle cx="785.57" cy="491.659" r="5"/>
+            <circle cx="911.025" cy="702.052" r="5"/>
+            <circle cx="74.367" cy="405.117" r="4.999"/>
+            <circle cx="130.195" cy="423.156" r="4.999"/>
+            <circle cx="207.065" cy="378.919" r="5"/>
+            <circle cx="165.057" cy="475.356" r="5"/>
+            <circle cx="258.613" cy="351.683" r="5"/>
+            <circle cx="198.826" cy="427.59" r="4.999"/>
+            <circle cx="222.446" cy="284.008" r="5"/>
+            <circle cx="70.832" cy="350.571" r="5"/>
+            <circle cx="262.547" cy="283" r="5"/>
+            <circle cx="56.594" cy="273" r="5"/>
+            <circle cx="280.118" cy="477.863" r="4.999"/>
+        </g>
+        <g id="stars_medium_c2">
+            <circle cx="258.956" cy="376.444" r="3.5"/>
+            <circle cx="252.766" cy="438.411" r="3.5"/>
+            <circle cx="86.732" cy="290.992" r="3.5"/>
+            <circle cx="12.213" cy="290.965" r="3.5"/>
+            <circle cx="15.698" cy="331.895" r="3.5"/>
+            <circle cx="76.027" cy="328.416" r="3.5"/>
+            <circle cx="47.786" cy="297.978" r="3.5"/>
+            <circle cx="65.085" cy="517.984" r="3.5"/>
+            <circle cx="15.638" cy="500.467" r="3.5"/>
+            <circle cx="144.24" cy="426.939" r="3.5"/>
+            <circle cx="184.747" cy="376.444" r="3.5"/>
+            <circle cx="120.066" cy="478.418" r="3.5"/>
+            <circle cx="59.704" cy="369.982" r="3.5"/>
+            <circle cx="47.743" cy="419.905" r="3.5"/>
+            <circle cx="222.988" cy="357.904" r="3.5"/>
+            <circle cx="186.046" cy="281.527" r="3.5"/>
+            <circle cx="148.091" cy="505.441" r="3.5"/>
+            <circle cx="182.604" cy="413.953" r="3.5"/>
+            <circle cx="242.934" cy="410.475" r="3.5"/>
+            <circle cx="202.958" cy="457.961" r="3.5"/>
+            <circle cx="214.649" cy="501.965" r="3.5"/>
+            <circle cx="222.378" cy="329.761" r="3.5"/>
+            <circle cx="197.632" cy="319.752" r="3.5"/>
+            <circle cx="211.141" cy="292.878" r="3.5"/>
+            <circle cx="786.734" cy="432.149" r="3.5"/>
+            <circle cx="871.176" cy="344.922" r="3.5"/>
+            <circle cx="953.305" cy="462.507" r="3.5"/>
+            <circle cx="918.076" cy="396.842" r="3.5"/>
+            <circle cx="883.665" cy="419.276" r="3.5"/>
+            <circle cx="915.27" cy="470.782" r="3.5"/>
+            <circle cx="928.727" cy="431.501" r="3.5"/>
+            <circle cx="743.08" cy="550.822" r="3.5"/>
+            <circle cx="735.121" cy="498.971" r="3.5"/>
+            <circle cx="860.738" cy="577.488" r="3.5"/>
+            <circle cx="924.388" cy="589.286" r="3.5"/>
+            <circle cx="870.927" cy="476.064" r="3.5"/>
+            <circle cx="821.285" cy="489.144" r="3.5"/>
+            <circle cx="958.813" cy="614.207" r="3.5"/>
+            <circle cx="1008.627" cy="545.529" r="3.5"/>
+            <circle cx="793.398" cy="618.017" r="3.5"/>
+            <circle cx="890.328" cy="605.143" r="3.5"/>
+            <circle cx="921.933" cy="656.649" r="3.5"/>
+            <circle cx="861.186" cy="643.895" r="3.5"/>
+            <circle cx="827.948" cy="675.012" r="3.5"/>
+            <circle cx="983.32" cy="600.356" r="3.5"/>
+            <circle cx="980.432" cy="573.819" r="3.5"/>
+            <circle cx="1010.499" cy="573.008" r="3.5"/>
+            <circle cx="1011.116" cy="647.232" r="3.5"/>
+            <circle cx="902.591" cy="635.761" r="3.5"/>
+            <circle cx="878.416" cy="687.239" r="3.5"/>
+            <circle cx="906.441" cy="714.263" r="3.5"/>
+            <circle cx="961.308" cy="666.782" r="3.5"/>
+            <circle cx="972.999" cy="710.786" r="3.5"/>
+            <circle cx="863.249" cy="410.632" r="3.5"/>
+            <circle cx="754.724" cy="399.16" r="3.5"/>
+            <circle cx="730.548" cy="450.639" r="3.5"/>
+            <circle cx="758.574" cy="477.662" r="3.5"/>
+            <circle cx="813.44" cy="430.182" r="3.5"/>
+            <circle cx="825.132" cy="474.186" r="3.5"/>
+            <circle cx="918.21" cy="477.916" r="3.5"/>
+            <circle cx="811.393" cy="500.268" r="3.5"/>
+            <circle cx="804.164" cy="556.679" r="3.5"/>
+            <circle cx="839.124" cy="573.81" r="3.5"/>
+            <circle cx="876.793" cy="511.794" r="3.5"/>
+            <circle cx="901.412" cy="550.095" r="3.5"/>
+        </g>
+        <g id="stars_twinkle_c1">
+            <use xlink:href="#star_twinkle1" x="167.156" y="176.084"/>
+            <use xlink:href="#star_twinkle2" x="801.629" y="432.088"/>
+            <use xlink:href="#star_twinkle2" x="1009.072" y="378.432"/>
+            <use xlink:href="#star_twinkle1" x="792" y="695"/>
+        </g>
+        <g id="stars_twinkle_c2">
+            <use xlink:href="#star_twinkle2" x="119.156" y="339.972"/>
+            <use xlink:href="#star_twinkle1" x="982.192" y="535.262"/>
+        </g>
+    </g>
+
+    <g id="contentGenerated" transform="translate(512, 384)">
+        <g mask="url(#maskWheel)">
+            <g id="wheel"/>
+        </g>
+        <g id="mouseAreas">
+            <g id="passive" 
+                transform="translate(-512, -384)"
+                onmousemove="wheelMouseMove(evt)" 
+                onmouseup="wheelMouseUp(evt)">
+                <use xlink:href="#fullArea" class="eventsTarget"/>
+            </g>
+            <g id="active" 
+                style="cursor: url(../openhand.cur), pointer;"
+                onmousedown="wheelMouseDown(evt)" 
+                onmousemove="wheelMouseMove(evt)" 
+                onmouseup="wheelMouseUp(evt)">
+                <use xlink:href="#mapView" class="eventsTarget"/>
+                <use xlink:href="#monthsView" class="eventsTarget"/>
+            </g>
+        </g>
+        <g id="frontGraphics">
+            <g id="scales"/>
+            <g id="monthsViewBorder"/>
+            <g id="mapViewBorder"/>
+        </g>
+    </g>
+    <g id="commandButtons">
+        <g transform="translate(785, 0)">
+            <a xlink:href="http://drifted.in/planisphere/" target="_blank">
+                <g id="buttonMoreInfo"/>
+            </a>
+        </g>
+        <g transform="translate(855, 0)" onclick="top.settingsDialog.show();">
+            <g id="buttonSettings"/>
+        </g>
+        <g transform="translate(925, 0)" onclick="top.document.getElementById('exportHTML').click();">
+            <g id="buttonExport"/>
+        </g>
+    </g>
+    <g id="designer" transform="translate(10, 755)">
+        <text>Design: © Jan Tošovský, 2011</text>
+    </g>
+<!--
+<rect x="0" y="0" width="100" height="100" class="color1a"/>
+<rect x="0" y="100" width="100" height="100" class="color1b"/>
+<rect x="0" y="200" width="100" height="100" class="color2a"/>
+<rect x="0" y="300" width="100" height="100" class="color2b"/>
+-->
+</svg>

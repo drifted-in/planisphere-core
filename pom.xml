@@ -31,11 +31,6 @@
             <version>2.4</version>
         </dependency>
         <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>planisphere-resources</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
             <groupId>in.drifted.util</groupId>
             <artifactId>svg-to-pdf-transcoder</artifactId>
             <version>1.0</version>

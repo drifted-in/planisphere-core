@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="buttonFlip"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+	 x="0px" y="0px" width="64px" height="50px" viewBox="0 0 64 50" enable-background="new 0 0 64 50" xml:space="preserve">
+<defs>
+    <style type="text/css">
+    	<![CDATA[
+         #buttonFlip {
+            cursor: pointer;
+         }
+         #buttonFlip:hover .gradientUp {
+            stop-color: #922c26;
+         }
+         #buttonFlip:hover .buttonBorder {
+            fill: #922c26;
+         }
+         #buttonFlip:hover .gradientDown {
+            stop-color: #ff6561;
+         }
+         #buttonFlip:hover .reflection {
+            fill: #ff6a66;
+         }         
+         #buttonFlip .gradientUp {
+            stop-color: #641e15;
+         }
+         #buttonFlip .border {
+            fill: #641e15;
+         }
+         #buttonFlip .gradientDown {
+            stop-color: #9f3026;
+         }         
+         #buttonFlip .reflection {
+            fill: #c83e05;
+         }         
+         .arrowTop {
+            fill: #FA9600;
+         }
+         .arrowBottom {
+            fill: #FF4A69;
+         }
+      ]]>
+      </style>
+</defs>
+    <g>
+        <linearGradient id="gradientFlip" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop class="gradientUp" offset="0%" />
+            <stop class="gradientDown" offset="100%" />
+        </linearGradient>
+        <path fill="url(#gradientFlip)" d="M0,0l0,39.5c0,5.6,4.7,10.3,10.5,10.3h43.1c5.8,0,10.5-4.6,10.5-10.3L64,0H0z"/>
+    </g>
+    <g>
+        <path class="reflection" d="M53.5,45.8H10.5c-5,0-9.1-4-9.2-8.9l0,2.6c0,4.9,4.1,9,9.2,9h43.1c5.1,0,9.2-4,9.2-9l0-2.6
+                C62.7,41.8,58.6,45.8,53.5,45.8z"/>
+    </g>
+    <g>
+        <path class="buttonBorder" d="M62.7,0l0,39.5c0,5-4.1,9-9.2,9H10.5c-5.1,0-9.2-4-9.2-9V0H0v39.5c0,5.6,4.7,10.3,10.5,10.3h43.1c5.8,0,10.5-4.6,10.5-10.3
+                V0H62.7z"/>
+    </g>
+    <path class="arrowTop" d="M45.268,17.195L39.486,6.683l-1.512,2.628c-2.029-1.012-4.318-1.582-6.741-1.582
+            c-8.356,0-15.131,6.775-15.131,15.132c0,0.19,0.004,0.38,0.012,0.568h0.396c0.4-6.181,5.539-11.069,11.82-11.069
+            c2.484,0,4.79,0.765,6.694,2.072l-1.592,2.764H45.268z"/>
+
+    <path class="arrowBottom" d="M18.781,28.804l5.781,10.513l1.514-2.628c2.029,1.012,4.317,1.581,6.739,1.581
+		c8.357,0,15.133-6.774,15.133-15.131c0-0.19-0.006-0.38-0.012-0.568h-0.396C47.139,28.751,42,33.64,35.719,33.64
+		c-2.484,0-4.791-0.766-6.695-2.072l1.591-2.764H18.781z"/>
+</svg>

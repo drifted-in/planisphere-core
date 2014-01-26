@@ -1,0 +1,88 @@
+400,4250,And,Andromeda
+10500,-3500,Ant,Antlia
+16134,-7641,Aps,Apus
+22500,-1500,Aqr,Aquarius
+19400,1100,Aql,Aquila
+17231,-4950,Ara,Ara
+2550,2150,Ari,Aries
+5550,4250,Aur,Auriga
+14450,4100,Boo,Boötes
+4721,-3883,Cae,Caelum
+5000,7300,Cam,Camelopardalis
+8350,2356,Cnc,Cancer
+13300,4450,CVn,Canes Venatici
+6700,-2600,CMa,Canis Major
+7450,1200,CMi,Canis Minor
+20650,-2200,Cap,Capricornus
+7761,-5717,Car,Carina
+1100,6450,Cas,Cassiopeia
+13300,-4400,Cen,Centaurus
+21850,7800,Cep,Cepheus
+1500,-500,Cet,Cetus
+12000,-8199,Cha,Chamaeleon
+14527,-6770,Cir,Circinus
+5700,-3050,Col,Columba
+12800,2500,Com,Coma Berenices
+18655,-4125,CrA,Corona Australis
+15900,3280,CrB,Corona Borealis
+12200,-1450,Crv,Corvus
+11200,-1150,Crt,Crater
+12481,-6070,Cru,Crux
+21100,5100,Cyg,Cygnus
+20600,750,Del,Delphinus
+5333,-6399,Dor,Dorado
+17400,6250,Dra,Draco
+21200,400,Equ,Equuleus
+3800,-1700,Eri,Eridanus
+2766,-2694,For,Fornax
+7200,2420,Gem,Gemini
+22457,-5154,Gru,Grus
+17620,1800,Her,Hercules
+3212,-5200,Hor,Horologium
+9200,-480,Hya,Hydra
+2589,-7210,Hyi,Hydrus
+21138,-5400,Ind,Indus
+22700,4580,Lac,Lacerta
+10700,1750,Leo,Leo
+10300,3000,LMi,Leo Minor
+5300,-1900,Lep,Lepus
+15450,-2200,Lib,Libra
+15300,-4150,Lup,Lupus
+8450,3800,Lyn,Lynx
+18900,4100,Lyr,Lyra
+5500,-7999,Men,Mensa
+20750,-3700,Mic,Microscopium
+6800,-700,Mon,Monoceros
+12460,-7250,Mus,Musca
+16042,-5229,Nor,Norma
+22173,-8473,Oct,Octans
+16750,-670,Oph,Ophiuchus
+5300,950,Ori,Orion
+19160,-6770,Pav,Pavo
+22617,1965,Peg,Pegasus
+3100,4700,Per,Perseus
+732,-4823,Phe,Phoenix
+5381,-5163,Pic,Pictor
+1000,1100,Psc,Pisces
+22500,-3050,PsA,Piscis Austrinus
+7750,-3350,Pup,Puppis
+8700,-2500,Pix,Pyxis
+3899,-6049,Ret,Reticulum
+19400,1730,Sge,Sagitta
+19400,-2750,Sgr,Sagittarius
+16300,-3400,Sco,Scorpius
+900,-3800,Scl,Sculptor
+18770,-1200,Sct,Scutum
+15450,1600,Ser,Serpens
+10400,-600,Sex,Sextans
+4050,1734,Tau,Taurus
+19244,-5154,Tel,Telescopium
+1730,3240,Tri,Triangulum
+16124,-6500,TrA,Triangulum Australe
+23828,-6590,Tuc,Tucana
+10950,5100,UMa,Ursa Major
+14050,7130,UMi,Ursa Minor
+9337,-4851,Vel,Vela
+13343,-349,Vir,Virgo
+7659,-6939,Vol,Volans
+19750,2600,Vul,Vulpecula

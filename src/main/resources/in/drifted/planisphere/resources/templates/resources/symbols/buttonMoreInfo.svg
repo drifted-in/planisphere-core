@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="buttonMoreInfo"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+	 x="0px" y="0px" width="64px" height="50px" viewBox="0 0 64 50" enable-background="new 0 0 64 50" xml:space="preserve">
+<defs>
+    <style type="text/css">
+    	<![CDATA[
+         #buttonMoreInfo {
+            cursor: pointer;
+         }
+         #buttonMoreInfo:hover .gradientUp {
+            stop-color: #922c26;
+         }
+         #buttonMoreInfo:hover .buttonBorder {
+            fill: #922c26;
+         }
+         #buttonMoreInfo:hover .gradientDown {
+            stop-color: #ff6561;
+         }
+         #buttonMoreInfo:hover .reflection {
+            fill: #ff6a66;
+         }         
+         #buttonMoreInfo .gradientUp {
+            stop-color: #641e15;
+         }
+         #buttonMoreInfo .border {
+            fill: #641e15;
+         }
+         #buttonMoreInfo .gradientDown {
+            stop-color: #9f3026;
+         }         
+         #buttonMoreInfo .reflection {
+            fill: #c83e05;
+         }         
+         .gearLarge {
+            fill: #FA9600;
+         }
+         .gearSmall {
+            fill: #FF4A69;
+         }
+      ]]>
+      </style>
+</defs>
+    <g>
+        <linearGradient id="gradientMoreInfo" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop class="gradientUp" offset="0%" />
+            <stop class="gradientDown" offset="100%" />
+        </linearGradient>
+        <path fill="url(#gradientMoreInfo)" d="M0,0l0,39.5c0,5.6,4.7,10.3,10.5,10.3h43.1c5.8,0,10.5-4.6,10.5-10.3L64,0H0z"/>
+    </g>
+    <g>
+        <path class="reflection" d="M53.5,45.8H10.5c-5,0-9.1-4-9.2-8.9l0,2.6c0,4.9,4.1,9,9.2,9h43.1c5.1,0,9.2-4,9.2-9l0-2.6
+                C62.7,41.8,58.6,45.8,53.5,45.8z"/>
+    </g>
+    <g>
+        <path class="buttonBorder" d="M62.7,0l0,39.5c0,5-4.1,9-9.2,9H10.5c-5.1,0-9.2-4-9.2-9V0H0v39.5c0,5.6,4.7,10.3,10.5,10.3h43.1c5.8,0,10.5-4.6,10.5-10.3
+                V0H62.7z"/>
+    </g>
+    <path class="moreInfo" d="M36.159,16.167v17.321c0,0.828,0.047,1.336,0.141,1.523s0.262,0.332,0.504,0.434s0.785,0.152,1.629,0.152
+	h1.266v4.523H25.214v-4.523h1.242c0.813,0,1.332-0.043,1.559-0.129s0.395-0.23,0.504-0.434s0.164-0.609,0.164-1.219v-11.18h-3.469
+	V18.23c1.234-0.063,2.418-0.195,3.551-0.398s2.145-0.445,3.035-0.727c0.578-0.188,1.289-0.5,2.133-0.938H36.159z"/>
+   <circle class="moreInfo" cx="32.289" cy="10.044" r="4.329"/>
+
+</svg>
