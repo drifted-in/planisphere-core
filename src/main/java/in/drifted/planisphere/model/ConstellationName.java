@@ -1,16 +1,13 @@
 package in.drifted.planisphere.model;
 
-import java.awt.geom.Point2D;
-import java.io.Serializable;
-
-public final class ConstellationName implements Serializable {
+public final class ConstellationName {
 
     private String id;
     private String abbreviation;
     private String latin;
-    private Point2D coord;
+    private Coord coord;
 
-    public ConstellationName(String abbreviation, String latin, Point2D coord) {
+    public ConstellationName(String abbreviation, String latin, Coord coord) {
         setAbbreviation(abbreviation);
         setLatin(latin);
         setId(generateId(latin));
@@ -46,11 +43,11 @@ public final class ConstellationName implements Serializable {
         this.abbreviation = abbreviation;
     }
 
-    public Point2D getCoord() {
+    public Coord getCoord() {
         return this.coord;
     }
 
-    private void setCoord(Point2D coord) {
+    private void setCoord(Coord coord) {
         this.coord = coord;
     }
 

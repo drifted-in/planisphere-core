@@ -6,10 +6,10 @@ import in.drifted.planisphere.resources.loader.ConstellationNameListLoader;
 import in.drifted.planisphere.resources.loader.MilkyWayLoader;
 import in.drifted.planisphere.resources.loader.StarListLoader;
 import in.drifted.planisphere.model.ConstellationName;
+import in.drifted.planisphere.model.Coord;
 import in.drifted.planisphere.model.MilkyWay;
 import in.drifted.planisphere.model.Star;
 import in.drifted.planisphere.Settings;
-import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +20,8 @@ public final class CacheHandler {
 
     private List<Star> starList;
     private List<ConstellationName> constellationNameList;
-    private List<Point2D> constellationLineList;
-    private List<Point2D> constellationBoundaryList;
+    private List<Coord> constellationLineList;
+    private List<Coord> constellationBoundaryList;
     private MilkyWay milkyWay;
 
     public static CacheHandler getInstance() {
@@ -62,11 +62,11 @@ public final class CacheHandler {
         return constellationNameList;
     }
 
-    public List<Point2D> getConstellationLineList() {
+    public List<Coord> getConstellationLineList() {
         return constellationLineList;
     }
 
-    public List<Point2D> getConstellationBoundaryList() {
+    public List<Coord> getConstellationBoundaryList() {
         return constellationBoundaryList;
     }
 

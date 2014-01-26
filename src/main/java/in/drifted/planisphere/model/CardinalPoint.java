@@ -1,55 +1,52 @@
 package in.drifted.planisphere.model;
 
-import java.awt.geom.Point2D;
-import java.io.Serializable;
-
-public final class CardinalPoint implements Serializable {
+public final class CardinalPoint {
 
     private Double startOffset;
     private Double radius;
-    private Point2D center;
-    private Point2D tickStart;
-    private Point2D tickEnd;
+    private Coord center;
+    private Coord tickStart;
+    private Coord tickEnd;
     private String label;
 
-    public Point2D getCenter() {
-        return this.center;
-    }
-
-    public void setCenter(Point2D center) {
-        this.center = center;
-    }
-
-    public Double getRadius() {
-        return this.radius;
-    }
-
-    public void setRadius(Double radius) {
-        this.radius = radius;
-    }
-
     public Double getStartOffset() {
-        return this.startOffset;
+        return startOffset;
     }
 
     public void setStartOffset(Double startOffset) {
         this.startOffset = startOffset;
     }
 
-    public Point2D getTickEnd() {
-        return this.tickEnd;
+    public Double getRadius() {
+        return radius;
     }
 
-    public void setTickEnd(Point2D tickEnd) {
-        this.tickEnd = tickEnd;
+    public void setRadius(Double radius) {
+        this.radius = radius;
     }
 
-    public Point2D getTickStart() {
-        return this.tickStart;
+    public Coord getCenter() {
+        return center;
     }
 
-    public void setTickStart(Point2D tickStart) {
+    public void setCenter(Coord center) {
+        this.center = center;
+    }
+
+    public Coord getTickStart() {
+        return tickStart;
+    }
+
+    public void setTickStart(Coord tickStart) {
         this.tickStart = tickStart;
+    }
+
+    public Coord getTickEnd() {
+        return tickEnd;
+    }
+
+    public void setTickEnd(Coord tickEnd) {
+        this.tickEnd = tickEnd;
     }
 
     public String getLabel() {

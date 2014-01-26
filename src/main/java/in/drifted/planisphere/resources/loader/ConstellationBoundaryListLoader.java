@@ -1,6 +1,6 @@
 package in.drifted.planisphere.resources.loader;
 
-import java.awt.geom.Point2D;
+import in.drifted.planisphere.model.Coord;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,21 +10,20 @@ import java.util.List;
 
 public final class ConstellationBoundaryListLoader {
 
-    public static List<Point2D> getConstellationBoundaryList(String filePath) throws IOException {
-        
-        List<Point2D> constellationBoundaryList = new ArrayList<>();
-        
+    public static List<Coord> getConstellationBoundaryList(String filePath) throws IOException {
+
+        List<Coord> constellationBoundaryList = new ArrayList<>();
+
         try (
-                InputStream inputStream = ConstellationBoundaryListLoader.class.getResourceAsStream(filePath); 
+                InputStream inputStream = ConstellationBoundaryListLoader.class.getResourceAsStream(filePath);
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "ASCII"))) {
-            
-            Point2D coordLast = new Point2D.Double();
+
+            Coord coordLast = new Coord();
             String strLine;
             while ((strLine = reader.readLine()) != null) {
                 if (!strLine.isEmpty()) {
                     String[] values = strLine.split("\t");
-                    Point2D coord = new Point2D.Double();
-                    coord.setLocation(Double.parseDouble(values[1]) / 1000.0, Double.parseDouble(values[2]) / 100.0);
+                    Coord coord = new Coord(Double.parseDouble(values[1]) / 1000.0, Double.parseDouble(values[2]) / 100.0);
                     if (values[0].equals("1")) {
                         constellationBoundaryList.add(coordLast);
                         constellationBoundaryList.add(coord);
@@ -33,7 +32,7 @@ public final class ConstellationBoundaryListLoader {
                 }
             }
         }
-        
+
         return constellationBoundaryList;
     }
 }

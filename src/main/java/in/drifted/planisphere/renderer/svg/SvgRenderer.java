@@ -1,18 +1,19 @@
 package in.drifted.planisphere.renderer.svg;
 
+import com.seisw.util.geom.Point2D;
 import com.seisw.util.geom.Poly;
 import com.seisw.util.geom.PolyDefault;
 import in.drifted.planisphere.Options;
 import in.drifted.planisphere.Settings;
 import in.drifted.planisphere.model.CardinalPoint;
 import in.drifted.planisphere.model.ConstellationName;
+import in.drifted.planisphere.model.Coord;
 import in.drifted.planisphere.model.MilkyWay;
 import in.drifted.planisphere.model.Star;
 import in.drifted.planisphere.util.CacheHandler;
 import in.drifted.planisphere.util.CoordUtil;
 import in.drifted.planisphere.util.FontManager;
 import in.drifted.planisphere.util.LocalizationUtil;
-import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -20,7 +21,6 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.text.DateFormatSymbols;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -58,7 +58,7 @@ public final class SvgRenderer {
     private transient XMLStreamWriter writer;
     private transient DocumentBuilder documentBuilder;
     private transient CacheHandler cacheHandler;
-    private final List<Point2D> mapAreaPointList = new LinkedList<>();
+    private final List<Coord> mapAreaPointList = new LinkedList<>();
     private final List<CardinalPoint> cardinalPointList = new LinkedList<>();
     private LocalizationUtil localizationUtil;
     private Double latitudeFixed;
@@ -67,6 +67,7 @@ public final class SvgRenderer {
     private Double scale; // map content
     private Boolean isDoubleSided;
     private Integer doubleSidedSign;
+    private Integer latitudeSign;
 
     public SvgRenderer() {
         initRenderer();
@@ -98,8 +99,10 @@ public final class SvgRenderer {
 
         latitudeFixed = options.getLatitude();
         isDoubleSided = options.getDoubleSided();
-        doubleSidedSign = (int) (options.getDoubleSidedSign() * Math.signum(latitudeFixed)) ;
+        Integer latitudeFixedSign = (latitudeFixed >= 0) ? 1 : -1;
+        doubleSidedSign = (int) (options.getDoubleSidedSign() * latitudeFixedSign);
         latitude = isDoubleSided ? doubleSidedSign * 65.0 : latitudeFixed;
+        latitudeSign = (latitude >= 0) ? 1 : -1; // Math.signum() returns 0 for zero latitude
         Locale locale = options.getCurrentLocale();
         localizationUtil = new LocalizationUtil(locale);
         FontManager fontManager = new FontManager(locale);
@@ -369,10 +372,10 @@ public final class SvgRenderer {
 
     private void renderStars() throws XMLStreamException, IOException {
 
-        Point2D coord = new Point2D.Double();
         Map<Integer, StringBuilder> pathMap = new HashMap<>();
 
         for (Star star : cacheHandler.getStarList()) {
+            Coord coord = new Coord();
             if (CoordUtil.convert(star.getRA(), star.getDec(), coord, latitude, scale)) {
                 String coordsChunk = CoordUtil.getCoordsChunk(coord);
 
@@ -396,13 +399,15 @@ public final class SvgRenderer {
     }
 
     private void renderConstellationBoundaries() throws XMLStreamException, IOException {
-        Point2D coordStart = new Point2D.Double();
-        Point2D coordEnd = new Point2D.Double();
+
         StringBuilder pathData = new StringBuilder();
-        for (Iterator<Point2D> i = cacheHandler.getConstellationBoundaryList().iterator(); i.hasNext();) {
-            Point2D coordStartRaw = i.next();
+
+        for (Iterator<Coord> i = cacheHandler.getConstellationBoundaryList().iterator(); i.hasNext();) {
+            Coord coordStartRaw = i.next();
+            Coord coordStart = new Coord();
             if (CoordUtil.convert(coordStartRaw.getX(), coordStartRaw.getY(), coordStart, latitude, scale)) {
-                Point2D coordEndRaw = i.next();
+                Coord coordEndRaw = i.next();
+                Coord coordEnd = new Coord();
                 if (CoordUtil.convert(coordEndRaw.getX(), coordEndRaw.getY(), coordEnd, latitude, scale)) {
                     if ((Math.abs(coordStartRaw.getY() - coordEndRaw.getY()) < 0.7) && (Math.abs(coordStartRaw.getX() - coordEndRaw.getX()) > 0)
                             || (Math.abs(coordStartRaw.getY()) > 86)) {
@@ -423,7 +428,7 @@ public final class SvgRenderer {
 
                         Double incDec = (coordEndRaw.getY() - coordStartRaw.getY()) / bDiv;
                         Double Dec = coordStartRaw.getY();
-                        Point2D coordTemp = new Point2D.Double();
+                        Coord coordTemp = new Coord();
 
                         for (Integer j = 0; j <= bDiv; j++) {
                             CoordUtil.convert(startRA + j * incRA / bDiv, Dec, coordTemp, latitude, scale);
@@ -451,13 +456,15 @@ public final class SvgRenderer {
     }
 
     private void renderConstellationLines() throws XMLStreamException, IOException {
-        Point2D coordStart = new Point2D.Double();
-        Point2D coordEnd = new Point2D.Double();
+
         StringBuilder pathData = new StringBuilder();
-        for (Iterator<Point2D> i = cacheHandler.getConstellationLineList().iterator(); i.hasNext();) {
-            Point2D coordStartRaw = i.next();
+
+        for (Iterator<Coord> i = cacheHandler.getConstellationLineList().iterator(); i.hasNext();) {
+            Coord coordStartRaw = i.next();
+            Coord coordStart = new Coord();
             if (CoordUtil.convert(coordStartRaw.getX(), coordStartRaw.getY(), coordStart, latitude, scale)) {
-                Point2D coordEndRaw = i.next();
+                Coord coordEndRaw = i.next();
+                Coord coordEnd = new Coord();
                 if (CoordUtil.convert(coordEndRaw.getX(), coordEndRaw.getY(), coordEnd, latitude, scale)) {
                     pathData.append("M");
                     pathData.append(CoordUtil.getCoordsChunk(coordStart));
@@ -472,8 +479,7 @@ public final class SvgRenderer {
     }
 
     private void renderConstellationNames(Integer mode) throws XMLStreamException, IOException {
-        Point2D coordRaw;
-        Point2D coord = new Point2D.Double();
+
         for (ConstellationName constellationName : cacheHandler.getConstellationNameList()) {
             String name = "";
             switch (mode) {
@@ -488,8 +494,9 @@ public final class SvgRenderer {
                     break;
                 default:
             }
-            //System.out.println(name + " : " + constellationName.getId());
-            coordRaw = constellationName.getCoord();
+
+            Coord coordRaw = constellationName.getCoord();
+            Coord coord = new Coord();
             if (CoordUtil.convert(coordRaw.getX(), coordRaw.getY(), coord, latitude, scale)) {
                 String id = "con" + constellationName.getAbbreviation();
                 renderPath(renderCircleForConstellationName(coord), id, "constellationNamesPath");
@@ -501,19 +508,15 @@ public final class SvgRenderer {
     private void renderEcliptic() throws XMLStreamException {
 
         Double epsilon = Math.toRadians(23.44);
-        Double lambda;
-        Double RA;
-        Double Dec;
         Boolean flag = false;
         String coordsChunk = "";
         StringBuilder pathData = new StringBuilder();
 
-        Point2D coord = new Point2D.Double();
-
         for (Integer i = 0; i <= 360; i = i + 2) {
-            lambda = Math.toRadians(i);
-            RA = (Math.atan2(Math.sin(lambda) * Math.cos(epsilon), Math.cos(lambda))) * 12 / Math.PI;
-            Dec = Math.toDegrees(Math.asin(Math.sin(epsilon) * Math.sin(lambda)));
+            Double lambda = Math.toRadians(i);
+            Double RA = (Math.atan2(Math.sin(lambda) * Math.cos(epsilon), Math.cos(lambda))) * 12 / Math.PI;
+            Double Dec = Math.toDegrees(Math.asin(Math.sin(epsilon) * Math.sin(lambda)));
+            Coord coord = new Coord();
             if (CoordUtil.convert(RA, Dec, coord, latitude, scale)) {
                 if (!flag) {
                     coordsChunk = CoordUtil.getCoordsChunk(coord);
@@ -535,13 +538,12 @@ public final class SvgRenderer {
     private void renderCoords() throws XMLStreamException {
 
         StringBuilder path = new StringBuilder();
-        Point2D coord = new Point2D.Double();
-        Double sign = Math.signum(latitude);
+        Coord coord = new Coord(0.0, 0.0);
 
         // declination circle (it cannot be rendered using circles because of the rotation at vernal point)        
         for (Double Dec = 60.0; Dec >= Math.abs(latitude) - 90.0; Dec = Dec - 30.0) {
             for (Double RA = 0.0; RA <= 24.0; RA = RA + 0.5) {
-                CoordUtil.convert(RA, sign * Dec, coord, latitude, scale);
+                CoordUtil.convert(RA, latitudeSign * Dec, coord, latitude, scale);
                 if (RA == 0.0) {
                     path.append("M");
                 } else {
@@ -552,26 +554,26 @@ public final class SvgRenderer {
         }
 
         // RA        
-        Integer start;
+        Double start;
         for (Integer RA = 0; RA < 24; RA++) {
             switch (RA % 6) {
                 case 1:
                 case 3:
                 case 5:
-                    start = 30;
+                    start = 30.0;
                     break;
                 case 2:
                 case 4:
-                    start = 60;
+                    start = 60.0;
                     break;
                 default:
-                    start = 90;
+                    start = 90.0;
             }
 
-            CoordUtil.convert(RA.doubleValue(), sign * start, coord, latitude, scale);
+            CoordUtil.convert(RA.doubleValue(), latitudeSign * start, coord, latitude, scale);
             path.append("M");
             path.append(CoordUtil.getCoordsChunk(coord));
-            CoordUtil.convert(RA.doubleValue(), latitude - sign * 90, coord, latitude, scale);
+            CoordUtil.convert(RA.doubleValue(), latitude - latitudeSign * 90.0, coord, latitude, scale);
             path.append("L");
             path.append(CoordUtil.getCoordsChunk(coord));
         }
@@ -580,8 +582,6 @@ public final class SvgRenderer {
 
     private void renderCoordLabels() throws XMLStreamException {
 
-        Double sign = Math.signum(latitude);
-
         for (int RA = 1; RA < 24; RA++) {
             Integer finalRA = (latitude >= 0) ? RA : 24 - RA;
             renderTextOnPath("coordLabelPath00", 100 - (RA * 100.0 / 24), finalRA + "h", "coordLabelRa");
@@ -589,7 +589,7 @@ public final class SvgRenderer {
         renderTextOnPath("coordLabelPath00", 0.0, "0h", "coordLabelRa");
 
         for (Double Dec = 60.0; Dec >= Math.abs(latitude) - 90.0; Dec = Dec - 30.0) {
-            Double finalDec = sign * Dec;
+            Double finalDec = latitudeSign * Dec;
             String pathId = "coordLabelPath" + Dec.intValue();
             String strSign = (finalDec > 0) ? "+" : "";
             renderTextOnPath(pathId, 100.0, strSign + finalDec.intValue() + "°", "coordLabelDec");
@@ -601,9 +601,6 @@ public final class SvgRenderer {
 
     private void renderDefsCoordLabelPaths() throws XMLStreamException {
 
-        Point2D coord = new Point2D.Double();
-        Double sign = Math.signum(latitude);
-
         for (Double Dec = 60.0; Dec >= Math.abs(latitude) - 90.0; Dec = Dec - 30.0) {
             StringBuilder path = new StringBuilder("M");
             for (Double RA = 24.0; RA >= 0.0; RA = RA - 0.5) {
@@ -611,7 +608,8 @@ public final class SvgRenderer {
                     path.append("L");
                 }
                 Double finalRA = (latitude >= 0) ? RA : 24.0 - RA;
-                CoordUtil.convert(finalRA, sign * Dec, coord, latitude, scale);
+                Coord coord = new Coord();
+                CoordUtil.convert(finalRA, latitudeSign * Dec, coord, latitude, scale);
                 path.append(CoordUtil.getCoordsChunk(coord));
             }
             renderPath(path.toString(), "coordLabelPath" + Dec.intValue(), null);
@@ -624,7 +622,8 @@ public final class SvgRenderer {
                 path.append("L");
             }
             Double finalRA = (latitude >= 0) ? RA : 24.0 - RA;
-            CoordUtil.convert(finalRA, -sign * 3.0, coord, latitude, scale);
+            Coord coord = new Coord();
+            CoordUtil.convert(finalRA, -latitudeSign * 3.0, coord, latitude, scale);
             path.append(CoordUtil.getCoordsChunk(coord));
         }
         renderPath(path.toString(), "coordLabelPath00", null);
@@ -635,10 +634,10 @@ public final class SvgRenderer {
         StringBuilder path = new StringBuilder();
         Iterator iter = mapAreaPointList.iterator();
         path.append("M");
-        path.append(CoordUtil.getCoordsChunk((Point2D) iter.next()));
+        path.append(CoordUtil.getCoordsChunk((Coord) iter.next()));
         while (iter.hasNext()) {
             path.append("L");
-            path.append(CoordUtil.getCoordsChunk((Point2D) iter.next()));
+            path.append(CoordUtil.getCoordsChunk((Coord) iter.next()));
         }
         path.append("z");
         renderPath(path.toString(), "mapView", null);
@@ -679,8 +678,8 @@ public final class SvgRenderer {
                     String pathId = "cid" + index;
 
                     if (latitudeFixed == 0) {
-                        Point2D point = cardinalPoint.getTickStart();
-                        Point2D center = new Point2D.Double(point.getX(), point.getY() + innerOffset);
+                        Coord point = cardinalPoint.getTickStart();
+                        Coord center = new Coord(point.getX(), point.getY() + innerOffset);
                         renderPath(renderLineHorizontal(center, textLineLength), pathId, "invisible");
                         renderTextOnPath(pathId, 50.0, cardinalPoint.getLabel(), "cardinalPointLabel");
 
@@ -867,7 +866,7 @@ public final class SvgRenderer {
             daysInYear = 366;
         }
 
-        Double sign = isDoubleSided ? doubleSidedSign : Math.signum(latitude);
+        Integer sign = isDoubleSided ? doubleSidedSign : latitudeSign;
         Double angleInRads;
 
         Double dayIncrement = 360.0 / daysInYear;
@@ -940,8 +939,10 @@ public final class SvgRenderer {
     }
 
     private void renderSpacer() throws XMLStreamException {
+
         StringBuilder pathData = new StringBuilder();
-        Double angle = Math.toRadians(210d);
+
+        Double angle = Math.toRadians(210.0);
         Double ratio = 1.03 * scaleFixed;
         String strRadius = CoordUtil.format(ratio);
 
@@ -957,24 +958,26 @@ public final class SvgRenderer {
         // ry
         pathData.append(strRadius);
         // rotation, large arc flag, sweep flag
-        angle = Math.toRadians(330d);
+        angle = Math.toRadians(330.0);
         pathData.append(" 0 0 0 ");
         pathData.append(CoordUtil.format(Math.cos(angle) * ratio));
         pathData.append(" ");
         pathData.append(CoordUtil.format(-Math.sin(angle) * ratio));
 
-        List<Point2D.Double> coords = new ArrayList<>();
-        Double dy = Math.tan(Math.toRadians(30d)) * scaleFixed;
-        coords.add(new Point2D.Double(scaleFixed, dy));
-        coords.add(new Point2D.Double(scaleFixed, 1.12 * scaleFixed));
-        coords.add(new Point2D.Double(-scaleFixed, 1.12 * scaleFixed));
-        coords.add(new Point2D.Double(-scaleFixed, dy));
+        List<Coord> coordList = new LinkedList<>();
+        Double dy = Math.tan(Math.toRadians(30.0)) * scaleFixed;
+        coordList.add(new Coord(scaleFixed, dy));
+        coordList.add(new Coord(scaleFixed, 1.12 * scaleFixed));
+        coordList.add(new Coord(-scaleFixed, 1.12 * scaleFixed));
+        coordList.add(new Coord(-scaleFixed, dy));
 
-        renderPath(pathData + getPathData(coords, true), "spacer", null);
+        renderPath(pathData + getPathData(coordList, true), "spacer", null);
     }
 
     private void renderCover() throws XMLStreamException {
+
         StringBuilder pathData = new StringBuilder();
+
         Double x1 = Math.cos(Math.toRadians(30d)) * 0.9 * scaleFixed;
         Double y1 = Math.sin(Math.toRadians(30d)) * 0.9 * scaleFixed;
         // main arc
@@ -1100,10 +1103,12 @@ public final class SvgRenderer {
         renderPath(pathData.toString(), "pinMark", "pinMark");
     }
 
-    private String getPathData(List<Point2D.Double> coords, Boolean append) {
+    private String getPathData(List<Coord> coordList, Boolean append) {
+
         StringBuilder pathData = new StringBuilder();
+
         Boolean isFirst = true;
-        for (Point2D.Double coord : coords) {
+        for (Coord coord : coordList) {
             if (isFirst) {
                 if (append) {
                     pathData.append("L");
@@ -1150,12 +1155,12 @@ public final class SvgRenderer {
         writer.writeEndElement();
     }
 
-    private Poly createContour(List<Point2D> coords) {
+    private Poly createContour(List<Coord> coords) {
         Poly contour = new PolyDefault();
-        for (Point2D coordRaw : coords) {
-            Point2D coord = new Point2D.Double();
+        for (Coord coordRaw : coords) {
+            Coord coord = new Coord();
             CoordUtil.convertWithoutCheck(coordRaw.getX(), coordRaw.getY(), coord, latitude, scale);
-            contour.add(coord);
+            contour.add(new Point2D(coord.getX(), coord.getY()));
         }
         return contour;
     }
@@ -1164,20 +1169,20 @@ public final class SvgRenderer {
         Poly contour = new PolyDefault();
         Double Dec = latitude > 0 ? latitude - 90 : latitude + 90;
         for (Double RA = 0.0; RA <= 24; RA = RA + 0.5) {
-            Point2D coord = new Point2D.Double();
+            Coord coord = new Coord();
             CoordUtil.convertWithoutCheck(RA, Dec, coord, latitude, scale);
-            contour.add(coord);
+            contour.add(new Point2D(coord.getX(), coord.getY()));
         }
         return contour;
     }
 
     private void renderDefsDialMonthsLabelMajorPath() throws XMLStreamException {
-        String pathData = isDoubleSided ? renderCircleInv(new Point2D.Double(0.0, 0.0), 0.98 * scaleFixed) : renderCircle(0.95 * scaleFixed);
+        String pathData = isDoubleSided ? renderCircleInv(new Coord(0.0, 0.0), 0.98 * scaleFixed) : renderCircle(0.95 * scaleFixed);
         renderPath(pathData, "dialMonthsLabelMajorPath", null);
     }
 
     private void renderDefsDialMonthsLabelMinorPath() throws XMLStreamException {
-        String pathData = isDoubleSided ? renderCircleInv(new Point2D.Double(0.0, 0.0), 0.935 * scaleFixed) : renderCircle(0.92 * scaleFixed);
+        String pathData = isDoubleSided ? renderCircleInv(new Coord(0.0, 0.0), 0.935 * scaleFixed) : renderCircle(0.92 * scaleFixed);
         renderPath(pathData, "dialMonthsLabelMinorPath", null);
     }
 
@@ -1366,26 +1371,26 @@ public final class SvgRenderer {
         return circle.render();
     }
 
-    private String renderCircle(Point2D center, Double radius) {
+    private String renderCircle(Coord center, Double radius) {
 
         BezierCircle circle = new BezierCircle(center, radius);
         return circle.render();
     }
 
-    public String renderCircleForConstellationName(Point2D coord) {
-        Double radius = coord.distance(0.0, 0.0);
+    public String renderCircleForConstellationName(Coord coord) {
+        Double radius = CoordUtil.getDistance(coord, new Coord(0.0, 0.0));
         Double angle = 90.0 + Math.toDegrees(Math.atan2(coord.getY(), coord.getX()));
-        BezierCircle circle = new BezierCircle(new Point2D.Double(0.0, 0.0), radius, angle);
+        BezierCircle circle = new BezierCircle(new Coord(0.0, 0.0), radius, angle);
         return circle.render();
     }
 
-    public String renderCircleInv(Point2D center, Double radius) {
+    public String renderCircleInv(Coord center, Double radius) {
 
         BezierCircle circle = new BezierCircle(center, radius);
         return circle.renderInv();
     }
 
-    private String renderLineHorizontal(Point2D center, Double length) {
+    private String renderLineHorizontal(Coord center, Double length) {
 
         StringBuilder path = new StringBuilder();
         path.append("M");
@@ -1402,7 +1407,7 @@ public final class SvgRenderer {
         return (100.0 + percent % 100.0) % 100.0;
     }
 
-    private Point2D getIntersection(Double ax, Double ay, Double bx, Double by, Double cx, Double cy) {
+    private Coord getIntersection(Double ax, Double ay, Double bx, Double by, Double cx, Double cy) {
 
         // Get the perpendicular bisector of (x1, y1) and (x2, y2)
         Double x1, y1, dx1, dy1;
@@ -1424,7 +1429,7 @@ public final class SvgRenderer {
                 / (dx1 * dy2 - dy1 * dx2);
         oy = (ox - x1) * dy1 / dx1 + y1;
 
-        return new Point2D.Double(ox, oy);
+        return new Coord(ox, oy);
     }
 
     private void createMapAreaPointList() {
@@ -1451,9 +1456,16 @@ public final class SvgRenderer {
                     mapAreaPointList.add(getMapAreaPoint(Az, latitudeFixedAbs, latitudeFixedInRads, scaleFix, true));
                 }
             }
+            //if (latitudeFixedAbs == 0.0) {
             for (Double Az = 90.0; Az < 270.0; Az = Az + step) {
                 mapAreaPointList.add(getMapAreaPoint(Az, latitudeAbs, latitudeInRads, scale, false));
             }
+            /*    
+             } else {
+             for (Double Az = 90.0; Az < 270.0; Az = Az + step) {                    
+             mapAreaPointList.add(getMapAreaPoint(Az, latitudeFixedAbs, latitudeFixedInRads, scale, false));
+             }                
+             }*/
 
         } else {
 
@@ -1463,14 +1475,14 @@ public final class SvgRenderer {
         }
     }
 
-    private Point2D getMapAreaPoint(Double Az, Double latitudeInDegs, Double latitudeInRads, Double mapAreaScale, Boolean useDoubleSidedSign) {
+    private Coord getMapAreaPoint(Double Az, Double latitudeInDegs, Double latitudeInRads, Double mapAreaScale, Boolean useDoubleSidedSign) {
 
         Double shift = isDoubleSided ? 6.0 : -6.0;
         Double AzInRads = Math.toRadians(Az);
         Double Dec = Math.asin(Math.cos(AzInRads) * Math.cos(latitudeInRads));
         Double RA = Math.atan2(Math.sin(AzInRads), Math.tan(latitudeInRads) * Math.sin(Dec));
 
-        Point2D.Double mapAreaPoint = new Point2D.Double();
+        Coord mapAreaPoint = new Coord();
         CoordUtil.convertWithoutCheck(Math.toDegrees(RA) / 15.0 + shift, Math.toDegrees(Dec), mapAreaPoint, latitudeInDegs, mapAreaScale);
         if (useDoubleSidedSign) {
             mapAreaPoint.setLocation(mapAreaPoint.getX(), Math.signum(latitudeFixed) * doubleSidedSign * mapAreaPoint.getY());
@@ -1480,8 +1492,6 @@ public final class SvgRenderer {
     }
 
     private void createCardinalPointList() {
-
-        Point2D pointA, pointB, pointC;
 
         Double latitudeAbs = Math.abs(latitude);
         List<String> cardinalPointLabelList = getCardinalPointLabelList();
@@ -1497,18 +1507,18 @@ public final class SvgRenderer {
 
             if (latitudeFixed == 0) {
 
-                Point2D pointRight = mapAreaPointList.get(0);
-                Point2D pointLeft = mapAreaPointList.get(1);
+                Coord pointRight = mapAreaPointList.get(0);
+                Coord pointLeft = mapAreaPointList.get(1);
                 Double x0 = pointRight.getX();
                 Double y0 = pointRight.getY();
-                Double step = pointRight.distance(pointLeft) / 4.0;
+                Double step = CoordUtil.getDistance(pointRight, pointLeft) / 4.0;
 
                 for (int i = 0; i <= 4; i++) {
 
                     Double x = x0 - i * step;
                     CardinalPoint cardinalPoint = new CardinalPoint();
-                    cardinalPoint.setTickStart(new Point2D.Double(x, y0));
-                    cardinalPoint.setTickEnd(new Point2D.Double(x, y0 + scale * 0.03));
+                    cardinalPoint.setTickStart(new Coord(x, y0));
+                    cardinalPoint.setTickEnd(new Coord(x, y0 + scale * 0.03));
                     Integer labelIndex = doubleSidedSign < 0 ? i : (i + 4) % 8;
                     cardinalPoint.setLabel(cardinalPointLabelList.get(labelIndex));
                     cardinalPointList.add(cardinalPoint);
@@ -1517,21 +1527,21 @@ public final class SvgRenderer {
             } else {
 
                 // right edge
-                Point2D pointOutsideRight = getMapAreaPoint(-10.0, latitudeFixedAbs, latitudeFixedInRads, scaleFix, true);
+                Coord pointOutsideRight = getMapAreaPoint(-10.0, latitudeFixedAbs, latitudeFixedInRads, scaleFix, true);
                 cardinalPointList.add(getCardinalPoint(pointOutsideRight, mapAreaPointList.get(0), mapAreaPointList.get(10), cardinalPointLabelList.get(0)));
 
                 for (int i = 1; i <= 3; i++) {
 
                     Integer index = i * 15;
-                    pointA = mapAreaPointList.get(index - 10);
-                    pointB = mapAreaPointList.get(index);
-                    pointC = mapAreaPointList.get(index + 10);
+                    Coord pointA = mapAreaPointList.get(index - 10);
+                    Coord pointB = mapAreaPointList.get(index);
+                    Coord pointC = mapAreaPointList.get(index + 10);
 
                     cardinalPointList.add(getCardinalPoint(pointA, pointB, pointC, cardinalPointLabelList.get(i)));
                 }
 
                 // left edge
-                Point2D pointOutsideLeft = getMapAreaPoint(100.0, latitudeFixedAbs, latitudeFixedInRads, scaleFix, true);
+                Coord pointOutsideLeft = getMapAreaPoint(100.0, latitudeFixedAbs, latitudeFixedInRads, scaleFix, true);
                 cardinalPointList.add(getCardinalPoint(mapAreaPointList.get(50), mapAreaPointList.get(60), pointOutsideLeft, cardinalPointLabelList.get(4)));
             }
 
@@ -1549,9 +1559,9 @@ public final class SvgRenderer {
                 } else {
 
                     Integer index = i * 15;
-                    pointA = mapAreaPointList.get((index - 10 + 120) % 120);
-                    pointB = mapAreaPointList.get(index);
-                    pointC = mapAreaPointList.get(index + 10);
+                    Coord pointA = mapAreaPointList.get((index - 10 + 120) % 120);
+                    Coord pointB = mapAreaPointList.get(index);
+                    Coord pointC = mapAreaPointList.get(index + 10);
 
                     cardinalPointList.add(getCardinalPoint(pointA, pointB, pointC, cardinalPointLabelList.get(i)));
                 }
@@ -1559,7 +1569,7 @@ public final class SvgRenderer {
         }
     }
 
-    private CardinalPoint getCardinalPoint(Point2D pointA, Point2D pointB, Point2D pointC, String label) {
+    private CardinalPoint getCardinalPoint(Coord pointA, Coord pointB, Coord pointC, String label) {
 
         Double ax = pointA.getX();
         Double ay = pointA.getY();
@@ -1568,8 +1578,8 @@ public final class SvgRenderer {
         Double cx = pointC.getX();
         Double cy = pointC.getY();
 
-        Point2D intersection = getIntersection(ax, ay, bx, by, cx, cy);
-        Double radius = intersection.distance(pointB);
+        Coord intersection = getIntersection(ax, ay, bx, by, cx, cy);
+        Double radius = CoordUtil.getDistance(intersection, pointB);
 
         Double sign = isDoubleSided ? doubleSidedSign * Math.signum(latitudeFixed) : 1.0;
         Double delta = -sign * Math.PI / 2.0 + Math.atan2(bx - intersection.getX(), by - intersection.getY());
@@ -1579,7 +1589,7 @@ public final class SvgRenderer {
 
         CardinalPoint cardinalPoint = new CardinalPoint();
         cardinalPoint.setTickStart(pointB);
-        cardinalPoint.setTickEnd(new Point2D.Double(dx, dy));
+        cardinalPoint.setTickEnd(new Coord(dx, dy));
         cardinalPoint.setRadius(radius);
         cardinalPoint.setStartOffset(normalizePercent(100.0 * (90.0 - Math.toDegrees(delta)) / 360.0));
         cardinalPoint.setCenter(intersection);

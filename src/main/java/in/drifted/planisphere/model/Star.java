@@ -1,8 +1,6 @@
 package in.drifted.planisphere.model;
 
-import java.io.Serializable;
-
-public final class Star implements Serializable {
+public final class Star {
 
     private final Double RA;
     private final Double Dec;

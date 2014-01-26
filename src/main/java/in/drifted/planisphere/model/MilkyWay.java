@@ -1,45 +1,43 @@
 package in.drifted.planisphere.model;
 
-import java.awt.geom.Point2D;
-import java.io.Serializable;
 import java.util.List;
 
-public final class MilkyWay implements Serializable {
+public final class MilkyWay {
 
-    private List<Point2D> darkNorth;
-    private List<Point2D> darkSouth;
-    private List<Point2D> brightNorth;
-    private List<Point2D> brightSouth;
+    private List<Coord> darkNorth;
+    private List<Coord> darkSouth;
+    private List<Coord> brightNorth;
+    private List<Coord> brightSouth;
 
-    public List<Point2D> getDarkNorth() {
+    public List<Coord> getDarkNorth() {
         return darkNorth;
     }
 
-    public void setDarkNorth(List<Point2D> darkNorth) {
+    public void setDarkNorth(List<Coord> darkNorth) {
         this.darkNorth = darkNorth;
     }
 
-    public List<Point2D> getDarkSouth() {
+    public List<Coord> getDarkSouth() {
         return darkSouth;
     }
 
-    public void setDarkSouth(List<Point2D> darkSouth) {
+    public void setDarkSouth(List<Coord> darkSouth) {
         this.darkSouth = darkSouth;
     }
 
-    public List<Point2D> getBrightNorth() {
+    public List<Coord> getBrightNorth() {
         return brightNorth;
     }
 
-    public void setBrightNorth(List<Point2D> brightNorth) {
+    public void setBrightNorth(List<Coord> brightNorth) {
         this.brightNorth = brightNorth;
     }
 
-    public List<Point2D> getBrightSouth() {
+    public List<Coord> getBrightSouth() {
         return brightSouth;
     }
 
-    public void setBrightSouth(List<Point2D> brightSouth) {
+    public void setBrightSouth(List<Coord> brightSouth) {
         this.brightSouth = brightSouth;
     }
 }
