@@ -1,6 +1,5 @@
 package in.drifted.planisphere.util;
 
-import java.io.Serializable;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
@@ -8,7 +7,7 @@ import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-public final class LocalizationUtil implements Serializable {
+public final class LocalizationUtil {
 
     private static final String LOCALE_BUNDLE = "in.drifted.planisphere.resources.localizations.messages";
     private ResourceBundle resources;

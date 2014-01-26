@@ -1,7 +1,6 @@
 package in.drifted.planisphere.renderer.svg;
 
 import in.drifted.planisphere.model.Coord;
-import in.drifted.planisphere.util.CoordUtil;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -68,47 +67,51 @@ public final class BezierCircle {
         }
     }
 
-    public String renderInv() {
+    public String getPathDataInv() {
+
+        StringBuilder pathData = new StringBuilder();
+
         Iterator<Coord> it = pointList.iterator();
-        StringBuilder result = new StringBuilder();
-        String firstPoint = CoordUtil.getCoordsChunk(it.next());
+        String firstPoint = PathUtil.getCoordsChunk(it.next());
         while (it.hasNext()) {
-            result.insert(0, CoordUtil.getCoordsChunk(it.next()));
-            result.insert(0, " ");
-            result.insert(0, CoordUtil.getCoordsChunk(it.next()));
-            result.insert(0, "C");
+            pathData.insert(0, PathUtil.getCoordsChunk(it.next()));
+            pathData.insert(0, " ");
+            pathData.insert(0, PathUtil.getCoordsChunk(it.next()));
+            pathData.insert(0, "C");
             if (it.hasNext()) {
-                result.insert(0, CoordUtil.getCoordsChunk(it.next()));
-                result.insert(0, " ");
+                pathData.insert(0, PathUtil.getCoordsChunk(it.next()));
+                pathData.insert(0, " ");
             } else {
-                result.insert(0, firstPoint);
-                result.insert(0, "M");
+                pathData.insert(0, firstPoint);
+                pathData.insert(0, "M");
             }
         }
-        result.append(" ");
-        result.append(firstPoint);
+        pathData.append(" ");
+        pathData.append(firstPoint);
 
-        return result.toString();
+        return pathData.toString();
     }
 
-    public String render() {
+    public String getPathData() {
+
+        StringBuilder pathData = new StringBuilder();
+
         Iterator<Coord> it = pointList.iterator();
-        StringBuilder result = new StringBuilder();
-        String firstPoint = CoordUtil.getCoordsChunk(it.next());
-        result.append("M");
-        result.append(firstPoint);
+        String firstPoint = PathUtil.getCoordsChunk(it.next());
+        pathData.append("M");
+        pathData.append(firstPoint);
         while (it.hasNext()) {
-            result.append("C");
-            result.append(CoordUtil.getCoordsChunk(it.next()));
-            result.append(" ");
-            result.append(CoordUtil.getCoordsChunk(it.next()));
-            result.append(" ");
+            pathData.append("C");
+            pathData.append(PathUtil.getCoordsChunk(it.next()));
+            pathData.append(" ");
+            pathData.append(PathUtil.getCoordsChunk(it.next()));
+            pathData.append(" ");
             if (it.hasNext()) {
-                result.append(CoordUtil.getCoordsChunk(it.next()));
+                pathData.append(PathUtil.getCoordsChunk(it.next()));
             } else {
-                result.append(firstPoint);
+                pathData.append(firstPoint);
             }
         }
-        return result.toString();
+        return pathData.toString();
     }
 }

@@ -12,13 +12,15 @@
     <url>http://drifted.in</url>
 
     <dependencies>
-        <!-- milky way clipping (GPC port for Java, could be replaced with the JTS Topology suite) -->
+        <!-- milky way clipper (the Java port of GPC clipper) -->
+        <!-- JTS Topology suite could be used as well -->
         <dependency>
             <groupId>math.geom2d</groupId>
             <artifactId>javaGeom</artifactId>
             <version>0.11.1</version>
-        </dependency>        
-        <!-- for processing elements as streams and CDATA as CDATA, not characters -->
+        </dependency>
+        <!-- for creating XMLStreamReader from a DOMSource -->
+        <!-- for correct detection of CDATA -->
         <dependency>
             <groupId>org.codehaus.woodstox</groupId>
             <artifactId>woodstox-core-lgpl</artifactId>
