@@ -2,16 +2,16 @@ package in.drifted.planisphere.model;
 
 public final class ConstellationName {
 
-    private String id;
-    private String abbreviation;
-    private String latin;
-    private Coord coord;
+    private final String id;
+    private final String abbreviation;
+    private final String latin;
+    private final Coord coord;
 
     public ConstellationName(String abbreviation, String latin, Coord coord) {
-        setAbbreviation(abbreviation);
-        setLatin(latin);
-        setId(generateId(latin));
-        setCoord(coord);
+        this.abbreviation = abbreviation;
+        this.latin = latin;
+        this.id = generateId(latin);
+        this.coord = coord;
     }
 
     private String generateId(String name) {
@@ -31,31 +31,15 @@ public final class ConstellationName {
         return id;
     }
 
-    private void setId(String id) {
-        this.id = id;
-    }
-
     public String getAbbreviation() {
         return this.abbreviation;
-    }
-
-    private void setAbbreviation(String abbreviation) {
-        this.abbreviation = abbreviation;
     }
 
     public Coord getCoord() {
         return this.coord;
     }
 
-    private void setCoord(Coord coord) {
-        this.coord = coord;
-    }
-
     public String getLatin() {
         return this.latin;
-    }
-
-    private void setLatin(String latin) {
-        this.latin = latin;
     }
 }
