@@ -41,7 +41,7 @@ function synchronize(evt) {
         for (var i = 0; i < objects.length; i++) {
             var currentWindow = objects[i].getSVGDocument().defaultView;
             var currentId = objects[i].getAttribute("id");
-            if ("angle" in currentWindow && currentId != "planisphere-0") {
+            if ("angle" in currentWindow && currentId !== "planisphere-0") {
                 currentWindow.angle = -angle;
                 currentWindow.wheel.setAttribute("transform", "rotate(" + (-180 * angle / Math.PI) + ")");
                 objects[i].setAttribute("style", "position:absolute; z-index:1");
