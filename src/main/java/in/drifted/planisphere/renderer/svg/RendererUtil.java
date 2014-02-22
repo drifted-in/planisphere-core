@@ -1,10 +1,13 @@
 package in.drifted.planisphere.renderer.svg;
 
 import in.drifted.planisphere.Settings;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
-import javax.xml.parsers.DocumentBuilder;
+import java.util.Map;
+import javax.xml.parsers.DocumentBuilder; 
+import javax.xml.stream.XMLEventFactory;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLInputFactory;
@@ -23,7 +26,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 public final class RendererUtil {
-    
+
     public static void renderPath(XMLStreamWriter writer, String pathData, String id, String style) throws XMLStreamException {
         writer.writeStartElement("path");
         if (id != null) {
@@ -49,7 +52,7 @@ public final class RendererUtil {
         writer.writeEndElement();
         writer.writeEndElement();
     }
-        
+
     public static void renderDefsInstance(XMLStreamWriter writer, String id, Double x, Double y, String transform, String style) throws XMLStreamException {
         writer.writeStartElement("use");
         if (x != 0) {
@@ -70,10 +73,10 @@ public final class RendererUtil {
 
     public static void renderSymbol(XMLInputFactory inputFactory, XMLStreamWriter writer, String id) throws XMLStreamException, IOException {
         try (InputStream is = RendererUtil.class.getResourceAsStream(Settings.RESOURCE_BASE_PATH + "templates/resources/symbols/" + id + ".svg")) {
-            writeStreamContent(inputFactory, writer, is);
+            writeStreamContent(inputFactory, writer, is, null);
         }
     }
-    
+
     public static void writeAttributes(XMLStreamWriter writer, Iterator attributes) throws XMLStreamException {
         while (attributes.hasNext()) {
             Attribute attr = (Attribute) attributes.next();
@@ -98,7 +101,8 @@ public final class RendererUtil {
     public static void writeGroupEnd(XMLStreamWriter writer) throws XMLStreamException {
         writer.writeEndElement();
     }
-    
+
+    @Deprecated
     public static Element getParamElement(DocumentBuilder documentBuilder, XMLOutputFactory outputFactory, XMLEventReader parser, XMLEvent event) throws XMLStreamException {
         Element paramElement = documentBuilder.newDocument().createElement("g");
         XMLEventWriter xmlWriter = outputFactory.createXMLEventWriter(new DOMResult(paramElement));
@@ -116,7 +120,33 @@ public final class RendererUtil {
         }
         return paramElement;
     }
-    
+
+    public static byte[] getParamStream(XMLOutputFactory outputFactory, XMLEventFactory eventFactory, XMLEventReader parser, XMLEvent paramEvent) throws XMLStreamException, IOException {
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        XMLEventWriter writer = outputFactory.createXMLEventWriter(outputStream);
+
+        // this skips all the attributes of the original <g> element to avoid ID duplications
+        writer.add(eventFactory.createStartElement("", null, "g"));
+
+        Integer level = 1;
+        while (!(parser.hasNext() && paramEvent.isEndElement() && level == 0)) {
+            paramEvent = parser.nextEvent();
+            writer.add(paramEvent);
+            if (paramEvent.isStartElement()) {
+                level++;
+            }
+            if (paramEvent.isEndElement()) {
+                level--;
+            }
+        }
+
+        writer.flush();
+        writer.close();
+
+        return outputStream.toByteArray();
+    }
+
     public static Element replaceTextElementContent(Element element, String originalText, String newText) {
         Element resultElement = (Element) element.cloneNode(true);
         NodeList textNodes = resultElement.getElementsByTagName("text");
@@ -127,7 +157,8 @@ public final class RendererUtil {
         }
         return resultElement;
     }
-    
+
+    @Deprecated
     public static void writeElementContent(XMLInputFactory inputFactory, XMLStreamWriter writer, Element element) throws XMLStreamException {
 
         //http://stackoverflow.com/questions/7257508/convert-java-w3c-document-to-xmlstreamreader
@@ -158,7 +189,7 @@ public final class RendererUtil {
         parser.close();
     }
 
-    private static void writeStreamContent(XMLInputFactory inputFactory, XMLStreamWriter writer, InputStream content) throws XMLStreamException {
+    public static void writeStreamContent(XMLInputFactory inputFactory, XMLStreamWriter writer, InputStream content, Map<String, String> replacementMap) throws XMLStreamException {
 
         XMLEventReader parser = inputFactory.createXMLEventReader(content);
         StartElement startElement;
@@ -176,18 +207,20 @@ public final class RendererUtil {
                     break;
                 case XMLStreamConstants.CHARACTERS:
                     characters = (Characters) event;
-                    writer.writeCharacters(characters.getData());
+                    String text = characters.getData().trim();
+                    if (!text.isEmpty()) {
+                        if (replacementMap != null && !replacementMap.isEmpty()) {
+                            for (Map.Entry<String, String> entry : replacementMap.entrySet()) {
+                                text = text.replace(entry.getKey(), entry.getValue());
+                            }
+                        }
+                        writer.writeCharacters(text);
+                    }
                     break;
-                /*
-                 case XMLStreamConstants.CDATA:
-                 characters = (Characters) event;
-                 writer.writeCData(characters.getData());
-                 break;
-                 */
                 default:
             }
         }
         parser.close();
     }
-    
+
 }

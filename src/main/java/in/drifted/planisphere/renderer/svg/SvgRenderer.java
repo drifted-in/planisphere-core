@@ -14,6 +14,7 @@ import in.drifted.planisphere.util.CacheHandler;
 import in.drifted.planisphere.util.CoordUtil;
 import in.drifted.planisphere.util.FontManager;
 import in.drifted.planisphere.util.LocalizationUtil;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -30,9 +31,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import javax.xml.namespace.QName;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.stream.XMLEventFactory;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
@@ -44,14 +43,13 @@ import javax.xml.stream.events.Characters;
 import javax.xml.stream.events.ProcessingInstruction;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
-import org.w3c.dom.Element;
 
 public final class SvgRenderer {
 
     private XMLInputFactory inputFactory;
     private XMLOutputFactory outputFactory;
+    private XMLEventFactory eventFactory;
     private XMLStreamWriter writer;
-    private DocumentBuilder documentBuilder;
     private CacheHandler cacheHandler;
     private LocalizationUtil localizationUtil;
     private final List<Coord> mapAreaPointList = new LinkedList<>();
@@ -73,11 +71,7 @@ public final class SvgRenderer {
         inputFactory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
         inputFactory.setProperty(XMLInputFactory.IS_VALIDATING, false);
         outputFactory = XMLOutputFactory.newInstance();
-        try {
-            documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-        } catch (ParserConfigurationException e) {
-            // LOGGER
-        }
+        eventFactory = XMLEventFactory.newInstance();
         cacheHandler = CacheHandler.getInstance();
     }
 
@@ -103,7 +97,7 @@ public final class SvgRenderer {
         FontManager fontManager = new FontManager(locale);
         XMLEventReader parser = inputFactory.createXMLEventReader(input);
 
-        Map<String, Element> paramMap = new HashMap<>();
+        Map<String, byte[]> paramMap = new HashMap<>();
 
         Boolean isUsed = true;
         StartElement startElement;
@@ -134,7 +128,7 @@ public final class SvgRenderer {
                             case "dialHoursMarkerMajorDouble":
                             case "dialHoursMarkerMinorSingle":
                             case "dialHoursMarkerMinorDouble":
-                                paramMap.put(id, RendererUtil.getParamElement(documentBuilder, outputFactory, parser, event));
+                                paramMap.put(id, RendererUtil.getParamStream(outputFactory, eventFactory, parser, event));
                                 break;
                             case "dialMonthsLabelMajorPath":
                                 renderDefsDialMonthsLabelMajorPath();
@@ -142,13 +136,6 @@ public final class SvgRenderer {
                             case "dialMonthsLabelMinorPath":
                                 renderDefsDialMonthsLabelMinorPath();
                                 break;
-                            /*
-                             case "cardinalPointLabelPaths":
-                             writeGroupStart("cardinalPointLabelPaths");
-                             renderDefsCardinalPointLabelPaths();
-                             writeGroupEnd();
-                             break;
-                             */
                             case "coordLabelPaths":
                                 RendererUtil.writeGroupStart(writer, "coordLabelPaths");
                                 renderDefsCoordLabelPaths();
@@ -261,6 +248,10 @@ public final class SvgRenderer {
                         writer.writeStartElement(elementName);
                         RendererUtil.writeNamespaces(writer, startElement.getNamespaces());
                         RendererUtil.writeAttributes(writer, startElement.getAttributes());
+                        String direction = localizationUtil.getValue("writingDirection");
+                        if (!direction.equals("writingDirection")) {
+                            writer.writeAttribute("direction", direction);
+                        }
                     } else {
                         writer.writeStartElement(elementName);
                         RendererUtil.writeAttributes(writer, startElement.getAttributes());
@@ -317,7 +308,7 @@ public final class SvgRenderer {
         parser.close();
         writer.writeEndDocument();
     }
-    
+
     private void createMapAreaPointList() {
 
         mapAreaPointList.clear();
@@ -517,7 +508,7 @@ public final class SvgRenderer {
 
         return cardinalPointLabelList;
     }
-        
+
     private void renderDefsMapArea() throws XMLStreamException {
         StringBuilder path = new StringBuilder();
         Iterator iter = mapAreaPointList.iterator();
@@ -529,8 +520,8 @@ public final class SvgRenderer {
         }
         path.append("z");
         RendererUtil.renderPath(writer, path.toString(), "mapArea", null);
-    }  
-    
+    }
+
     private void renderDefsMonthsArea() throws XMLStreamException {
 
         Double angle = Math.toRadians(30d);
@@ -589,7 +580,7 @@ public final class SvgRenderer {
 
         RendererUtil.renderPath(writer, pathData.toString(), "monthsArea", "null");
     }
-    
+
     private void renderDefsDialMonthsLabelMajorPath() throws XMLStreamException {
         String pathData = isDoubleSided ? PathUtil.getCirclePathDataInv(new Coord(0.0, 0.0), 0.98 * scaleFixed) : PathUtil.getCirclePathData(0.95 * scaleFixed);
         RendererUtil.renderPath(writer, pathData, "dialMonthsLabelMajorPath", null);
@@ -599,7 +590,7 @@ public final class SvgRenderer {
         String pathData = isDoubleSided ? PathUtil.getCirclePathDataInv(new Coord(0.0, 0.0), 0.935 * scaleFixed) : PathUtil.getCirclePathData(0.92 * scaleFixed);
         RendererUtil.renderPath(writer, pathData, "dialMonthsLabelMinorPath", null);
     }
-    
+
     private void renderDefsCoordLabelPaths() throws XMLStreamException {
 
         for (Double Dec = 60.0; Dec >= Math.abs(latitude) - 90.0; Dec = Dec - 30.0) {
@@ -630,7 +621,7 @@ public final class SvgRenderer {
         RendererUtil.renderPath(writer, path.toString(), "coordLabelPath00", null);
 
     }
-    
+
     private void renderMapBackground() throws XMLStreamException {
         RendererUtil.renderPath(writer, PathUtil.getCirclePathData(1.0 * scaleFixed), null, "mapBackground");
     }
@@ -706,7 +697,7 @@ public final class SvgRenderer {
         }
         return monthNames;
     }
-    
+
     private void renderDialMonthsTicks() throws XMLStreamException {
 
         Integer[] daysInMonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
@@ -751,7 +742,7 @@ public final class SvgRenderer {
             RendererUtil.renderPath(writer, pathData.toString(), null, "dialMonthsTick");
         }
     }
-    
+
     private String getDialMonthsTickPathData(Double angle, Double radius) {
         return "M" + PathUtil.format(Math.cos(angle) * 0.89 * scaleFixed)
                 + " " + PathUtil.format(-Math.sin(angle) * 0.89 * scaleFixed)
@@ -1025,7 +1016,7 @@ public final class SvgRenderer {
             RendererUtil.renderPath(writer, entry.getValue().toString(), null, "star level" + entry.getKey());
         }
     }
-    
+
     private void renderMapAreaBorder() throws XMLStreamException {
         RendererUtil.renderDefsInstance(writer, "mapArea", 0d, 0d, null, "mapAreaBorder");
     }
@@ -1118,10 +1109,10 @@ public final class SvgRenderer {
         }
     }
 
-    private void renderDialHours(Map<String, Element> paramMap, Boolean isDayLightSavingTimeScale) throws XMLStreamException {
+    private void renderDialHours(Map<String, byte[]> paramMap, Boolean isDayLightSavingTimeScale) throws XMLStreamException {
 
-        Element markMajor = isDoubleSided ? paramMap.get("dialHoursMarkerMajorDouble") : paramMap.get("dialHoursMarkerMajorSingle");
-        Element markMinor = isDoubleSided ? paramMap.get("dialHoursMarkerMinorDouble") : paramMap.get("dialHoursMarkerMinorSingle");
+        byte[] markMajor = isDoubleSided ? paramMap.get("dialHoursMarkerMajorDouble") : paramMap.get("dialHoursMarkerMajorSingle");
+        byte[] markMinor = isDoubleSided ? paramMap.get("dialHoursMarkerMinorDouble") : paramMap.get("dialHoursMarkerMinorSingle");
 
         Integer rangeMajor = 8;
         Integer rangeMinor = 7;
@@ -1146,7 +1137,7 @@ public final class SvgRenderer {
             if (hour < 0) {
                 hour = hour + 24;
             }
-            renderDialHoursMarker(RendererUtil.replaceTextElementContent(markMajor, "#", hour.toString()), i * 15.0 + shiftAngle, "dialHoursMarkerMajor");
+            renderDialHoursMarker(markMajor, hour.toString(), i * 15.0 + shiftAngle, "dialHoursMarkerMajor");
         }
 
         // summer time labels
@@ -1159,7 +1150,7 @@ public final class SvgRenderer {
                 if (hour > 23) {
                     hour = hour - 24;
                 }
-                renderDialHoursMarker(RendererUtil.replaceTextElementContent(markMinor, "#", hour.toString()), i * 15.0 + shiftAngle, "dialHoursMarkerMinor");
+                renderDialHoursMarker(markMinor, hour.toString(), i * 15.0 + shiftAngle, "dialHoursMarkerMinor");
             }
         }
 
@@ -1169,15 +1160,17 @@ public final class SvgRenderer {
         }
     }
 
-    private void renderDialHoursMarker(Element mark, Double angle, String style) throws XMLStreamException {
+    private void renderDialHoursMarker(byte[] mark, String replacement, Double angle, String style) throws XMLStreamException {
+        Map<String, String> replacementMap = new HashMap<>();
+        replacementMap.put("#", replacement);
         String strTranslate = PathUtil.format(0.9 * scaleFixed);
         writer.writeStartElement("g");
         writer.writeAttribute("class", style);
         writer.writeAttribute("transform", "translate(0,-" + strTranslate + ") rotate(" + angle + ",0," + strTranslate + ")");
-        RendererUtil.writeElementContent(inputFactory, writer, mark);
+        RendererUtil.writeStreamContent(inputFactory, writer, new ByteArrayInputStream(mark), replacementMap);
         writer.writeEndElement();
     }
-    
+
     private void renderMonthsAreaBorder() throws XMLStreamException {
         RendererUtil.renderDefsInstance(writer, "monthsArea", 0d, 0d, null, "monthsAreaBorder");
     }
@@ -1323,7 +1316,7 @@ public final class SvgRenderer {
 
         RendererUtil.renderPath(writer, pathData + PathUtil.getPathData(coordList, true), "spacer", null);
     }
-    
+
     private void renderPinMark(Integer mode) throws XMLStreamException {
         StringBuilder pathData = new StringBuilder();
         Double size = 0.02 * scaleFixed;
@@ -1372,8 +1365,8 @@ public final class SvgRenderer {
         Double radius = CoordUtil.getDistance(coord, new Coord(0.0, 0.0));
         Double angle = 90.0 + Math.toDegrees(Math.atan2(coord.getY(), coord.getX()));
         return PathUtil.getCirclePathData(new Coord(0.0, 0.0), radius, angle);
-    }    
-    
+    }
+
     private Double getNormalizedPercent(Double percent) {
         return (100.0 + percent % 100.0) % 100.0;
     }
