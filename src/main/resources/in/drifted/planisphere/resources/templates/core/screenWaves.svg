@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1024px" height="768px" viewBox="0 0 1024 768" enable-background="new 0 0 1024 768" xml:space="preserve" onload="startup(evt)">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+     x="0px" y="0px" width="1024px" height="768px" viewBox="0 0 1024 768" enable-background="new 0 0 1024 768" xml:space="preserve" onload="startup(evt)">
     <?mouseEventsScript?>
     <defs>
         <style type="text/css">
             <![CDATA[
-            @font-face {font-family: "Droid Sans"; src: url(${screen.droid-sans});}
+            @font-face {font-family: "${screen.droid-sans.name}"; src: url(${screen.droid-sans});}
             svg {
                 margin: auto;
-                background: #4d4d4d; 
-                font-family: Droid Sans;
+                background: #4d4d4d;
+                font-family: "${screen.droid-sans.name}";
                 -moz-user-select: none;
                 -webkit-user-select: none;
                 -ms-user-select: none;
@@ -21,22 +22,26 @@
                 font-size: 12px;
                 fill: silver;
             }
+            .invisible {
+                fill: none;
+                stroke: none;
+            }
             .mapBackground {
-                fill: #003e61; 
-            } 
+                fill: #003e61;
+            }
             .maskBlack {
                 fill: black;
-            } 
+            }
             .maskWhite {
                 fill: white;
-            } 
+            }
             .dummyRectBlue {
                 fill: #4d4d4d;
             }
             .eventsTarget {
                 fill: white;
                 opacity: 0;
-            } 
+            }
             .dialHoursMarkerMajor path {
                 fill: #FA9600;
             }
@@ -55,11 +60,11 @@
             .dialHoursMarkerHalf {
                 fill: #FFD43F;
             }
-            .monthsViewBorder {
-                fill: none; 
-                stroke: green; 
+            .monthsAreaBorder {
+                fill: none;
+                stroke: green;
                 stroke-width: 2;
-            } 
+            }
             .dialMonthsTick {
                 fill: none;
                 stroke: white;
@@ -69,12 +74,12 @@
                 font-size: 18px;
                 fill: white;
                 text-anchor: middle;
-            } 
+            }
             .dialMonthsLabelMinor {
                 font-size: 10px;
                 fill: white;
                 text-anchor: middle;
-            } 
+            }
             .cardinalPointLabel {
                 font-size: 18px;
                 fill: orange;
@@ -82,7 +87,7 @@
                 text-anchor: middle;
             }
             .cardinalPointTick,
-            .mapViewBorder {
+            .mapAreaBorder {
                 fill: none;
                 stroke: green;
                 stroke-width: 3;
@@ -107,24 +112,24 @@
                 stroke: none;
             }
             .constellationBoundaries {
-                fill: none;   
-                stroke-width: 1;   
-                stroke: grey;   
+                fill: none;
+                stroke-width: 1;
+                stroke: grey;
                 stroke-dasharray: 5 3;
             }
-            .constellationLines {   
-                fill: none;   
-                stroke-width: 1.2;   
+            .constellationLines {
+                fill: none;
+                stroke-width: 1.2;
                 stroke: #9a9a9a;
             }
-            .ecliptic {   
-                fill: none;   
+            .ecliptic {
+                fill: none;
                 stroke-width: 0.7;
                 stroke: #2abacf;
             }
             .coords {
-                fill: none;   
-                stroke-width: 0.7;   
+                fill: none;
+                stroke-width: 0.7;
                 stroke: grey;
             }
             .milkyWayBright {
@@ -135,32 +140,32 @@
                 fill: #00466b;
                 stroke: none;
             }
-            .star {   
-                stroke-linecap: round;   
+            .star {
+                stroke-linecap: round;
                 stroke: yellow;
             }
-            .level0 {   
+            .level0 {
                 stroke-width: 8;
             }
-            .level1 {   
+            .level1 {
                 stroke-width: 7;
             }
-            .level2 {   
+            .level2 {
                 stroke-width: 6;
             }
-            .level3 {   
+            .level3 {
                 stroke-width: 5;
             }
-            .level4 {   
+            .level4 {
                 stroke-width: 4;
             }
-            .level5 {   
+            .level5 {
                 stroke-width: 3;
             }
-            .level6 {   
+            .level6 {
                 stroke-width: 2;
             }
-            .level7 {   
+            .level7 {
                 stroke-width: 1;
             }
 
@@ -169,11 +174,11 @@
             .color1a,
             #shades_c1,
             #stars_large_c1,
-            #stars_medium_c1 {    	  	
+            #stars_medium_c1 {
                 fill: #DD4500;
             }
             #lines_c1 {
-                stroke: #FF4A69; 
+                stroke: #FF4A69;
             }
             .color1b,
             #circles_c1,
@@ -199,7 +204,7 @@
             .color1a,
             #shades_c1,
             #stars_large_c1,
-            #stars_medium_c1 {    	  	
+            #stars_medium_c1 {
                 fill: #880045;
             }
             #lines_c1 {
@@ -241,7 +246,7 @@
             #stars_large_c1,
             #stars_large_c2,
             #stars_medium_c1,
-            #stars_medium_c2 {    	
+            #stars_medium_c2 {
                 fill-opacity: 0.75;
             }
 
@@ -249,77 +254,98 @@
             #commandButtons {
                 cursor: pointer;
             }
+            #buttonFlip:hover .gradientUp,
             #buttonMoreInfo:hover .gradientUp,
             #buttonSettings:hover .gradientUp,
             #buttonExport:hover .gradientUp {
                 stop-color: #922c26;
             }
+            #buttonFlip:hover .buttonBorder,
             #buttonMoreInfo:hover .buttonBorder,
             #buttonSettings:hover .buttonBorder,
             #buttonExport:hover .buttonBorder {
                 fill: #922c26;
             }
+            #buttonFlip:hover .gradientDown,
             #buttonMoreInfo:hover .gradientDown,
             #buttonSettings:hover .gradientDown,
             #buttonExport:hover .gradientDown {
                 stop-color: #ff6561;
             }
+            #buttonFlip:hover .reflection,
             #buttonMoreInfo:hover .reflection,
             #buttonSettings:hover .reflection,
             #buttonExport:hover .reflection {
                 fill: #ff6a66;
             }
+            #buttonFlip .gradientUp,
             #buttonMoreInfo .gradientUp,
             #buttonSettings .gradientUp,
             #buttonExport .gradientUp {
                 stop-color: #641e15;
             }
+            #buttonFlip .buttonBorder,
             #buttonMoreInfo .buttonBorder,
             #buttonSettings .buttonBorder,
             #buttonExport .buttonBorder {
                 fill: #641e15;
             }
+            #buttonFlip .gradientDown,
             #buttonMoreInfo .gradientDown,
             #buttonSettings .gradientDown,
             #buttonExport .gradientDown {
                 stop-color: #9f3026;
             }
+            #buttonFlip .reflection,
             #buttonMoreInfo .reflection,
             #buttonSettings .reflection,
             #buttonExport .reflection {
                 fill: #c83e05;
             }
+            .arrowBottom,
             .moreInfo,
             .gearLarge,
             .planisphere {
                 fill: #FA9600;
             }
+            .arrowTop,
             .gearSmall,
             .scissors {
                 fill: #FF4A69;
             }
-            ]]></style>
+            ]]>
+        </style>
         <path id="cursorPreloader" d="M0 0"/>
         <rect id="fullArea" x="0" y="0" width="1024.0" height="768.0"/>
-        <path id="mapView" d=""/>
-        <path id="monthsView" d=""/>
+        <path id="mapArea" d=""/>
+        <path id="monthsArea" d=""/>
         <path id="dialMonthsLabelMajorPath" d=""/>
         <path id="dialMonthsLabelMinorPath" d=""/>
-        <g id="dialHoursMarkerMajor" class="dialHoursMarkerMajor">
+        <g id="dialHoursMarkerMajorSingle" class="dialHoursMarkerMajor">
             <path d="M0 0L-22.17 38.4H22.17Z" stroke="none"/>
             <text y="30" x="0">#</text>
         </g>
-        <g id="dialHoursMarkerMinor" class="dialHoursMarkerMinor">
+        <g id="dialHoursMarkerMajorDouble" class="dialHoursMarkerMajor">
+            <path d="M0 0L-22.17 38.4H22.17Z" stroke="none"/>
+            <g transform="rotate(180)">
+                <text y="-20" x="0">#</text>
+            </g>
+        </g>
+        <g id="dialHoursMarkerMinorSingle" class="dialHoursMarkerMinor">
             <text y="56" x="0">#</text>
+        </g>
+        <g id="dialHoursMarkerMinorDouble" class="dialHoursMarkerMinor">
+            <g transform="rotate(180)">
+                <text y="-45" x="0">#</text>
+            </g>    
         </g>
         <g id="dialHoursMarkerHalf" class="dialHoursMarkerHalf">
             <path d="M0 0L-4.434 7.68H4.434Z" stroke="none"/>
-        </g>			
-        <g id="cardinalPointLabelPaths"/>
+        </g>
         <g id="coordLabelPaths"/>
         <mask id="maskWheel">
-            <use xlink:href="#mapView" class="maskWhite"/>
-            <use xlink:href="#monthsView" class="maskWhite"/>
+            <use xlink:href="#mapArea" class="maskWhite"/>
+            <use xlink:href="#monthsArea" class="maskWhite"/>
         </mask>
         <polygon id="star_twinkle1" points="2,2 0,30 -2,2 -30,0 -2,-2 0,-30 2,-2 30,0 ">
             <animateTransform attributeName="transform" dur="2.9s" type="scale" values="1.8;0.6;1.8" repeatCount="indefinite"/>
@@ -673,41 +699,37 @@
             <g id="wheel"/>
         </g>
         <g id="mouseAreas">
-            <g id="passive" 
-                transform="translate(-512, -384)"
-                onmousemove="wheelMouseMove(evt)" 
-                onmouseup="wheelMouseUp(evt)">
+            <g id="passive" transform="translate(-512, -384)" onmousemove="wheelMouseMove(evt)" onmouseup="wheelMouseUp(evt)">
                 <use xlink:href="#fullArea" class="eventsTarget"/>
             </g>
-            <g id="active" 
-                style="cursor: url(../openhand.cur), pointer;"
-                onmousedown="wheelMouseDown(evt)" 
-                onmousemove="wheelMouseMove(evt)" 
-                onmouseup="wheelMouseUp(evt)">
-                <use xlink:href="#mapView" class="eventsTarget"/>
-                <use xlink:href="#monthsView" class="eventsTarget"/>
+            <g id="active" style="cursor: url(../openhand.cur), pointer;" onmousedown="wheelMouseDown(evt)" onmousemove="wheelMouseMove(evt)" onmouseup="wheelMouseUp(evt)">
+                <use xlink:href="#mapArea" class="eventsTarget"/>
+                <use xlink:href="#monthsArea" class="eventsTarget"/>
             </g>
         </g>
         <g id="frontGraphics">
             <g id="scales"/>
-            <g id="monthsViewBorder"/>
-            <g id="mapViewBorder"/>
+            <g id="monthsAreaBorder"/>
+            <g id="mapAreaBorder"/>
         </g>
     </g>
     <g id="commandButtons">
-        <g transform="translate(785, 0)">
+        <g transform="translate(715, 0)" onclick="synchronize(evt);">
+            <g id="buttonFlip"/>
+        </g>
+        <g transform="translate(785, 0)" onclick="top.settingsDialog.show();">
+            <g id="buttonSettings"/>
+        </g>
+        <g transform="translate(855, 0)" onclick="top.document.getElementById('exportHTML').click();">
+            <g id="buttonExport"/>
+        </g>
+        <g transform="translate(925, 0)">
             <a xlink:href="http://drifted.in/planisphere/" target="_blank">
                 <g id="buttonMoreInfo"/>
             </a>
         </g>
-        <g transform="translate(855, 0)" onclick="top.settingsDialog.show();">
-            <g id="buttonSettings"/>
-        </g>
-        <g transform="translate(925, 0)" onclick="top.document.getElementById('exportHTML').click();">
-            <g id="buttonExport"/>
-        </g>
     </g>
-    <g id="designer" transform="translate(10, 755)">
+    <g id="designer" transform="translate(30, 760)">
         <text>Design: © Jan Tošovský, 2011</text>
     </g>
 <!--

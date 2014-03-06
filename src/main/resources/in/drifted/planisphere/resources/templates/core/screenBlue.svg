@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1024px" height="768px" viewBox="521.317 233.188 1024 768" enable-background="new 521.317 233.188 1024 768" xml:space="preserve" onload="startup(evt)">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+     x="0px" y="0px" width="1024px" height="768px" viewBox="521.317 233.188 1024 768" enable-background="new 521.317 233.188 1024 768" xml:space="preserve" onload="startup(evt)">
     <?mouseEventsScript?>
     <defs>
         <style type="text/css">
             <![CDATA[
-            @font-face {font-family: "Droid Sans"; src: url(${screen.droid-sans});}
+            @font-face {font-family: "${screen.droid-sans.name}"; src: url(${screen.droid-sans});}
             svg {
                 margin: auto;
-                background: #4d4d4d; 
-                font-family: Droid Sans;
+                background: #4d4d4d;
+                font-family: "${screen.droid-sans.name}";
                 -moz-user-select: none;
                 -webkit-user-select: none;
-                -ms-user-select: none;                
+                -ms-user-select: none;
             }
             #cursorPreloader {
                 cursor: url(../closedhand.cur), crosshair;
@@ -26,21 +27,21 @@
                 stroke: none;
             }
             .mapBackground {
-                fill: #003e61; 
-            } 
+                fill: #003e61;
+            }
             .maskBlack {
                 fill: black;
-            } 
+            }
             .maskWhite {
                 fill: white;
-            } 
+            }
             .dummyRectBlue {
                 fill: #4d4d4d;
             }
             .eventsTarget {
                 fill: white;
                 opacity: 0;
-            } 
+            }
             .dialHoursMarkerMajor path {
                 fill: #FA9600;
             }
@@ -60,10 +61,10 @@
                 fill: #FFD43F;
             }
             .monthsAreaBorder {
-                fill: none; 
-                stroke: green; 
+                fill: none;
+                stroke: green;
                 stroke-width: 2;
-            } 
+            }
             .dialMonthsTick {
                 fill: none;
                 stroke: white;
@@ -73,12 +74,12 @@
                 font-size: 18px;
                 fill: white;
                 text-anchor: middle;
-            } 
+            }
             .dialMonthsLabelMinor {
                 font-size: 10px;
                 fill: white;
                 text-anchor: middle;
-            } 
+            }
             .cardinalPointLabel {
                 font-size: 18px;
                 fill: orange;
@@ -111,24 +112,24 @@
                 stroke: none;
             }
             .constellationBoundaries {
-                fill: none;   
-                stroke-width: 1;   
-                stroke: grey;   
+                fill: none;
+                stroke-width: 1;
+                stroke: grey;
                 stroke-dasharray: 5 3;
             }
-            .constellationLines {   
-                fill: none;   
-                stroke-width: 1.2;   
+            .constellationLines {
+                fill: none;
+                stroke-width: 1.2;
                 stroke: #9a9a9a;
             }
-            .ecliptic {   
-                fill: none;   
+            .ecliptic {
+                fill: none;
                 stroke-width: 0.7;
                 stroke: #2abacf;
             }
             .coords {
-                fill: none;   
-                stroke-width: 0.7;   
+                fill: none;
+                stroke-width: 0.7;
                 stroke: grey;
             }
             .milkyWayBright {
@@ -139,39 +140,40 @@
                 fill: #00466b;
                 stroke: none;
             }
-            .star {   
-                stroke-linecap: round;   
+            .star {
+                stroke-linecap: round;
                 stroke: yellow;
             }
-            .level0 {   
+            .level0 {
                 stroke-width: 8;
             }
-            .level1 {   
+            .level1 {
                 stroke-width: 7;
             }
-            .level2 {   
+            .level2 {
                 stroke-width: 6;
             }
-            .level3 {   
+            .level3 {
                 stroke-width: 5;
             }
-            .level4 {   
+            .level4 {
                 stroke-width: 4;
             }
-            .level5 {   
+            .level5 {
                 stroke-width: 3;
             }
-            .level6 {   
+            .level6 {
                 stroke-width: 2;
             }
-            .level7 {   
+            .level7 {
                 stroke-width: 1;
             }
+
             /* buttons */
             #commandButtons {
                 cursor: pointer;
             }
-            #buttonFlip:hover .gradientUp,            
+            #buttonFlip:hover .gradientUp,
             #buttonMoreInfo:hover .gradientUp,
             #buttonSettings:hover .gradientUp,
             #buttonExport:hover .gradientUp {

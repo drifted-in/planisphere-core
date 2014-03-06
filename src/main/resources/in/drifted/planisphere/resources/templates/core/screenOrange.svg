@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1"
-	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-	 x="0px" y="0px" width="1024px" height="768px" viewBox="594.2 1135.6 1024 768" enable-background="new 594.2 1135.6 1024 768"
-	 xml:space="preserve" onload="startup(evt)">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     x="0px" y="0px" width="1024px" height="768px" viewBox="594.2 1135.6 1024 768" enable-background="new 594.2 1135.6 1024 768" xml:space="preserve" onload="startup(evt)">
     <?mouseEventsScript?>
     <defs>
         <style type="text/css">
             <![CDATA[
-            @font-face {font-family: "Droid Sans"; src: url(${screen.droid-sans});}
+            @font-face {font-family: "${screen.droid-sans.name}"; src: url(${screen.droid-sans});}
             svg {
                 margin: auto;
                 background: #4d4d4d;
-                font-family: Droid Sans;
+                font-family: "${screen.droid-sans.name}";
                 -moz-user-select: none;
                 -webkit-user-select: none;
-                -ms-user-select: none;                
+                -ms-user-select: none;
             }
             #cursorPreloader {
                 cursor: url(../closedhand.cur), crosshair;
@@ -23,6 +21,10 @@
             #designer {
                 font-size: 12px;
                 fill: #DD4500;
+            }
+            .invisible {
+                fill: none;
+                stroke: none;
             }
             .mapBackground {
                 fill: #003e61;
@@ -58,7 +60,7 @@
             .dialHoursMarkerHalf {
                 fill: #FFD43F;
             }
-            .monthsViewBorder {
+            .monthsAreaBorder {
                 fill: none;
                 stroke: green;
                 stroke-width: 2;
@@ -85,7 +87,7 @@
                 text-anchor: middle;
             }
             .cardinalPointTick,
-            .mapViewBorder {
+            .mapAreaBorder {
                 fill: none;
                 stroke: green;
                 stroke-width: 3;
@@ -171,51 +173,61 @@
             #commandButtons {
                 cursor: pointer;
             }
+            #buttonFlip:hover .gradientUp,
             #buttonMoreInfo:hover .gradientUp,
             #buttonSettings:hover .gradientUp,
             #buttonExport:hover .gradientUp {
                 stop-color: #922c26;
             }
+            #buttonFlip:hover .buttonBorder,
             #buttonMoreInfo:hover .buttonBorder,
             #buttonSettings:hover .buttonBorder,
             #buttonExport:hover .buttonBorder {
                 fill: #922c26;
             }
+            #buttonFlip:hover .gradientDown,
             #buttonMoreInfo:hover .gradientDown,
             #buttonSettings:hover .gradientDown,
             #buttonExport:hover .gradientDown {
                 stop-color: #ff6561;
             }
+            #buttonFlip:hover .reflection,
             #buttonMoreInfo:hover .reflection,
             #buttonSettings:hover .reflection,
             #buttonExport:hover .reflection {
                 fill: #ff6a66;
             }
+            #buttonFlip .gradientUp,
             #buttonMoreInfo .gradientUp,
             #buttonSettings .gradientUp,
             #buttonExport .gradientUp {
                 stop-color: green;
             }
+            #buttonFlip .buttonBorder,
             #buttonMoreInfo .buttonBorder,
             #buttonSettings .buttonBorder,
             #buttonExport .buttonBorder {
                 fill: black;
             }
+            #buttonFlip .gradientDown,
             #buttonMoreInfo .gradientDown,
             #buttonSettings .gradientDown,
             #buttonExport .gradientDown {
                 stop-color: #6d491b;
             }
+            #buttonFlip .reflection,
             #buttonMoreInfo .reflection,
             #buttonSettings .reflection,
             #buttonExport .reflection {
                 fill: #6e771d;
             }
-            .moreInfo,            
+            .arrowBottom,
+            .moreInfo,
             .gearLarge,
             .planisphere {
                 fill: #FA9600;
             }
+            .arrowTop,
             .gearSmall,
             .scissors {
                 fill: #DD4500;
@@ -224,26 +236,36 @@
         </style>
         <path id="cursorPreloader" d="M0 0"/>
         <rect id="fullArea" x="0" y="0" width="1024.0" height="768.0"/>
-        <path id="mapView" d=""/>
-        <path id="monthsView" d=""/>
+        <path id="mapArea" d=""/>
+        <path id="monthsArea" d=""/>
         <path id="dialMonthsLabelMajorPath" d=""/>
         <path id="dialMonthsLabelMinorPath" d=""/>
-        <g id="dialHoursMarkerMajor" class="dialHoursMarkerMajor">
+        <g id="dialHoursMarkerMajorSingle" class="dialHoursMarkerMajor">
             <path d="M0 0L-22.17 38.4H22.17Z" stroke="none"/>
             <text y="30" x="0">#</text>
         </g>
-        <g id="dialHoursMarkerMinor" class="dialHoursMarkerMinor">
+        <g id="dialHoursMarkerMajorDouble" class="dialHoursMarkerMajor">
+            <path d="M0 0L-22.17 38.4H22.17Z" stroke="none"/>
+            <g transform="rotate(180)">
+                <text y="-20" x="0">#</text>
+            </g>
+        </g>
+        <g id="dialHoursMarkerMinorSingle" class="dialHoursMarkerMinor">
             <text y="56" x="0">#</text>
+        </g>
+        <g id="dialHoursMarkerMinorDouble" class="dialHoursMarkerMinor">
+            <g transform="rotate(180)">
+                <text y="-45" x="0">#</text>
+            </g>    
         </g>
         <g id="dialHoursMarkerHalf" class="dialHoursMarkerHalf">
             <path d="M0 0L-4.434 7.68H4.434Z" stroke="none"/>
         </g>
-        <g id="cardinalPointLabelPaths"/>
         <g id="coordLabelPaths"/>
 
         <mask id="maskWheel">
-            <use xlink:href="#mapView" class="maskWhite"/>
-            <use xlink:href="#monthsView" class="maskWhite"/>
+            <use xlink:href="#mapArea" class="maskWhite"/>
+            <use xlink:href="#monthsArea" class="maskWhite"/>
         </mask>
 
         <radialGradient id="gradientOrange1" cx="50%" cy="50%" r="50%">
@@ -297,41 +319,37 @@
                 <g id="wheel"/>
             </g>
             <g id="mouseAreas">
-                <g id="passive"
-                    transform="translate(-512, -384)"
-                    onmousemove="wheelMouseMove(evt)"
-                    onmouseup="wheelMouseUp(evt)">
+                <g id="passive" transform="translate(-512, -384)" onmousemove="wheelMouseMove(evt)" onmouseup="wheelMouseUp(evt)">
                     <use xlink:href="#fullArea" class="eventsTarget"/>
                 </g>
-                <g id="active"
-                    style="cursor: url(../openhand.cur), pointer;"
-                    onmousedown="wheelMouseDown(evt)"
-                    onmousemove="wheelMouseMove(evt)"
-                    onmouseup="wheelMouseUp(evt)">
-                    <use xlink:href="#mapView" class="eventsTarget"/>
-                    <use xlink:href="#monthsView" class="eventsTarget"/>
+                <g id="active" style="cursor: url(../openhand.cur), pointer;" onmousedown="wheelMouseDown(evt)" onmousemove="wheelMouseMove(evt)" onmouseup="wheelMouseUp(evt)">
+                    <use xlink:href="#mapArea" class="eventsTarget"/>
+                    <use xlink:href="#monthsArea" class="eventsTarget"/>
                 </g>
             </g>
             <g id="frontGraphics">
                 <g id="scales"/>
-                <g id="monthsViewBorder"/>
-                <g id="mapViewBorder"/>
+                <g id="monthsAreaBorder"/>
+                <g id="mapAreaBorder"/>
             </g>
         </g>
         <g id="commandButtons">
-            <g transform="translate(785, 0)">
+            <g transform="translate(715, 0)" onclick="synchronize(evt);">
+                <g id="buttonFlip"/>
+            </g>
+            <g transform="translate(785, 0)" onclick="top.settingsDialog.show();">
+                <g id="buttonSettings"/>
+            </g>
+            <g transform="translate(855, 0)" onclick="top.document.getElementById('exportHTML').click();">
+                <g id="buttonExport"/>
+            </g>
+            <g transform="translate(925, 0)">
                 <a xlink:href="http://drifted.in/planisphere/" target="_blank">
                     <g id="buttonMoreInfo"/>
                 </a>
             </g>
-            <g transform="translate(855, 0)" onclick="top.settingsDialog.show();">
-                <g id="buttonSettings"/>
-            </g>
-            <g transform="translate(925, 0)" onclick="top.document.getElementById('exportHTML').click();">
-                <g id="buttonExport"/>
-            </g>
         </g>
-        <g id="designer" transform="translate(10, 755)">
+        <g id="designer" transform="translate(30, 760)">
             <text>Design: © Jan Tošovský, 2011</text>
         </g>
     </g>
