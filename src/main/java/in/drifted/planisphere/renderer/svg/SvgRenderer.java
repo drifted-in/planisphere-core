@@ -190,13 +190,12 @@ public final class SvgRenderer {
                                 break;
                             case "cover":
                                 renderCover();
-                                renderBendLine();
-                                renderPinMark(1);
                                 break;
                             case "pinMark":
                                 renderPinMark(0);
                                 break;
-                            case "guide":
+                            case "guide_S":
+                            case "guide_D":
                             case "worldmap":
                             case "buttonFlip":
                             case "buttonSettings":
@@ -224,7 +223,7 @@ public final class SvgRenderer {
                                     if (attr.getLocalPart().equals("y")) {
                                         Double range = Double.valueOf(a.getValue());
                                         Double ratio = range / 180;
-                                        Double y = ratio * (Math.abs(latitude - 90) - 90);
+                                        Double y = ratio * (Math.abs(latitudeFixed - 90) - 90);
                                         writer.writeAttribute("y", y.toString());
                                     } else {
                                         writer.writeAttribute(attr.getPrefix(), attr.getNamespaceURI(), attr.getLocalPart(), a.getValue());
@@ -1177,10 +1176,22 @@ public final class SvgRenderer {
 
     private void renderCover() throws XMLStreamException {
 
+        if (isDoubleSided) {
+            renderCoverDoubleSided();
+        } else {
+            renderCoverSingleSided();
+            renderPinMark(1);
+        }
+
+        renderBendLine();
+    }
+
+    private void renderCoverSingleSided() throws XMLStreamException {
+
         StringBuilder pathData = new StringBuilder();
 
-        Double x1 = Math.cos(Math.toRadians(30d)) * 0.9 * scaleFixed;
-        Double y1 = Math.sin(Math.toRadians(30d)) * 0.9 * scaleFixed;
+        Double x1 = Math.cos(Math.toRadians(30.0)) * 0.9 * scaleFixed;
+        Double y1 = Math.sin(Math.toRadians(30.0)) * 0.9 * scaleFixed;
         // main arc
         pathData.append("M");
         pathData.append(PathUtil.format(-x1));
@@ -1199,7 +1210,7 @@ public final class SvgRenderer {
         pathData.append(PathUtil.format(y1));
 
         // joiners
-        Double y2 = Math.tan(Math.toRadians(30d)) * scaleFixed;
+        Double y2 = Math.tan(Math.toRadians(30.0)) * scaleFixed;
         Double height = 1.12 * scaleFixed - y2;
         Double y3 = y2 + 2 * height;
         Double y4 = y3 + (y2 - y1);
@@ -1265,9 +1276,59 @@ public final class SvgRenderer {
 
     }
 
-    private void renderBendLine() throws XMLStreamException {
+    private void renderCoverDoubleSided() throws XMLStreamException {
+
         StringBuilder pathData = new StringBuilder();
+
+        Double x1 = Math.cos(Math.toRadians(30.0)) * 0.9 * scaleFixed;
+        Double y1 = -Math.sin(Math.toRadians(30.0)) * 0.9 * scaleFixed;
+        Double y2 = -Math.tan(Math.toRadians(30.0)) * scaleFixed;
+
+        // right side
+        pathData.append("M");
+        pathData.append(PathUtil.format(scaleFixed));
+        pathData.append(" ");
+        pathData.append(PathUtil.format(-1.12 * scaleFixed));
+        pathData.append("V");
+        pathData.append(PathUtil.format(y2));
+        pathData.append("L");
+        pathData.append(PathUtil.format(x1));
+        pathData.append(" ");
+        pathData.append(PathUtil.format(y1));
+
+        // main arc        
+        pathData.append("A");
+        // rx
+        pathData.append(PathUtil.format(0.9 * scaleFixed));
+        pathData.append(" ");
+        // ry
+        pathData.append(PathUtil.format(0.9 * scaleFixed));
+        // rotation, large arc flag, sweep flag
+        pathData.append(" 0 1 1 ");
+        pathData.append(PathUtil.format(-x1));
+        pathData.append(" ");
+        pathData.append(PathUtil.format(y1));
+
+        // left side
+        pathData.append("L");
+        pathData.append(PathUtil.format(-scaleFixed));
+        pathData.append(" ");
+        pathData.append(PathUtil.format(y2));
+        pathData.append("V");
+        pathData.append(PathUtil.format(-1.12 * scaleFixed));
+        pathData.append("z");
+
+        RendererUtil.renderPath(writer, pathData.toString(), "cover", "cover");
+    }
+
+    private void renderBendLine() throws XMLStreamException {
+
+        StringBuilder pathData = new StringBuilder();
+
         Double y = 1.12 * scaleFixed;
+        if (isDoubleSided) {
+            y = -y;
+        }
 
         pathData.append("M");
         pathData.append(PathUtil.format(-scaleFixed));

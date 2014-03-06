@@ -10,7 +10,11 @@
                 margin: auto;
                 background: white;
                 font-family: "${print.droid-sans.name}";
-            } 
+            }
+            .invisible {
+                fill: none;
+                stroke: none;
+            }            
             #cover {
                 fill: white;
                 stroke: gray;
@@ -38,7 +42,7 @@
                 text-anchor: middle;
             }
             .cardinalPointTick,
-            .mapViewBorder {
+            .mapAreaBorder {
                 fill: white;
                 stroke: gray;
                 stroke-width: 3;
@@ -112,20 +116,31 @@
             }
             ]]>
         </style>
-        <path id="mapView" d=""/>
-        <path id="monthsView" d=""/>
+        <path id="mapArea" d=""/>
+        <path id="monthsArea" d=""/>
         <path id="dialMonthsLabelMajorPath" d=""/>
         <path id="dialMonthsLabelMinorPath" d=""/>
-        <g id="dialHoursMarkerMajor" class="dialHoursMarkerMajor">
+        <g id="dialHoursMarkerMajorSingle" class="dialHoursMarkerMajor">
             <path d="M0 0L-22.17 38.4H22.17Z" stroke="none"/>
             <text y="30" x="0">#</text>
         </g>
-        <g id="dialHoursMarkerMinor" class="dialHoursMarkerMinor">
+        <g id="dialHoursMarkerMajorDouble" class="dialHoursMarkerMajor">
+            <path d="M0 0L-22.17 38.4H22.17Z" stroke="none"/>
+            <g transform="rotate(180)">
+                <text y="-20" x="0">#</text>
+            </g>
+        </g>        
+        <g id="dialHoursMarkerMinorSingle" class="dialHoursMarkerMinor">
             <text y="56" x="0">#</text>
+        </g>
+        <g id="dialHoursMarkerMinorDouble" class="dialHoursMarkerMinor">
+            <g transform="rotate(180)">
+                <text y="-45" x="0">#</text>
+            </g>
         </g>
         <g id="dialHoursMarkerHalf" class="dialHoursMarkerHalf">
             <path d="M0 0L-4.434 7.68H4.434Z" stroke="none"/>
-        </g>			
+        </g>
         <g id="cardinalPointLabelPaths"/>
         <g id="latitudeMarkerDef">
             <text x="-10" y="3" text-anchor="end">${latitudeValue}</text>
@@ -138,7 +153,7 @@
         <g id="frontGraphics">      
             <g id="cover"/>
             <g id="scales"/>
-            <g id="mapViewBorder"/>
+            <g id="mapAreaBorder"/>
         </g>
     </g>
     <g transform="translate(-240, -160) rotate(180, 240, 160) translate(-420, -930)">

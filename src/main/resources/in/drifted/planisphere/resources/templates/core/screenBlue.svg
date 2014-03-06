@@ -21,6 +21,10 @@
                 font-size: 12px;
                 fill: silver;
             }
+            .invisible {
+                fill: none;
+                stroke: none;
+            }
             .mapBackground {
                 fill: #003e61; 
             } 
@@ -163,11 +167,6 @@
             .level7 {   
                 stroke-width: 1;
             }
-            .invisible {
-                fill: none;
-                stroke: none;
-            }
-
             /* buttons */
             #commandButtons {
                 cursor: pointer;

@@ -4,11 +4,11 @@
     <defs>
         <style type="text/css">
             <![CDATA[
-            @font-face {font-family: ${print.droid-sans.name}; src: url(${print.droid-sans});}
+            @font-face {font-family: "${print.droid-sans.name}"; src: url(${print.droid-sans});}
             svg {
                 margin: auto;
                 background: white;
-                font-family: ${print.droid-sans.name};
+                font-family: "${print.droid-sans.name}";
             }
             .mapBackground {
                 fill: white;
@@ -138,7 +138,7 @@
         <rect id="guideBackground" rx="10" ry="10" width="500" height="340"/>
     </g>
     <g transform="translate(220, 815) scale(1.4)">
-        <g id="guide"/>
+        <g id="guide_S"/>
     </g>
     <g id="contentGenerated" transform="translate(420, 400) scale(0.76, 0.76)">
         <g id="wheel"/>

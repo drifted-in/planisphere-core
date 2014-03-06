@@ -4,10 +4,11 @@
     <defs>
         <style type="text/css">
             <![CDATA[
+            @font-face {font-family: "${print.droid-sans.name}"; src: url(${print.droid-sans});}
             svg {
                 margin: auto;
                 background: white;
-                font-family: sans-serif;
+                font-family: "${print.droid-sans.name}";
             }
             .mapBackground {
                 fill: #003264;
@@ -49,7 +50,7 @@
             .constellationBoundaries {
                 fill: none;
                 stroke-width: 1;
-                stroke: grey;
+                stroke: gray;
                 stroke-dasharray: 5 3;
             }
             .constellationLines {
@@ -65,7 +66,7 @@
             .coords {
                 fill: none;
                 stroke-width: 0.7;
-                stroke: grey;
+                stroke: gray;
             }
             .milkyWayBright {
                 fill: #194682;
@@ -122,7 +123,7 @@
             }
             #guide .axis {
                 fill: none;
-                stroke: grey;
+                stroke: gray;
                 stroke-width: 1;
                 stroke-dasharray: 10 5 3 5;
             }
@@ -199,7 +200,7 @@
         <rect id="guideBackground" rx="10" ry="10" width="500" height="340"/>
     </g>
     <g transform="translate(220, 815) scale(1.4)">
-        <g id="guide"/>
+        <g id="guide_S"/>
     </g>
     <g id="contentGenerated" transform="translate(420, 400) scale(0.76, 0.76)">
         <g id="wheel"/>
