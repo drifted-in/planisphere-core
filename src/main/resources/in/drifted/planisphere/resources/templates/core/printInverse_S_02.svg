@@ -134,15 +134,15 @@
         <path id="dialMonthsLabelMinorPath" d=""/>
         <g id="coordLabelPaths"/>
     </defs>
+    <g id="contentGenerated" transform="translate(420, 400) scale(0.76, 0.76)">
+        <g id="wheel"/>
+        <g id="pinMark"/>
+        <g id="spacer"/>
+    </g>
     <g transform="translate(170, 790)">
         <rect id="guideBackground" rx="10" ry="10" width="500" height="340"/>
     </g>
     <g transform="translate(220, 815) scale(1.4)">
         <g id="guide_S"/>
-    </g>
-    <g id="contentGenerated" transform="translate(420, 400) scale(0.76, 0.76)">
-        <g id="wheel"/>
-        <g id="pinMark"/>
-        <g id="spacer"/>
     </g>
 </svg>

@@ -109,23 +109,10 @@
             .level7 {
                 stroke-width: 1;
             }
-            #spacer,
-            #guideBackground,
-            #guide path,
-            #guide line {
-                fill: none;
-                stroke: black;
-                stroke-width: 1;
-            }
-            #spacer,
             #guideBackground {
                 fill: white;
-            }
-            #guide .axis {
-                fill: none;
-                stroke: gray;
+                stroke: black;
                 stroke-width: 1;
-                stroke-dasharray: 10 5 3 5;
             }
             ]]>
         </style>
@@ -196,15 +183,14 @@
         <use x="0" y="1300" xlink:href="#rect"/>
     </g>
     <use x="0" y="0" xlink:href="#dottedBackground"/>
-    <g id="contentGenerated" transform="translate(420, 400) scale(0.76, 0.76)">
+    <g id="contentGenerated" transform="translate(420, 410) scale(0.92, 0.92)">
         <g id="wheel"/>
         <g id="pinMark"/>
-        <g id="spacer"/>
     </g>
-    <g transform="translate(170, 790)">
-        <rect id="guideBackground" rx="10" ry="10" width="500" height="340"/>
+    <g transform="translate(160, 815)">
+        <rect id="guideBackground" rx="10" ry="10" width="520" height="340"/>
     </g>
-    <g transform="translate(220, 815) scale(1.4)">
-        <g id="guide_S"/>
+    <g transform="translate(165, 840) scale(1.4)">
+        <g id="guide_D"/>
     </g>
 </svg>

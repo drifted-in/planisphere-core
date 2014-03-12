@@ -192,7 +192,7 @@ public final class SvgRenderer {
                                 renderCover();
                                 break;
                             case "pinMark":
-                                renderPinMark(0);
+                                renderPinMark(false);
                                 break;
                             case "guide_S":
                             case "guide_D":
@@ -1180,9 +1180,9 @@ public final class SvgRenderer {
             renderCoverDoubleSided();
         } else {
             renderCoverSingleSided();
-            renderPinMark(1);
         }
 
+        renderPinMark(true);
         renderBendLine();
     }
 
@@ -1378,11 +1378,11 @@ public final class SvgRenderer {
         RendererUtil.renderPath(writer, pathData + PathUtil.getPathData(coordList, true), "spacer", null);
     }
 
-    private void renderPinMark(Integer mode) throws XMLStreamException {
+    private void renderPinMark(Boolean isCover) throws XMLStreamException {
         StringBuilder pathData = new StringBuilder();
         Double size = 0.02 * scaleFixed;
         Double dy = 0d;
-        if (mode > 0) {
+        if (isCover && !isDoubleSided) {
             dy = 2.24 * scaleFixed;
         }
         pathData.append("M");

@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" width="210mm" height="297mm" viewBox="0 0 840 1180" xml:space="preserve">
+    <defs>
+        <style type="text/css">
+            <![CDATA[
+            @font-face {font-family: "${print.droid-sans.name}"; src: url(${print.droid-sans});}
+            @font-face {font-family: "${print.planisphere.name}"; src: url(${print.planisphere});}
+            svg {
+                margin: auto;
+                background: white;
+                font-family: "${print.droid-sans.name}";
+            }
+            .invisible {
+                fill: none;
+                stroke: none;
+            }            
+            .dialHoursMarkerMajor path {
+                fill: #FA8700;
+            }
+            .dialHoursMarkerMajor text {
+                fill: #DC2D00;
+                text-anchor: middle;
+                font-size: 16px;
+            }
+            .dialHoursMarkerMinor text {
+                fill: #DC2D00;
+                text-anchor: middle;
+                font-size: 12px;
+            }
+            .dialHoursMarkerHalf {
+                fill: #FA8700;
+            }
+            .cardinalPointLabel {
+                font-size: 18px;
+                fill: #FA8700;
+                stroke: none;
+                text-anchor: middle;
+            }
+            .cardinalPointTick,
+            .mapAreaBorder {
+                fill: white;
+                stroke: #FA8700;
+                stroke-width: 3;
+            }
+            .bendLine {
+                stroke: #FA8700;
+                stroke-width: 1;
+                stroke-dasharray: 8 10;
+                stroke-linecap: round;
+                fill: none;
+            }
+            .pinMark {
+                stroke: #DC2D00;
+                stroke-width: 1;
+                stroke-linecap: round;
+                fill: none;
+            }            
+            .boxArea {
+                fill: #4D4D4D;
+                stroke: #606060;
+                stroke-width: 1.5;
+            }
+            .boxHeader {
+                fill: #606060;
+                stroke: none;
+            }
+            .boxTitle {
+                fill: white;
+                font-size: 13px;
+                text-anchor: middle;
+            }
+            .boxBody {
+                fill: white;
+                font-size: 9px;
+            }
+            .astroSymbols {
+                fill: white;
+                font-family: "${print.planisphere.name}";
+                font-size: 10px;
+            }
+            .copyright {
+                font-size: 10px;
+                text-anchor: middle;
+                fill: white;
+            }
+            #latitudeMarkerDef text {
+                fill: white;
+                font-size: 13px;
+            }
+            #latitudeMarkerDef path {
+                fill: #FA8700;
+            }
+            #latitudeMarkerDef line {
+                stroke: #FA8700;
+                stroke-width: 2;
+            }
+            .worldmap {
+                fill: silver;
+                stroke: none;
+            }
+            #spacer {
+                fill: white;
+                stroke: black;
+                stroke-width: 1;
+            }
+            ]]>
+        </style>
+        <path id="mapArea" d=""/>
+        <path id="monthsArea" d=""/>
+        <path id="dialMonthsLabelMajorPath" d=""/>
+        <path id="dialMonthsLabelMinorPath" d=""/>
+        <g id="dialHoursMarkerMajorSingle" class="dialHoursMarkerMajor">
+            <path d="M0 0L-22.17 38.4H22.17Z" stroke="none"/>
+            <text y="30" x="0">#</text>
+        </g>
+        <g id="dialHoursMarkerMajorDouble" class="dialHoursMarkerMajor">
+            <path d="M0 0L-22.17 38.4H22.17Z" stroke="none"/>
+            <g transform="rotate(180)">
+                <text y="-20" x="0">#</text>
+            </g>
+        </g>        
+        <g id="dialHoursMarkerMinorSingle" class="dialHoursMarkerMinor">
+            <text y="56" x="0">#</text>
+        </g>
+        <g id="dialHoursMarkerMinorDouble" class="dialHoursMarkerMinor">
+            <g transform="rotate(180)">
+                <text y="-45" x="0">#</text>
+            </g>
+        </g>
+        <g id="dialHoursMarkerHalf" class="dialHoursMarkerHalf">
+            <path d="M0 0L-4.434 7.68H4.434Z" stroke="none"/>
+        </g>
+        <g id="cardinalPointLabelPaths"/>
+        <linearGradient id="grey" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" style="stop-color:rgb(200,200,200);stop-opacity:1"/>
+            <stop offset="100%" style="stop-color:rgb(255,255,255);stop-opacity:1"/>
+        </linearGradient>
+        <rect id="rect" x="-500" y="0" width="2000" height="50" fill="url(#grey)"/>
+        <path id="dottedLine" d="M0 0L1180 0" stroke-dasharray="0 10" stroke-width="2" stroke="grey" stroke-linecap="round" fill="none" />
+        <g id="dottedGroup">
+            <use x="0" y="0" xlink:href="#dottedLine"/>
+            <use x="0" y="10" xlink:href="#dottedLine"/>
+            <use x="0" y="20" xlink:href="#dottedLine"/>
+            <use x="0" y="30" xlink:href="#dottedLine"/>
+            <use x="0" y="40" xlink:href="#dottedLine"/>
+            <use x="0" y="50" xlink:href="#dottedLine"/>
+            <use x="0" y="60" xlink:href="#dottedLine"/>
+            <use x="0" y="70" xlink:href="#dottedLine"/>
+            <use x="0" y="80" xlink:href="#dottedLine"/>
+            <use x="0" y="90" xlink:href="#dottedLine"/>
+        </g>
+        <g id="dottedBlock">
+            <use x="0" y="0" xlink:href="#dottedGroup"/>
+            <use x="0" y="100" xlink:href="#dottedGroup"/>
+            <use x="0" y="200" xlink:href="#dottedGroup"/>
+            <use x="0" y="300" xlink:href="#dottedGroup"/>
+            <use x="0" y="400" xlink:href="#dottedGroup"/>
+        </g>
+        <g id="dottedBackground">
+            <use x="0" y="0" xlink:href="#dottedBlock"/>
+            <use x="0" y="500" xlink:href="#dottedBlock"/>
+            <use x="0" y="1000" xlink:href="#dottedBlock"/>
+        </g>
+        <g id="latitudeMarkerDef">
+            <text x="-13" y="4" text-anchor="end">${latitudeValue}</text>
+            <path d="M0 0L-8 -5L-8 5Z"/>
+            <path d="M190 0L198 -5L198 5Z"/>
+            <line x1="0" y1="0" x2="190" y2="0"/>
+        </g>
+    </defs>
+    <g transform="rotate(20, 420, 590)">
+        <use x="0" y="-150" xlink:href="#rect"/>
+        <use x="0" y="-100" xlink:href="#rect"/>
+        <use x="0" y="-50" xlink:href="#rect"/>
+        <use x="0" y="0" xlink:href="#rect"/>
+        <use x="0" y="50" xlink:href="#rect"/>
+        <use x="0" y="100" xlink:href="#rect"/>
+        <use x="0" y="150" xlink:href="#rect"/>
+        <use x="0" y="200" xlink:href="#rect"/>
+        <use x="0" y="250" xlink:href="#rect"/>
+        <use x="0" y="300" xlink:href="#rect"/>
+        <use x="0" y="350" xlink:href="#rect"/>
+        <use x="0" y="400" xlink:href="#rect"/>
+        <use x="0" y="450" xlink:href="#rect"/>
+        <use x="0" y="500" xlink:href="#rect"/>
+        <use x="0" y="550" xlink:href="#rect"/>
+        <use x="0" y="600" xlink:href="#rect"/>
+        <use x="0" y="650" xlink:href="#rect"/>
+        <use x="0" y="700" xlink:href="#rect"/>
+        <use x="0" y="750" xlink:href="#rect"/>
+        <use x="0" y="800" xlink:href="#rect"/>
+        <use x="0" y="850" xlink:href="#rect"/>
+        <use x="0" y="900" xlink:href="#rect"/>
+        <use x="0" y="950" xlink:href="#rect"/>
+        <use x="0" y="1000" xlink:href="#rect"/>
+        <use x="0" y="1050" xlink:href="#rect"/>
+        <use x="0" y="1100" xlink:href="#rect"/>
+        <use x="0" y="1150" xlink:href="#rect"/>
+        <use x="0" y="1200" xlink:href="#rect"/>
+        <use x="0" y="1250" xlink:href="#rect"/>
+        <use x="0" y="1300" xlink:href="#rect"/>
+    </g>
+    <use x="0" y="0" xlink:href="#dottedBackground"/>
+    <g transform="translate(420, 740) scale(0.92, 0.92)">
+        <g id="contentGenerated">
+            <g id="frontGraphics">
+                <g transform="translate(0, -941)">
+                    <g id="spacer"/>
+                </g>
+                <g id="cover"/>
+                <g id="scales"/>
+                <g id="mapAreaBorder"/>
+            </g>
+        </g>
+        <g transform="translate(0, -430)">
+            <text class="copyright">Copyright (c) ${year}, Jan Tosovsky</text>
+            <text y="16" class="copyright">http://drifted.in/planisphere/</text>
+        </g>
+        <g transform="translate(-400, -450)">
+            <g id="objectSymbolsBox">
+                <rect class="boxArea" x="0" y="0" width="190" height="126"/>
+                <rect class="boxHeader" x="0" y="0" width="190" height="32"/>
+                <text x="95" y="21" class="boxTitle">${zoodiacSignsTitle}</text>
+                <g transform="translate(7, 36)" class="astroSymbols">
+                    <text>
+                        <tspan x="0" dy="13">&#x2648;</tspan>
+                        <tspan x="0" dy="13">&#x2649;</tspan>
+                        <tspan x="0" dy="13">&#x264A;</tspan>
+                        <tspan x="0" dy="13">&#x264B;</tspan>
+                        <tspan x="0" dy="13">&#x264C;</tspan>
+                        <tspan x="0" dy="13">&#x264D;</tspan>
+                    </text>
+                </g>
+                <g transform="translate(24, 36)" class="boxBody">
+                    <text>
+                        <tspan x="0" dy="13">${aries}</tspan>
+                        <tspan x="0" dy="13">${taurus}</tspan>
+                        <tspan x="0" dy="13">${gemini}</tspan>
+                        <tspan x="0" dy="13">${cancer}</tspan>
+                        <tspan x="0" dy="13">${leo}</tspan>
+                        <tspan x="0" dy="13">${virgo}</tspan>
+                    </text>
+                </g>
+                <g transform="translate(95, 36)" class="astroSymbols">
+                    <text>
+                        <tspan x="0" dy="13">&#x264E;</tspan>
+                        <tspan x="0" dy="13">&#x264F;</tspan>
+                        <tspan x="0" dy="13">&#x2650;</tspan>
+                        <tspan x="0" dy="13">&#x2651;</tspan>
+                        <tspan x="0" dy="13">&#x2652;</tspan>
+                        <tspan x="0" dy="13">&#x2653;</tspan>
+                    </text>
+                </g>
+                <g transform="translate(112, 36)" class="boxBody">
+                    <text>
+                        <tspan x="0" dy="13">${libra}</tspan>
+                        <tspan x="0" dy="13">${scorpius}</tspan>
+                        <tspan x="0" dy="13">${sagittarius}</tspan>
+                        <tspan x="0" dy="13">${aquarius}</tspan>
+                        <tspan x="0" dy="13">${capricornus}</tspan>
+                        <tspan x="0" dy="13">${pisces}</tspan>
+                    </text>
+                </g>
+            </g>
+        </g>
+        <g transform="translate(210, -450)">
+            <g id="latitudeBox">
+                <rect class="boxArea" x="0" y="0" width="190" height="126"/>
+                <rect class="boxHeader" x="0" y="0" width="190" height="32"/>
+                <text x="95" y="21" class="boxTitle">${latitude}</text>
+                <g transform="translate(0.75, 32)">
+                    <g id="worldmap"/>
+                </g>
+                <g transform="translate(0, 80)">
+                    <use id="latitudeMarker" x="0" y="93" xlink:href="#latitudeMarkerDef"/>
+                </g>
+            </g>
+        </g>
+    </g>   
+</svg>
