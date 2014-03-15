@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="188.5px" height="93.25px" viewBox="0 0 188.5 93.25">
+  <defs>
+    <style type="text/css">
+      <![CDATA[
+        .star {
+          fill: silver;
+          stroke: none;
+        }
+        .star-label {
+          fill: #FA8700;
+          text-anchor: middle;
+          font-size: 9px;
+        }
+        .end {
+          text-anchor: end;
+        }        
+      ]]>
+    </style>  
+    <clipPath id="view-area">
+      <rect x="0" y="0" width="188.5" height="93.25"/>
+    </clipPath>    
+  </defs>
+  
+  <g clip-path="url(#view-area)">
+    <circle id="sun" cx="22" cy="12" r="0.5" class="star"/>
+    <circle id="sirius" cx="26" cy="36" r="0.85" class="star"/>
+    <circle id="procyon" cx="30" cy="60" r="1" class="star"/>      
+    <circle id="vega" cx="54" cy="47" r="1.75" class="star"/>
+    <circle id="capella" cx="54" cy="16" r="6" class="star"/>
+    <circle id="arcturus" cx="90" cy="22" r="12.85" class="star"/>
+    <circle id="aldebaran" cx="136" cy="40" r="22" class="star"/>
+    <circle id="rigel" cx="197" cy="80" r="37" class="star"/>
+    <circle id="betelgeuse" cx="10" cy="575" r="500" class="star"/>
+
+    <text x="22" y="24" class="star-label">${sun}</text>
+    <text x="26" y="48" class="star-label">${sirius}</text>
+    <text x="30" y="72" class="star-label">${procyon}</text>
+    <text x="54" y="60" class="star-label">${vega}</text>
+    <text x="54" y="36" class="star-label">${capella}</text>
+    <text x="90" y="48" class="star-label">${arcturus}</text>
+    <text x="137" y="14" class="star-label">${aldebaran}</text>
+    <text x="154" y="84" class="star-label end">${rigel}</text>
+    <text x="90" y="72" class="star-label">${betelgeuse}</text>    
+  </g>
+</svg>

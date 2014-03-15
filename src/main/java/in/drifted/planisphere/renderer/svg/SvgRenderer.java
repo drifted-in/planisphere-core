@@ -197,6 +197,7 @@ public final class SvgRenderer {
                             case "guide_S":
                             case "guide_D":
                             case "worldmap":
+                            case "starSizeComparison":
                             case "buttonFlip":
                             case "buttonSettings":
                             case "buttonExport":
@@ -210,7 +211,7 @@ public final class SvgRenderer {
                                     writer.writeCharacters(localizationUtil.getValue(id));
                                     writer.writeEndElement();
                                 }
-                                RendererUtil.renderSymbol(inputFactory, writer, id);
+                                RendererUtil.renderSymbol(inputFactory, writer, id, localizationUtil);
                                 writer.writeEndElement();
                             }
                                 break;
@@ -1166,7 +1167,7 @@ public final class SvgRenderer {
         writer.writeStartElement("g");
         writer.writeAttribute("class", style);
         writer.writeAttribute("transform", "translate(0,-" + strTranslate + ") rotate(" + angle + ",0," + strTranslate + ")");
-        RendererUtil.writeStreamContent(inputFactory, writer, new ByteArrayInputStream(mark), replacementMap);
+        RendererUtil.writeStreamContent(inputFactory, writer, new ByteArrayInputStream(mark), replacementMap, localizationUtil);
         writer.writeEndElement();
     }
 

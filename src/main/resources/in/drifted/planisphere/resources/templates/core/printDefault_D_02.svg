@@ -99,6 +99,18 @@
                 fill: silver;
                 stroke: none;
             }
+            .star {
+                fill: silver;
+                stroke: none;
+            }
+            .star-label {
+                fill: #FA8700;
+                text-anchor: middle;
+                font-size: 9px;
+            }
+            .end {
+                text-anchor: end;
+            }
             #spacer {
                 fill: white;
                 stroke: black;
@@ -221,46 +233,9 @@
             <g id="objectSymbolsBox">
                 <rect class="boxArea" x="0" y="0" width="190" height="126"/>
                 <rect class="boxHeader" x="0" y="0" width="190" height="32"/>
-                <text x="95" y="21" class="boxTitle">${zoodiacSignsTitle}</text>
-                <g transform="translate(7, 36)" class="astroSymbols">
-                    <text>
-                        <tspan x="0" dy="13">&#x2648;</tspan>
-                        <tspan x="0" dy="13">&#x2649;</tspan>
-                        <tspan x="0" dy="13">&#x264A;</tspan>
-                        <tspan x="0" dy="13">&#x264B;</tspan>
-                        <tspan x="0" dy="13">&#x264C;</tspan>
-                        <tspan x="0" dy="13">&#x264D;</tspan>
-                    </text>
-                </g>
-                <g transform="translate(24, 36)" class="boxBody">
-                    <text>
-                        <tspan x="0" dy="13">${aries}</tspan>
-                        <tspan x="0" dy="13">${taurus}</tspan>
-                        <tspan x="0" dy="13">${gemini}</tspan>
-                        <tspan x="0" dy="13">${cancer}</tspan>
-                        <tspan x="0" dy="13">${leo}</tspan>
-                        <tspan x="0" dy="13">${virgo}</tspan>
-                    </text>
-                </g>
-                <g transform="translate(95, 36)" class="astroSymbols">
-                    <text>
-                        <tspan x="0" dy="13">&#x264E;</tspan>
-                        <tspan x="0" dy="13">&#x264F;</tspan>
-                        <tspan x="0" dy="13">&#x2650;</tspan>
-                        <tspan x="0" dy="13">&#x2651;</tspan>
-                        <tspan x="0" dy="13">&#x2652;</tspan>
-                        <tspan x="0" dy="13">&#x2653;</tspan>
-                    </text>
-                </g>
-                <g transform="translate(112, 36)" class="boxBody">
-                    <text>
-                        <tspan x="0" dy="13">${libra}</tspan>
-                        <tspan x="0" dy="13">${scorpius}</tspan>
-                        <tspan x="0" dy="13">${sagittarius}</tspan>
-                        <tspan x="0" dy="13">${aquarius}</tspan>
-                        <tspan x="0" dy="13">${capricornus}</tspan>
-                        <tspan x="0" dy="13">${pisces}</tspan>
-                    </text>
+                <text x="95" y="21" class="boxTitle">${starSizeComparisonTitle}</text>
+                <g transform="translate(0.75, 32)">
+                    <g id="starSizeComparison"/>
                 </g>
             </g>
         </g>

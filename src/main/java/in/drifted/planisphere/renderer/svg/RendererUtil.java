@@ -1,6 +1,7 @@
 package in.drifted.planisphere.renderer.svg;
 
 import in.drifted.planisphere.Settings;
+import in.drifted.planisphere.util.LocalizationUtil;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -71,9 +72,9 @@ public final class RendererUtil {
         writer.writeEndElement();
     }
 
-    public static void renderSymbol(XMLInputFactory inputFactory, XMLStreamWriter writer, String id) throws XMLStreamException, IOException {
+    public static void renderSymbol(XMLInputFactory inputFactory, XMLStreamWriter writer, String id, LocalizationUtil localizationUtil) throws XMLStreamException, IOException {
         try (InputStream is = RendererUtil.class.getResourceAsStream(Settings.RESOURCE_BASE_PATH + "templates/resources/symbols/" + id + ".svg")) {
-            writeStreamContent(inputFactory, writer, is, null);
+            writeStreamContent(inputFactory, writer, is, null, localizationUtil);
         }
     }
 
@@ -189,7 +190,7 @@ public final class RendererUtil {
         parser.close();
     }
 
-    public static void writeStreamContent(XMLInputFactory inputFactory, XMLStreamWriter writer, InputStream content, Map<String, String> replacementMap) throws XMLStreamException {
+    public static void writeStreamContent(XMLInputFactory inputFactory, XMLStreamWriter writer, InputStream content, Map<String, String> replacementMap, LocalizationUtil localizationUtil) throws XMLStreamException {
 
         XMLEventReader parser = inputFactory.createXMLEventReader(content);
         StartElement startElement;
@@ -214,7 +215,7 @@ public final class RendererUtil {
                                 text = text.replace(entry.getKey(), entry.getValue());
                             }
                         }
-                        writer.writeCharacters(text);
+                        writer.writeCharacters(localizationUtil.translate(text, 0.0));
                     }
                     break;
                 default:
