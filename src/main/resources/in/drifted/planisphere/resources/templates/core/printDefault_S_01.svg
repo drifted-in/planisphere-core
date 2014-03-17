@@ -94,7 +94,7 @@
             }
             #latitudeMarkerDef text {
                 fill: white;
-                font-size: 12px;
+                font-size: 13px;
             }
             #latitudeMarkerDef path {
                 fill: #FA8700;
@@ -207,7 +207,7 @@
     <use x="0" y="0" xlink:href="#dottedBackground"/>
     <g transform="translate(420, 330) scale(0.76, 0.76)">
         <g id="contentGenerated">
-            <g id="frontGraphics">      
+            <g id="frontGraphics">
                 <g id="cover"/>
                 <g id="scales"/>
                 <g id="mapAreaBorder"/>

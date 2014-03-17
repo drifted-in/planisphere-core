@@ -54,8 +54,7 @@
                 stroke: #DC2D00;
                 stroke-width: 1;
                 stroke-linecap: round;
-                fill: none;
-            }            
+            }
             .boxArea {
                 fill: #4D4D4D;
                 stroke: #606060;
@@ -119,7 +118,7 @@
             <g transform="rotate(180)">
                 <text y="-20" x="0">#</text>
             </g>
-        </g>        
+        </g>
         <g id="dialHoursMarkerMinorSingle" class="dialHoursMarkerMinor">
             <text y="56" x="0">#</text>
         </g>
@@ -277,5 +276,5 @@
                 </g>
             </g>
         </g>
-    </g>   
+    </g>
 </svg>
