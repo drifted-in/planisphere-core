@@ -15,53 +15,57 @@
                 fill: none;
                 stroke: none;
             }            
+            #cover {
+                fill: white;
+                stroke: gray;
+            }
             .dialHoursMarkerMajor path {
-                fill: #FA8700;
+                fill: gray;
             }
             .dialHoursMarkerMajor text {
-                fill: #DC2D00;
+                fill: white;
                 text-anchor: middle;
                 font-size: 16px;
             }
             .dialHoursMarkerMinor text {
-                fill: #DC2D00;
+                fill: gray;
                 text-anchor: middle;
                 font-size: 12px;
             }
             .dialHoursMarkerHalf {
-                fill: #FA8700;
+                fill: black;
             }
             .cardinalPointLabel {
                 font-size: 18px;
-                fill: #FA8700;
+                fill: gray;
                 stroke: none;
                 text-anchor: middle;
             }
             .cardinalPointTick,
             .mapAreaBorder {
                 fill: white;
-                stroke: #FA8700;
+                stroke: gray;
                 stroke-width: 3;
             }
             .bendLine {
-                stroke: #FA8700;
+                stroke: gray;
                 stroke-width: 1;
                 stroke-dasharray: 8 10;
                 stroke-linecap: round;
                 fill: none;
             }
             .pinMark {
-                stroke: #DC2D00;
+                stroke: gray;
                 stroke-width: 1;
                 stroke-linecap: round;
             }
             .boxArea {
-                fill: #4D4D4D;
-                stroke: #606060;
+                fill: none;
+                stroke: gray;
                 stroke-width: 1.5;
             }
             .boxHeader {
-                fill: #606060;
+                fill: gray;
                 stroke: none;
             }
             .boxTitle {
@@ -70,40 +74,40 @@
                 text-anchor: middle;
             }
             .boxBody {
-                fill: white;
+                fill: gray;
                 font-size: 9px;
             }
             .astroSymbols {
-                fill: white;
+                fill: gray;
                 font-family: "${print.planisphere.name}";
                 font-size: 10px;
             }
             .copyright {
                 font-size: 10px;
                 text-anchor: middle;
-                fill: white;
+                fill: gray;
             }
             #latitudeMarkerDef text {
-                fill: white;
-                font-size: 13px;
+                fill: black;
+                font-size: 12px;
             }
             #latitudeMarkerDef path {
-                fill: #FA8700;
+                fill: gray;
             }
             #latitudeMarkerDef line {
-                stroke: #FA8700;
+                stroke: gray;
                 stroke-width: 2;
             }
             .worldmap {
-                fill: silver;
-                stroke: none;
+                fill: #C0C0C0;
+                stroke: #C0C0C0;
             }
             .star {
-                fill: silver;
+                fill: #C0C0C0;
                 stroke: none;
             }
             .star-label {
-                fill: #FA8700;
+                fill: gray;
                 text-anchor: middle;
                 font-size: 9px;
             }
@@ -112,7 +116,7 @@
             }
             #spacer {
                 fill: white;
-                stroke: black;
+                stroke: gray;
                 stroke-width: 1;
             }
             ]]>
@@ -143,36 +147,6 @@
             <path d="M0 0L-4.434 7.68H4.434Z" stroke="none"/>
         </g>
         <g id="cardinalPointLabelPaths"/>
-        <linearGradient id="grey" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" style="stop-color:rgb(200,200,200);stop-opacity:1"/>
-            <stop offset="100%" style="stop-color:rgb(255,255,255);stop-opacity:1"/>
-        </linearGradient>
-        <rect id="rect" x="-500" y="0" width="2000" height="50" fill="url(#grey)"/>
-        <path id="dottedLine" d="M0 0L1180 0" stroke-dasharray="0 10" stroke-width="2" stroke="grey" stroke-linecap="round" fill="none" />
-        <g id="dottedGroup">
-            <use x="0" y="0" xlink:href="#dottedLine"/>
-            <use x="0" y="10" xlink:href="#dottedLine"/>
-            <use x="0" y="20" xlink:href="#dottedLine"/>
-            <use x="0" y="30" xlink:href="#dottedLine"/>
-            <use x="0" y="40" xlink:href="#dottedLine"/>
-            <use x="0" y="50" xlink:href="#dottedLine"/>
-            <use x="0" y="60" xlink:href="#dottedLine"/>
-            <use x="0" y="70" xlink:href="#dottedLine"/>
-            <use x="0" y="80" xlink:href="#dottedLine"/>
-            <use x="0" y="90" xlink:href="#dottedLine"/>
-        </g>
-        <g id="dottedBlock">
-            <use x="0" y="0" xlink:href="#dottedGroup"/>
-            <use x="0" y="100" xlink:href="#dottedGroup"/>
-            <use x="0" y="200" xlink:href="#dottedGroup"/>
-            <use x="0" y="300" xlink:href="#dottedGroup"/>
-            <use x="0" y="400" xlink:href="#dottedGroup"/>
-        </g>
-        <g id="dottedBackground">
-            <use x="0" y="0" xlink:href="#dottedBlock"/>
-            <use x="0" y="500" xlink:href="#dottedBlock"/>
-            <use x="0" y="1000" xlink:href="#dottedBlock"/>
-        </g>
         <g id="latitudeMarkerDef">
             <text x="-13" y="4" text-anchor="end">${latitudeValue}</text>
             <path d="M0 0L-8 -5L-8 5Z"/>
@@ -180,39 +154,6 @@
             <line x1="0" y1="0" x2="190" y2="0"/>
         </g>
     </defs>
-    <g transform="rotate(20, 420, 590)">
-        <use x="0" y="-150" xlink:href="#rect"/>
-        <use x="0" y="-100" xlink:href="#rect"/>
-        <use x="0" y="-50" xlink:href="#rect"/>
-        <use x="0" y="0" xlink:href="#rect"/>
-        <use x="0" y="50" xlink:href="#rect"/>
-        <use x="0" y="100" xlink:href="#rect"/>
-        <use x="0" y="150" xlink:href="#rect"/>
-        <use x="0" y="200" xlink:href="#rect"/>
-        <use x="0" y="250" xlink:href="#rect"/>
-        <use x="0" y="300" xlink:href="#rect"/>
-        <use x="0" y="350" xlink:href="#rect"/>
-        <use x="0" y="400" xlink:href="#rect"/>
-        <use x="0" y="450" xlink:href="#rect"/>
-        <use x="0" y="500" xlink:href="#rect"/>
-        <use x="0" y="550" xlink:href="#rect"/>
-        <use x="0" y="600" xlink:href="#rect"/>
-        <use x="0" y="650" xlink:href="#rect"/>
-        <use x="0" y="700" xlink:href="#rect"/>
-        <use x="0" y="750" xlink:href="#rect"/>
-        <use x="0" y="800" xlink:href="#rect"/>
-        <use x="0" y="850" xlink:href="#rect"/>
-        <use x="0" y="900" xlink:href="#rect"/>
-        <use x="0" y="950" xlink:href="#rect"/>
-        <use x="0" y="1000" xlink:href="#rect"/>
-        <use x="0" y="1050" xlink:href="#rect"/>
-        <use x="0" y="1100" xlink:href="#rect"/>
-        <use x="0" y="1150" xlink:href="#rect"/>
-        <use x="0" y="1200" xlink:href="#rect"/>
-        <use x="0" y="1250" xlink:href="#rect"/>
-        <use x="0" y="1300" xlink:href="#rect"/>
-    </g>
-    <use x="0" y="0" xlink:href="#dottedBackground"/>
     <g transform="translate(420, 740) scale(0.92, 0.92)">
         <g id="contentGenerated">
             <g id="frontGraphics">

@@ -69,7 +69,7 @@
                 font-size: 9px;
             }
             .boxArea {
-                fill: #ececec;
+                fill: none;
                 stroke: gray;
                 stroke-width: 1.5;
             }
@@ -83,18 +83,18 @@
                 text-anchor: middle;
             }
             .boxBody {
-                fill: black;
+                fill: gray;
                 font-size: 9px;
             }
             .astroSymbols {
-                fill: black;
+                fill: gray;
                 font-family: "${print.planisphere.name}";
                 font-size: 10px;
             }
             .copyright {
                 font-size: 12px;
                 text-anchor: middle;
-                fill: black;
+                fill: gray;
             }
             #latitudeMarkerDef text {
                 fill: black;
@@ -108,8 +108,8 @@
                 stroke-width: 2;
             }
             .worldmap {
-                fill: #dadada;
-                stroke: #dadada;
+                fill: #C0C0C0;
+                stroke: #C0C0C0;
             }
             ]]>
         </style>

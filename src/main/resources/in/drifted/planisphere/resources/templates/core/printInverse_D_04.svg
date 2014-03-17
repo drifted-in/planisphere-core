@@ -11,35 +11,36 @@
                 font-family: "${print.droid-sans.name}";
             }
             .mapBackground {
-                fill: #003264;
+                fill: white;
+                stroke: gray;
             }
             .dialMonthsTick {
                 fill: none;
-                stroke: white;
+                stroke: black;
                 stroke-width: 2;
             }
             .dialMonthsLabelMajor {
                 font-size: 18px;
-                fill: white;
+                fill: black;
                 text-anchor: middle;
             } 
             .dialMonthsLabelMinor {
                 font-size: 10px;
-                fill: white;
+                fill: black;
                 text-anchor: middle;
             }
             .coordLabelRa {
                 font-size: 9px;
-                fill: #2abacf;
+                fill: gray;
                 text-anchor: start;
             }
             .coordLabelDec {
                 font-size: 9px;
-                fill: #2abacf;
+                fill: gray;
                 text-anchor: end;
             }
             .constellationNames {
-                fill: white;
+                fill: black;
                 font-size: 9px;
                 text-anchor: middle;
             }
@@ -56,12 +57,12 @@
             .constellationLines {
                 fill: none;
                 stroke-width: 1.2;
-                stroke: #9a9a9a;
+                stroke: gray;
             }
             .ecliptic {
                 fill: none;
                 stroke-width: 0.7;
-                stroke: #2abacf;
+                stroke: gray;
             }
             .coords {
                 fill: none;
@@ -69,11 +70,11 @@
                 stroke: gray;
             }
             .milkyWayBright {
-                fill: #194682;
+                fill: #dadada;
                 stroke: none;
             }
             .milkyWayDark {
-                fill: #0A3C73;
+                fill: #ececec;
                 stroke: none;
             }
             .constellationOverview {
@@ -84,13 +85,13 @@
                 font-size: 7px;
             }
             .pinMark {
-                stroke: orange;
+                stroke: gray;
                 stroke-width: 1;
                 stroke-linecap: round;
             }
             .star {
                 stroke-linecap: round;
-                stroke: yellow;
+                stroke: black;
             }
             .level0 {
                 stroke-width: 8;
@@ -117,7 +118,7 @@
                 stroke-width: 1;
             }
             #guideBackground {
-                fill: white;
+                fill: none;
                 stroke: black;
                 stroke-width: 1;
             }
@@ -126,70 +127,7 @@
         <path id="dialMonthsLabelMajorPath" d=""/>
         <path id="dialMonthsLabelMinorPath" d=""/>
         <g id="coordLabelPaths"/>
-        <linearGradient id="grey" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" style="stop-color:rgb(200,200,200);stop-opacity:1"/>
-            <stop offset="100%" style="stop-color:rgb(255,255,255);stop-opacity:1"/>
-        </linearGradient>
-        <rect id="rect" x="-500" y="0" width="2000" height="50" fill="url(#grey)"/>    
-        <path id="dottedLine" d="M0 0L1180 0" stroke-dasharray="0 10" stroke-width="2" stroke="grey" stroke-linecap="round" fill="none" />
-        <g id="dottedGroup">
-            <use x="0" y="0" xlink:href="#dottedLine"/>
-            <use x="0" y="10" xlink:href="#dottedLine"/>
-            <use x="0" y="20" xlink:href="#dottedLine"/>
-            <use x="0" y="30" xlink:href="#dottedLine"/>
-            <use x="0" y="40" xlink:href="#dottedLine"/>
-            <use x="0" y="50" xlink:href="#dottedLine"/>
-            <use x="0" y="60" xlink:href="#dottedLine"/>
-            <use x="0" y="70" xlink:href="#dottedLine"/>
-            <use x="0" y="80" xlink:href="#dottedLine"/>
-            <use x="0" y="90" xlink:href="#dottedLine"/>
-        </g>
-        <g id="dottedBlock">
-            <use x="0" y="0" xlink:href="#dottedGroup"/>
-            <use x="0" y="100" xlink:href="#dottedGroup"/>
-            <use x="0" y="200" xlink:href="#dottedGroup"/>
-            <use x="0" y="300" xlink:href="#dottedGroup"/>
-            <use x="0" y="400" xlink:href="#dottedGroup"/>
-        </g>
-        <g id="dottedBackground">
-            <use x="0" y="0" xlink:href="#dottedBlock"/>
-            <use x="0" y="500" xlink:href="#dottedBlock"/>
-            <use x="0" y="1000" xlink:href="#dottedBlock"/>
-        </g>
     </defs>
-    <g transform="rotate(20, 420, 590)">
-        <use x="0" y="-150" xlink:href="#rect"/>
-        <use x="0" y="-100" xlink:href="#rect"/>
-        <use x="0" y="-50" xlink:href="#rect"/>
-        <use x="0" y="0" xlink:href="#rect"/>
-        <use x="0" y="50" xlink:href="#rect"/>
-        <use x="0" y="100" xlink:href="#rect"/>
-        <use x="0" y="150" xlink:href="#rect"/>
-        <use x="0" y="200" xlink:href="#rect"/>
-        <use x="0" y="250" xlink:href="#rect"/>
-        <use x="0" y="300" xlink:href="#rect"/>
-        <use x="0" y="350" xlink:href="#rect"/>
-        <use x="0" y="400" xlink:href="#rect"/>
-        <use x="0" y="450" xlink:href="#rect"/>
-        <use x="0" y="500" xlink:href="#rect"/>
-        <use x="0" y="550" xlink:href="#rect"/>
-        <use x="0" y="600" xlink:href="#rect"/>
-        <use x="0" y="650" xlink:href="#rect"/>
-        <use x="0" y="700" xlink:href="#rect"/>
-        <use x="0" y="750" xlink:href="#rect"/>
-        <use x="0" y="800" xlink:href="#rect"/>
-        <use x="0" y="850" xlink:href="#rect"/>
-        <use x="0" y="900" xlink:href="#rect"/>
-        <use x="0" y="950" xlink:href="#rect"/>
-        <use x="0" y="1000" xlink:href="#rect"/>
-        <use x="0" y="1050" xlink:href="#rect"/>
-        <use x="0" y="1100" xlink:href="#rect"/>
-        <use x="0" y="1150" xlink:href="#rect"/>
-        <use x="0" y="1200" xlink:href="#rect"/>
-        <use x="0" y="1250" xlink:href="#rect"/>
-        <use x="0" y="1300" xlink:href="#rect"/>
-    </g>
-    <use x="0" y="0" xlink:href="#dottedBackground"/>
     <g id="contentGenerated" transform="translate(420, 410) scale(0.92, 0.92)">
         <g id="wheel"/>
         <g id="pinMark"/>
@@ -246,7 +184,7 @@
                     <tspan x="0" dy="10">Ara</tspan>
                     <tspan x="0" dy="10">Aries</tspan>
                     <tspan x="0" dy="10">Auriga</tspan>
-                    <tspan x="0" dy="10">Boötes</tspan>
+                    <tspan x="0" dy="10">BoĂ¶tes</tspan>
                     <tspan x="0" dy="10">Caelum</tspan>
                     <tspan x="0" dy="10">Camelopardalis</tspan>
                     <tspan x="0" dy="10">Cancer</tspan>
@@ -280,7 +218,7 @@
                     <tspan x="0" dy="10">${ara}</tspan>
                     <tspan x="0" dy="10">${aries}</tspan>
                     <tspan x="0" dy="10">${auriga}</tspan>
-                    <tspan x="0" dy="10">${boötes}</tspan>
+                    <tspan x="0" dy="10">${boĂ¶tes}</tspan>
                     <tspan x="0" dy="10">${caelum}</tspan>
                     <tspan x="0" dy="10">${camelopardalis}</tspan>
                     <tspan x="0" dy="10">${cancer}</tspan>
