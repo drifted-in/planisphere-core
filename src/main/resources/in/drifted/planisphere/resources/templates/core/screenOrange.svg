@@ -9,7 +9,7 @@
             @font-face {font-family: "${screen.droid-sans.name}"; src: url(${screen.droid-sans});}
             svg {
                 margin: auto;
-                background: #4d4d4d;
+                background: #4D4D4D;
                 font-family: "${screen.droid-sans.name}";
                 -moz-user-select: none;
                 -webkit-user-select: none;
@@ -27,7 +27,7 @@
                 stroke: none;
             }
             .mapBackground {
-                fill: #003e61;
+                fill: #003E61;
             }
             .maskBlack {
                 fill: black;
@@ -36,7 +36,7 @@
                 fill: white;
             }
             .dummyRectBlue {
-                fill: #4d4d4d;
+                fill: #4D4D4D;
             }
             .eventsTarget {
                 fill: white;
@@ -62,7 +62,7 @@
             }
             .monthsAreaBorder {
                 fill: none;
-                stroke: green;
+                stroke: #DD4500;
                 stroke-width: 2;
             }
             .dialMonthsTick {
@@ -89,17 +89,17 @@
             .cardinalPointTick,
             .mapAreaBorder {
                 fill: none;
-                stroke: green;
+                stroke: #DD4500;
                 stroke-width: 3;
             }
             .coordLabelRa {
                 font-size: 9px;
-                fill: #2abacf;
+                fill: #2ABACF;
                 text-anchor: start;
             }
             .coordLabelDec {
                 font-size: 9px;
-                fill: #2abacf;
+                fill: #2ABACF;
                 text-anchor: end;
             }
             .constellationNames {
@@ -120,12 +120,12 @@
             .constellationLines {
                 fill: none;
                 stroke-width: 1.2;
-                stroke: #9a9a9a;
+                stroke: #9A9A9A;
             }
             .ecliptic {
                 fill: none;
                 stroke-width: 0.7;
-                stroke: #2abacf;
+                stroke: #2ABACF;
             }
             .coords {
                 fill: none;
@@ -137,7 +137,7 @@
                 stroke: none;
             }
             .milkyWayDark {
-                fill: #00466b;
+                fill: #00466B;
                 stroke: none;
             }
             .star {
@@ -177,49 +177,49 @@
             #buttonMoreInfo:hover .gradientUp,
             #buttonSettings:hover .gradientUp,
             #buttonExport:hover .gradientUp {
-                stop-color: #922c26;
+                stop-color: #AA3300;
             }
             #buttonFlip:hover .buttonBorder,
             #buttonMoreInfo:hover .buttonBorder,
             #buttonSettings:hover .buttonBorder,
             #buttonExport:hover .buttonBorder {
-                fill: #922c26;
+                fill: brown;
             }
             #buttonFlip:hover .gradientDown,
             #buttonMoreInfo:hover .gradientDown,
             #buttonSettings:hover .gradientDown,
             #buttonExport:hover .gradientDown {
-                stop-color: #ff6561;
+                stop-color: #EE4400;
             }
             #buttonFlip:hover .reflection,
             #buttonMoreInfo:hover .reflection,
             #buttonSettings:hover .reflection,
             #buttonExport:hover .reflection {
-                fill: #ff6a66;
+                fill: #FF5500;
             }
             #buttonFlip .gradientUp,
             #buttonMoreInfo .gradientUp,
             #buttonSettings .gradientUp,
             #buttonExport .gradientUp {
-                stop-color: green;
+                stop-color: brown;
             }
             #buttonFlip .buttonBorder,
             #buttonMoreInfo .buttonBorder,
             #buttonSettings .buttonBorder,
             #buttonExport .buttonBorder {
-                fill: black;
+                fill: brown;
             }
             #buttonFlip .gradientDown,
             #buttonMoreInfo .gradientDown,
             #buttonSettings .gradientDown,
             #buttonExport .gradientDown {
-                stop-color: #6d491b;
+                stop-color: #DD4500;
             }
             #buttonFlip .reflection,
             #buttonMoreInfo .reflection,
             #buttonSettings .reflection,
             #buttonExport .reflection {
-                fill: #6e771d;
+                fill: #EE5500;
             }
             .arrowBottom,
             .moreInfo,

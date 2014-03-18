@@ -9,7 +9,7 @@
             @font-face {font-family: "${screen.droid-sans.name}"; src: url(${screen.droid-sans});}
             svg {
                 margin: auto;
-                background: #4d4d4d;
+                background: #4D4D4D;
                 font-family: "${screen.droid-sans.name}";
                 -moz-user-select: none;
                 -webkit-user-select: none;
@@ -27,7 +27,7 @@
                 stroke: none;
             }
             .mapBackground {
-                fill: #003e61;
+                fill: #003E61;
             }
             .maskBlack {
                 fill: black;
@@ -36,14 +36,14 @@
                 fill: white;
             }
             .dummyRectBlue {
-                fill: #4d4d4d;
+                fill: #4D4D4D;
             }
             .eventsTarget {
                 fill: white;
                 opacity: 0;
             }
             .dialHoursMarkerMajor path {
-                fill: #FA9600;
+                fill: #FF8800;
             }
             .dialHoursMarkerMajor text {
                 fill: #DD4500;
@@ -58,11 +58,11 @@
                 font-size: 12px;
             }
             .dialHoursMarkerHalf {
-                fill: #FFD43F;
+                fill: #FFB400;
             }
             .monthsAreaBorder {
                 fill: none;
-                stroke: green;
+                stroke: #443300;
                 stroke-width: 2;
             }
             .dialMonthsTick {
@@ -82,24 +82,24 @@
             }
             .cardinalPointLabel {
                 font-size: 18px;
-                fill: orange;
+                fill: #FF8800;
                 stroke: none;
                 text-anchor: middle;
             }
             .cardinalPointTick,
             .mapAreaBorder {
                 fill: none;
-                stroke: green;
+                stroke: #443300;
                 stroke-width: 3;
             }
             .coordLabelRa {
                 font-size: 9px;
-                fill: #2abacf;
+                fill: #2ABACF;
                 text-anchor: start;
             }
             .coordLabelDec {
                 font-size: 9px;
-                fill: #2abacf;
+                fill: #2ABACF;
                 text-anchor: end;
             }
             .constellationNames {
@@ -120,12 +120,12 @@
             .constellationLines {
                 fill: none;
                 stroke-width: 1.2;
-                stroke: #9a9a9a;
+                stroke: #9A9A9A;
             }
             .ecliptic {
                 fill: none;
                 stroke-width: 0.7;
-                stroke: #2abacf;
+                stroke: #2ABACF;
             }
             .coords {
                 fill: none;
@@ -133,11 +133,11 @@
                 stroke: grey;
             }
             .milkyWayBright {
-                fill: #004e75;
+                fill: #004E75;
                 stroke: none;
             }
             .milkyWayDark {
-                fill: #00466b;
+                fill: #00466B;
                 stroke: none;
             }
             .star {
@@ -175,29 +175,29 @@
             #shades_c1,
             #stars_large_c1,
             #stars_medium_c1 {
-                fill: #DD4500;
+                fill: #CC4500;
             }
             #lines_c1 {
-                stroke: #FF4A69;
+                stroke: #FF4A00;
             }
             .color1b,
             #circles_c1,
             #stars_twinkle_c1 {
-                fill: #FF4A69;
+                fill: #FF4A00;
             }
             .color2a,
             #shades_c2,
             #stars_medium_c2,
             #stars_large_c2 {
-                fill: #FA9600;
+                fill: #FF8800;
             }
             #lines_c2 {
-                stroke: #FFD43F;
+                stroke: #FFB400;
             }
             .color2b,
             #circles_c2,
             #stars_twinkle_c2 {
-                fill: #FFD43F;
+                fill: #FFB400;
             }
 
             /*
@@ -234,20 +234,20 @@
             /* opacity */
 
             #shades_c1 {
-                fill-opacity: 0.15;
+                fill-opacity: 0.1;
             }
             #shades_c2 {
-                fill-opacity: 0.25;
+                fill-opacity: 0.2;
             }
             #circles_c1,
             #circles_c2 {
-                fill-opacity: 0.2
+                fill-opacity: 0.1
             }
             #stars_large_c1,
             #stars_large_c2,
             #stars_medium_c1,
             #stars_medium_c2 {
-                fill-opacity: 0.75;
+                fill-opacity: 0.6;
             }
 
             /* buttons */
@@ -258,60 +258,60 @@
             #buttonMoreInfo:hover .gradientUp,
             #buttonSettings:hover .gradientUp,
             #buttonExport:hover .gradientUp {
-                stop-color: #922c26;
+                stop-color: #922C00;
             }
             #buttonFlip:hover .buttonBorder,
             #buttonMoreInfo:hover .buttonBorder,
             #buttonSettings:hover .buttonBorder,
             #buttonExport:hover .buttonBorder {
-                fill: #922c26;
+                fill: #922C00;
             }
             #buttonFlip:hover .gradientDown,
             #buttonMoreInfo:hover .gradientDown,
             #buttonSettings:hover .gradientDown,
             #buttonExport:hover .gradientDown {
-                stop-color: #ff6561;
+                stop-color: #FF6500;
             }
             #buttonFlip:hover .reflection,
             #buttonMoreInfo:hover .reflection,
             #buttonSettings:hover .reflection,
             #buttonExport:hover .reflection {
-                fill: #ff6a66;
+                fill: #FF7A00;
             }
             #buttonFlip .gradientUp,
             #buttonMoreInfo .gradientUp,
             #buttonSettings .gradientUp,
             #buttonExport .gradientUp {
-                stop-color: #641e15;
+                stop-color: #641E00;
             }
             #buttonFlip .buttonBorder,
             #buttonMoreInfo .buttonBorder,
             #buttonSettings .buttonBorder,
             #buttonExport .buttonBorder {
-                fill: #641e15;
+                fill: #641E00;
             }
             #buttonFlip .gradientDown,
             #buttonMoreInfo .gradientDown,
             #buttonSettings .gradientDown,
             #buttonExport .gradientDown {
-                stop-color: #9f3026;
+                stop-color: #9F3000;
             }
             #buttonFlip .reflection,
             #buttonMoreInfo .reflection,
             #buttonSettings .reflection,
             #buttonExport .reflection {
-                fill: #c83e05;
+                fill: #C83E00;
             }
             .arrowBottom,
             .moreInfo,
             .gearLarge,
             .planisphere {
-                fill: #FA9600;
+                fill: #FF8800;
             }
             .arrowTop,
             .gearSmall,
             .scissors {
-                fill: #FF4A69;
+                fill: #FF4A00;
             }
             ]]>
         </style>
