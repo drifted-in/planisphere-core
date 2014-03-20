@@ -184,7 +184,7 @@
                     <tspan x="0" dy="10">Ara</tspan>
                     <tspan x="0" dy="10">Aries</tspan>
                     <tspan x="0" dy="10">Auriga</tspan>
-                    <tspan x="0" dy="10">BoĂ¶tes</tspan>
+                    <tspan x="0" dy="10">Boötes</tspan>
                     <tspan x="0" dy="10">Caelum</tspan>
                     <tspan x="0" dy="10">Camelopardalis</tspan>
                     <tspan x="0" dy="10">Cancer</tspan>
@@ -218,7 +218,7 @@
                     <tspan x="0" dy="10">${ara}</tspan>
                     <tspan x="0" dy="10">${aries}</tspan>
                     <tspan x="0" dy="10">${auriga}</tspan>
-                    <tspan x="0" dy="10">${boĂ¶tes}</tspan>
+                    <tspan x="0" dy="10">${boötes}</tspan>
                     <tspan x="0" dy="10">${caelum}</tspan>
                     <tspan x="0" dy="10">${camelopardalis}</tspan>
                     <tspan x="0" dy="10">${cancer}</tspan>
