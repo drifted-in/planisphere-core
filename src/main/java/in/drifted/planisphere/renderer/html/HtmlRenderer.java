@@ -9,7 +9,8 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import javax.xml.bind.DatatypeConverter;
 import javax.xml.stream.XMLStreamException;
 
@@ -21,9 +22,9 @@ public final class HtmlRenderer {
         this.svgRenderer = svgRenderer;
     }
 
-    public void createFromTemplateList(List<String> templateList, Path outputPath, Options options) throws XMLStreamException, IOException {
+    public void createFromTemplateMap(Map<String, Options> templateMap, Path outputPath) throws XMLStreamException, IOException {
 
-        LocalizationUtil l10n = new LocalizationUtil(options.getCurrentLocale());
+        LocalizationUtil l10n = new LocalizationUtil(templateMap.values().iterator().next().getCurrentLocale());
 
         try (BufferedWriter writer = Files.newBufferedWriter(outputPath, StandardCharsets.UTF_8)) {
 
@@ -33,9 +34,9 @@ public final class HtmlRenderer {
             writer.append("<style type=\"text/css\">@page {size: auto; margin:0mm}</style>");
             writer.append("</head><body style=\"margin:0;\">");
 
-            for (String template : templateList) {
+            for (Entry<String, Options> entry : templateMap.entrySet()) {
                 try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-                    svgRenderer.createFromTemplate(template, outputStream, options);
+                    svgRenderer.createFromTemplate(entry.getKey(), outputStream, entry.getValue());
                     writer.append(getBase64EncodedImage(outputStream.toByteArray()));
                 }
             }
