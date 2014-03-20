@@ -581,8 +581,10 @@
                 <g transform="translate(0.75, 32)">
                     <g id="worldmap"/>
                 </g>
-                <g transform="translate(0, 80)">
-                    <use id="latitudeMarker" x="0" y="93" xlink:href="#latitudeMarkerDef"/>
+                <!-- y = boxHeaderY + latitudeMarkerY / 2 -->
+                <g transform="translate(0, 78.25)">
+                    <!-- latitudeMarkerY = (boxAreaY - boxHeaderY - 1.5) -->                    
+                    <use id="latitudeMarker" x="0" y="92.5" xlink:href="#latitudeMarkerDef"/>
                 </g>
             </g>
         </g>
