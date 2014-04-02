@@ -1,6 +1,7 @@
 package in.drifted.planisphere.util;
 
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -18,6 +19,10 @@ public final class LocalizationUtil {
         } catch (MissingResourceException e) {
             resources = ResourceBundle.getBundle(LOCALE_BUNDLE, Locale.ENGLISH);
         }
+    }
+
+    public Collection<String> getKeyCollection() {
+        return resources.keySet();
     }
 
     public String getValue(String key) {
