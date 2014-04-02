@@ -166,11 +166,325 @@
             <use x="0" y="1000" xlink:href="#dottedBlock"/>
         </g>
         <g id="latitudeMarkerDef">
-            <text x="-13" y="4" text-anchor="end">${latitudeValue}</text>
+            <text direction="ltr" x="-13" y="4" text-anchor="end">${latitudeValue}</text>
             <path d="M0 0L-8 -5L-8 5Z"/>
             <path d="M190 0L198 -5L198 5Z"/>
             <line x1="0" y1="0" x2="190" y2="0"/>
         </g>
+        <text id="astroSymbols01">
+            <tspan x="0" dy="13">&#x2648;</tspan>
+            <tspan x="0" dy="13">&#x2649;</tspan>
+            <tspan x="0" dy="13">&#x264A;</tspan>
+            <tspan x="0" dy="13">&#x264B;</tspan>
+            <tspan x="0" dy="13">&#x264C;</tspan>
+            <tspan x="0" dy="13">&#x264D;</tspan>
+        </text>
+        <text id="astroSymbolsDescription01">
+            <tspan x="0" dy="13">${aries}</tspan>
+            <tspan x="0" dy="13">${taurus}</tspan>
+            <tspan x="0" dy="13">${gemini}</tspan>
+            <tspan x="0" dy="13">${cancer}</tspan>
+            <tspan x="0" dy="13">${leo}</tspan>
+            <tspan x="0" dy="13">${virgo}</tspan>
+        </text>
+        <text id="astroSymbols02">
+            <tspan x="0" dy="13">&#x264E;</tspan>
+            <tspan x="0" dy="13">&#x264F;</tspan>
+            <tspan x="0" dy="13">&#x2650;</tspan>
+            <tspan x="0" dy="13">&#x2651;</tspan>
+            <tspan x="0" dy="13">&#x2652;</tspan>
+            <tspan x="0" dy="13">&#x2653;</tspan>
+        </text>
+        <text id="astroSymbolsDescription02">
+            <tspan x="0" dy="13">${libra}</tspan>
+            <tspan x="0" dy="13">${scorpius}</tspan>
+            <tspan x="0" dy="13">${sagittarius}</tspan>
+            <tspan x="0" dy="13">${aquarius}</tspan>
+            <tspan x="0" dy="13">${capricornus}</tspan>
+            <tspan x="0" dy="13">${pisces}</tspan>
+        </text>
+        <text id="constallationAbbrev01" class="constellations">
+            <tspan x="0">And</tspan>
+            <tspan x="0" dy="13">Ant</tspan>
+            <tspan x="0" dy="13">Aps</tspan>
+            <tspan x="0" dy="13">Aqr</tspan>
+            <tspan x="0" dy="13">Aql</tspan>
+            <tspan x="0" dy="13">Ara</tspan>
+            <tspan x="0" dy="13">Ari</tspan>
+            <tspan x="0" dy="13">Aur</tspan>
+            <tspan x="0" dy="13">Boo</tspan>
+            <tspan x="0" dy="13">Cae</tspan>
+            <tspan x="0" dy="13">Cam</tspan>
+            <tspan x="0" dy="13">Cnc</tspan>
+            <tspan x="0" dy="13">CVn</tspan>
+            <tspan x="0" dy="13">CMa</tspan>
+            <tspan x="0" dy="13">CMi</tspan>
+            <tspan x="0" dy="13">Cap</tspan>
+            <tspan x="0" dy="13">Car</tspan>
+            <tspan x="0" dy="13">Cas</tspan>
+            <tspan x="0" dy="13">Cen</tspan>
+            <tspan x="0" dy="13">Cep</tspan>
+            <tspan x="0" dy="13">Cet</tspan>
+            <tspan x="0" dy="13">Cha</tspan>
+            <tspan x="0" dy="13">Cir</tspan>
+            <tspan x="0" dy="13">Col</tspan>
+            <tspan x="0" dy="13">Com</tspan>
+            <tspan x="0" dy="13">CrA</tspan>
+            <tspan x="0" dy="13">CrB</tspan>
+            <tspan x="0" dy="13">Crv</tspan>
+            <tspan x="0" dy="13">Crt</tspan>
+            <tspan x="0" dy="13">Cru</tspan>
+        </text>
+        <text id="constallationLatin01" class="constellations">
+            <tspan x="0">Andromeda</tspan>
+            <tspan x="0" dy="13">Antlia</tspan>
+            <tspan x="0" dy="13">Apus</tspan>
+            <tspan x="0" dy="13">Aquarius</tspan>
+            <tspan x="0" dy="13">Aquila</tspan>
+            <tspan x="0" dy="13">Ara</tspan>
+            <tspan x="0" dy="13">Aries</tspan>
+            <tspan x="0" dy="13">Auriga</tspan>
+            <tspan x="0" dy="13">Boötes</tspan>
+            <tspan x="0" dy="13">Caelum</tspan>
+            <tspan x="0" dy="13">Camelopardalis</tspan>
+            <tspan x="0" dy="13">Cancer</tspan>
+            <tspan x="0" dy="13">Canes Venatici</tspan>
+            <tspan x="0" dy="13">Canis Major</tspan>
+            <tspan x="0" dy="13">Canis Minor</tspan>
+            <tspan x="0" dy="13">Capricornus</tspan>
+            <tspan x="0" dy="13">Carina</tspan>
+            <tspan x="0" dy="13">Cassiopeia</tspan>
+            <tspan x="0" dy="13">Centaurus</tspan>
+            <tspan x="0" dy="13">Cepheus</tspan>
+            <tspan x="0" dy="13">Cetus</tspan>
+            <tspan x="0" dy="13">Chamaeleon</tspan>
+            <tspan x="0" dy="13">Circinus</tspan>
+            <tspan x="0" dy="13">Columba</tspan>
+            <tspan x="0" dy="13">Coma Berenices</tspan>
+            <tspan x="0" dy="13">Corona Australis</tspan>
+            <tspan x="0" dy="13">Corona Borealis</tspan>
+            <tspan x="0" dy="13">Corvus</tspan>
+            <tspan x="0" dy="13">Crater</tspan>
+            <tspan x="0" dy="13">Crux</tspan>
+        </text>
+        <text id="constallationLocal01" class="constellations">
+            <tspan x="0">${andromeda}</tspan>
+            <tspan x="0" dy="13">${antlia}</tspan>
+            <tspan x="0" dy="13">${apus}</tspan>
+            <tspan x="0" dy="13">${aquarius}</tspan>
+            <tspan x="0" dy="13">${aquila}</tspan>
+            <tspan x="0" dy="13">${ara}</tspan>
+            <tspan x="0" dy="13">${aries}</tspan>
+            <tspan x="0" dy="13">${auriga}</tspan>
+            <tspan x="0" dy="13">${boötes}</tspan>
+            <tspan x="0" dy="13">${caelum}</tspan>
+            <tspan x="0" dy="13">${camelopardalis}</tspan>
+            <tspan x="0" dy="13">${cancer}</tspan>
+            <tspan x="0" dy="13">${canesVenatici}</tspan>
+            <tspan x="0" dy="13">${canisMajor}</tspan>
+            <tspan x="0" dy="13">${canisMinor}</tspan>
+            <tspan x="0" dy="13">${capricornus}</tspan>
+            <tspan x="0" dy="13">${carina}</tspan>
+            <tspan x="0" dy="13">${cassiopeia}</tspan>
+            <tspan x="0" dy="13">${centaurus}</tspan>
+            <tspan x="0" dy="13">${cepheus}</tspan>
+            <tspan x="0" dy="13">${cetus}</tspan>
+            <tspan x="0" dy="13">${chamaeleon}</tspan>
+            <tspan x="0" dy="13">${circinus}</tspan>
+            <tspan x="0" dy="13">${columba}</tspan>
+            <tspan x="0" dy="13">${comaBerenices}</tspan>
+            <tspan x="0" dy="13">${coronaAustralis}</tspan>
+            <tspan x="0" dy="13">${coronaBorealis}</tspan>
+            <tspan x="0" dy="13">${corvus}</tspan>
+            <tspan x="0" dy="13">${crater}</tspan>
+            <tspan x="0" dy="13">${crux}</tspan>
+        </text>
+        <text id="constallationAbbrev02" class="constellations">
+            <tspan x="0">Cyg</tspan>
+            <tspan x="0" dy="13">Del</tspan>
+            <tspan x="0" dy="13">Dor</tspan>
+            <tspan x="0" dy="13">Dra</tspan>
+            <tspan x="0" dy="13">Equ</tspan>
+            <tspan x="0" dy="13">Eri</tspan>
+            <tspan x="0" dy="13">For</tspan>
+            <tspan x="0" dy="13">Gem</tspan>
+            <tspan x="0" dy="13">Gru</tspan>
+            <tspan x="0" dy="13">Her</tspan>
+            <tspan x="0" dy="13">Hor</tspan>
+            <tspan x="0" dy="13">Hya</tspan>
+            <tspan x="0" dy="13">Hyi</tspan>
+            <tspan x="0" dy="13">Ind</tspan>
+            <tspan x="0" dy="13">Lac</tspan>
+            <tspan x="0" dy="13">Leo</tspan>
+            <tspan x="0" dy="13">LMi</tspan>
+            <tspan x="0" dy="13">Lep</tspan>
+            <tspan x="0" dy="13">Lib</tspan>
+            <tspan x="0" dy="13">Lup</tspan>
+            <tspan x="0" dy="13">Lyn</tspan>
+            <tspan x="0" dy="13">Lyr</tspan>
+            <tspan x="0" dy="13">Men</tspan>
+            <tspan x="0" dy="13">Mic</tspan>
+            <tspan x="0" dy="13">Mon</tspan>
+            <tspan x="0" dy="13">Mus</tspan>
+            <tspan x="0" dy="13">Nor</tspan>
+            <tspan x="0" dy="13">Oct</tspan>
+            <tspan x="0" dy="13">Oph</tspan>
+        </text>
+        <text id="constallationLatin02" class="constellations">
+            <tspan x="0">Cygnus</tspan>
+            <tspan x="0" dy="13">Delphinus</tspan>
+            <tspan x="0" dy="13">Dorado</tspan>
+            <tspan x="0" dy="13">Draco</tspan>
+            <tspan x="0" dy="13">Equuleus</tspan>
+            <tspan x="0" dy="13">Eridanus</tspan>
+            <tspan x="0" dy="13">Fornax</tspan>
+            <tspan x="0" dy="13">Gemini</tspan>
+            <tspan x="0" dy="13">Grus</tspan>
+            <tspan x="0" dy="13">Hercules</tspan>
+            <tspan x="0" dy="13">Horologium</tspan>
+            <tspan x="0" dy="13">Hydra</tspan>
+            <tspan x="0" dy="13">Hydrus</tspan>
+            <tspan x="0" dy="13">Indus</tspan>
+            <tspan x="0" dy="13">Lacerta</tspan>
+            <tspan x="0" dy="13">Leo</tspan>
+            <tspan x="0" dy="13">Leo Minor</tspan>
+            <tspan x="0" dy="13">Lepus</tspan>
+            <tspan x="0" dy="13">Libra</tspan>
+            <tspan x="0" dy="13">Lupus</tspan>
+            <tspan x="0" dy="13">Lynx</tspan>
+            <tspan x="0" dy="13">Lyra</tspan>
+            <tspan x="0" dy="13">Mensa</tspan>
+            <tspan x="0" dy="13">Microscopium</tspan>
+            <tspan x="0" dy="13">Monoceros</tspan>
+            <tspan x="0" dy="13">Musca</tspan>
+            <tspan x="0" dy="13">Norma</tspan>
+            <tspan x="0" dy="13">Octans</tspan>
+            <tspan x="0" dy="13">Ophiuchus</tspan>
+        </text>
+        <text id="constallationLocal02" class="constellations">
+            <tspan x="0">${cygnus}</tspan>
+            <tspan x="0" dy="13">${delphinus}</tspan>
+            <tspan x="0" dy="13">${dorado}</tspan>
+            <tspan x="0" dy="13">${draco}</tspan>
+            <tspan x="0" dy="13">${equuleus}</tspan>
+            <tspan x="0" dy="13">${eridanus}</tspan>
+            <tspan x="0" dy="13">${fornax}</tspan>
+            <tspan x="0" dy="13">${gemini}</tspan>
+            <tspan x="0" dy="13">${grus}</tspan>
+            <tspan x="0" dy="13">${hercules}</tspan>
+            <tspan x="0" dy="13">${horologium}</tspan>
+            <tspan x="0" dy="13">${hydra}</tspan>
+            <tspan x="0" dy="13">${hydrus}</tspan>
+            <tspan x="0" dy="13">${indus}</tspan>
+            <tspan x="0" dy="13">${lacerta}</tspan>
+            <tspan x="0" dy="13">${leo}</tspan>
+            <tspan x="0" dy="13">${leoMinor}</tspan>
+            <tspan x="0" dy="13">${lepus}</tspan>
+            <tspan x="0" dy="13">${libra}</tspan>
+            <tspan x="0" dy="13">${lupus}</tspan>
+            <tspan x="0" dy="13">${lynx}</tspan>
+            <tspan x="0" dy="13">${lyra}</tspan>
+            <tspan x="0" dy="13">${mensa}</tspan>
+            <tspan x="0" dy="13">${microscopium}</tspan>
+            <tspan x="0" dy="13">${monoceros}</tspan>
+            <tspan x="0" dy="13">${musca}</tspan>
+            <tspan x="0" dy="13">${norma}</tspan>
+            <tspan x="0" dy="13">${octans}</tspan>
+            <tspan x="0" dy="13">${ophiuchus}</tspan>
+        </text>
+        <text id="constallationAbbrev03" class="constellations">
+            <tspan x="0">Ori</tspan>
+            <tspan x="0" dy="13">Pav</tspan>
+            <tspan x="0" dy="13">Peg</tspan>
+            <tspan x="0" dy="13">Per</tspan>
+            <tspan x="0" dy="13">Phe</tspan>
+            <tspan x="0" dy="13">Pic</tspan>
+            <tspan x="0" dy="13">Psc</tspan>
+            <tspan x="0" dy="13">PsA</tspan>
+            <tspan x="0" dy="13">Pup</tspan>
+            <tspan x="0" dy="13">Pix</tspan>
+            <tspan x="0" dy="13">Ret</tspan>
+            <tspan x="0" dy="13">Sge</tspan>
+            <tspan x="0" dy="13">Sgr</tspan>
+            <tspan x="0" dy="13">Sco</tspan>
+            <tspan x="0" dy="13">Scl</tspan>
+            <tspan x="0" dy="13">Sct</tspan>
+            <tspan x="0" dy="13">Ser</tspan>
+            <tspan x="0" dy="13">Sex</tspan>
+            <tspan x="0" dy="13">Tau</tspan>
+            <tspan x="0" dy="13">Tel</tspan>
+            <tspan x="0" dy="13">Tri</tspan>
+            <tspan x="0" dy="13">TrA</tspan>
+            <tspan x="0" dy="13">Tuc</tspan>
+            <tspan x="0" dy="13">UMa</tspan>
+            <tspan x="0" dy="13">UMi</tspan>
+            <tspan x="0" dy="13">Vel</tspan>
+            <tspan x="0" dy="13">Vir</tspan>
+            <tspan x="0" dy="13">Vol</tspan>
+            <tspan x="0" dy="13">Vul</tspan>
+        </text>
+        <text id="constallationLatin03" class="constellations">
+            <tspan x="0">Orion</tspan>
+            <tspan x="0" dy="13">Pavo</tspan>
+            <tspan x="0" dy="13">Pegasus</tspan>
+            <tspan x="0" dy="13">Perseus</tspan>
+            <tspan x="0" dy="13">Phoenix</tspan>
+            <tspan x="0" dy="13">Pictor</tspan>
+            <tspan x="0" dy="13">Pisces</tspan>
+            <tspan x="0" dy="13">Piscis Austrinus</tspan>
+            <tspan x="0" dy="13">Puppis</tspan>
+            <tspan x="0" dy="13">Pyxis</tspan>
+            <tspan x="0" dy="13">Reticulum</tspan>
+            <tspan x="0" dy="13">Sagitta</tspan>
+            <tspan x="0" dy="13">Sagittarius</tspan>
+            <tspan x="0" dy="13">Scorpius</tspan>
+            <tspan x="0" dy="13">Sculptor</tspan>
+            <tspan x="0" dy="13">Scutum</tspan>
+            <tspan x="0" dy="13">Serpens</tspan>
+            <tspan x="0" dy="13">Sextans</tspan>
+            <tspan x="0" dy="13">Taurus</tspan>
+            <tspan x="0" dy="13">Telescopium</tspan>
+            <tspan x="0" dy="13">Triangulum</tspan>
+            <tspan x="0" dy="13">Triangulum Australe</tspan>
+            <tspan x="0" dy="13">Tucana</tspan>
+            <tspan x="0" dy="13">Ursa Major</tspan>
+            <tspan x="0" dy="13">Ursa Minor</tspan>
+            <tspan x="0" dy="13">Vela</tspan>
+            <tspan x="0" dy="13">Virgo</tspan>
+            <tspan x="0" dy="13">Volans</tspan>
+            <tspan x="0" dy="13">Vulpecula</tspan>
+        </text>
+        <text id="constallationLocal03" class="constellations">
+            <tspan x="0">${orion}</tspan>
+            <tspan x="0" dy="13">${pavo}</tspan>
+            <tspan x="0" dy="13">${pegasus}</tspan>
+            <tspan x="0" dy="13">${perseus}</tspan>
+            <tspan x="0" dy="13">${phoenix}</tspan>
+            <tspan x="0" dy="13">${pictor}</tspan>
+            <tspan x="0" dy="13">${pisces}</tspan>
+            <tspan x="0" dy="13">${piscisAustrinus}</tspan>
+            <tspan x="0" dy="13">${puppis}</tspan>
+            <tspan x="0" dy="13">${pyxis}</tspan>
+            <tspan x="0" dy="13">${reticulum}</tspan>
+            <tspan x="0" dy="13">${sagitta}</tspan>
+            <tspan x="0" dy="13">${sagittarius}</tspan>
+            <tspan x="0" dy="13">${scorpius}</tspan>
+            <tspan x="0" dy="13">${sculptor}</tspan>
+            <tspan x="0" dy="13">${scutum}</tspan>
+            <tspan x="0" dy="13">${serpens}</tspan>
+            <tspan x="0" dy="13">${sextans}</tspan>
+            <tspan x="0" dy="13">${taurus}</tspan>
+            <tspan x="0" dy="13">${telescopium}</tspan>
+            <tspan x="0" dy="13">${triangulum}</tspan>
+            <tspan x="0" dy="13">${triangulumAustrale}</tspan>
+            <tspan x="0" dy="13">${tucana}</tspan>
+            <tspan x="0" dy="13">${ursaMajor}</tspan>
+            <tspan x="0" dy="13">${ursaMinor}</tspan>
+            <tspan x="0" dy="13">${vela}</tspan>
+            <tspan x="0" dy="13">${virgo}</tspan>
+            <tspan x="0" dy="13">${volans}</tspan>
+            <tspan x="0" dy="13">${vulpecula}</tspan>
+        </text>
     </defs>
     <g transform="rotate(20, 420, 590)">
         <use x="0" y="-150" xlink:href="#rect"/>
@@ -214,7 +528,7 @@
             </g>
         </g>
         <g transform="translate(-240, -160) rotate(180, 240, 160) translate(240, -840)">
-            <g transform="translate(0, 440)">
+            <g direction="ltr" transform="translate(0, 440)">
                 <text class="copyright">Copyright (c) ${year}, Jan Tosovsky</text>
                 <text y="18" class="copyright">http://drifted.in/planisphere/</text>
             </g>
@@ -224,305 +538,63 @@
                 <text class="constellationOverview">${constellationOverviewTitle}</text>
             </g>
             <g transform="translate(-315, 21)">
-                <g>
-                    <text class="constellations">
-                        <tspan x="0">And</tspan>
-                        <tspan x="0" dy="13">Ant</tspan>
-                        <tspan x="0" dy="13">Aps</tspan>
-                        <tspan x="0" dy="13">Aqr</tspan>
-                        <tspan x="0" dy="13">Aql</tspan>
-                        <tspan x="0" dy="13">Ara</tspan>
-                        <tspan x="0" dy="13">Ari</tspan>
-                        <tspan x="0" dy="13">Aur</tspan>
-                        <tspan x="0" dy="13">Boo</tspan>
-                        <tspan x="0" dy="13">Cae</tspan>
-                        <tspan x="0" dy="13">Cam</tspan>
-                        <tspan x="0" dy="13">Cnc</tspan>
-                        <tspan x="0" dy="13">CVn</tspan>
-                        <tspan x="0" dy="13">CMa</tspan>
-                        <tspan x="0" dy="13">CMi</tspan>
-                        <tspan x="0" dy="13">Cap</tspan>
-                        <tspan x="0" dy="13">Car</tspan>
-                        <tspan x="0" dy="13">Cas</tspan>
-                        <tspan x="0" dy="13">Cen</tspan>
-                        <tspan x="0" dy="13">Cep</tspan>
-                        <tspan x="0" dy="13">Cet</tspan>
-                        <tspan x="0" dy="13">Cha</tspan>
-                        <tspan x="0" dy="13">Cir</tspan>
-                        <tspan x="0" dy="13">Col</tspan>
-                        <tspan x="0" dy="13">Com</tspan>
-                        <tspan x="0" dy="13">CrA</tspan>
-                        <tspan x="0" dy="13">CrB</tspan>
-                        <tspan x="0" dy="13">Crv</tspan>
-                        <tspan x="0" dy="13">Crt</tspan>
-                        <tspan x="0" dy="13">Cru</tspan>
-                    </text>
+                <g direction="!rtl">
+                    <g>
+                        <use xlink:href="#constallationAbbrev01"/>
+                    </g>
+                    <g transform="translate(26, 0)">
+                        <use xlink:href="#constallationLatin01"/>
+                    </g>
+                    <g transform="translate(115, 0)">
+                        <use xlink:href="#constallationLocal01"/>
+                    </g>
+                    <g transform="translate(217, 0)">
+                        <use xlink:href="#constallationAbbrev02"/>
+                    </g>
+                    <g transform="translate(243, 0)">
+                        <use xlink:href="#constallationLatin02"/>
+                    </g>
+                    <g transform="translate(333, 0)">
+                        <use xlink:href="#constallationLocal02"/>
+                    </g>
+                    <g transform="translate(434, 0)">
+                        <use xlink:href="#constallationAbbrev03"/>
+                    </g>
+                    <g transform="translate(460, 0)">
+                        <use xlink:href="#constallationLatin03"/>
+                    </g>
+                    <g transform="translate(550, 0)">
+                        <use xlink:href="#constallationLocal03"/>
+                    </g>
                 </g>
-                <g transform="translate(26, 0)">
-                    <text class="constellations">
-                        <tspan x="0">Andromeda</tspan>
-                        <tspan x="0" dy="13">Antlia</tspan>
-                        <tspan x="0" dy="13">Apus</tspan>
-                        <tspan x="0" dy="13">Aquarius</tspan>
-                        <tspan x="0" dy="13">Aquila</tspan>
-                        <tspan x="0" dy="13">Ara</tspan>
-                        <tspan x="0" dy="13">Aries</tspan>
-                        <tspan x="0" dy="13">Auriga</tspan>
-                        <tspan x="0" dy="13">Boötes</tspan>
-                        <tspan x="0" dy="13">Caelum</tspan>
-                        <tspan x="0" dy="13">Camelopardalis</tspan>
-                        <tspan x="0" dy="13">Cancer</tspan>
-                        <tspan x="0" dy="13">Canes Venatici</tspan>
-                        <tspan x="0" dy="13">Canis Major</tspan>
-                        <tspan x="0" dy="13">Canis Minor</tspan>
-                        <tspan x="0" dy="13">Capricornus</tspan>
-                        <tspan x="0" dy="13">Carina</tspan>
-                        <tspan x="0" dy="13">Cassiopeia</tspan>
-                        <tspan x="0" dy="13">Centaurus</tspan>
-                        <tspan x="0" dy="13">Cepheus</tspan>
-                        <tspan x="0" dy="13">Cetus</tspan>
-                        <tspan x="0" dy="13">Chamaeleon</tspan>
-                        <tspan x="0" dy="13">Circinus</tspan>
-                        <tspan x="0" dy="13">Columba</tspan>
-                        <tspan x="0" dy="13">Coma Berenices</tspan>
-                        <tspan x="0" dy="13">Corona Australis</tspan>
-                        <tspan x="0" dy="13">Corona Borealis</tspan>
-                        <tspan x="0" dy="13">Corvus</tspan>
-                        <tspan x="0" dy="13">Crater</tspan>
-                        <tspan x="0" dy="13">Crux</tspan>
-                    </text>
-                </g>
-                <g transform="translate(115, 0)">
-                    <text class="constellations">
-                        <tspan x="0">${andromeda}</tspan>
-                        <tspan x="0" dy="13">${antlia}</tspan>
-                        <tspan x="0" dy="13">${apus}</tspan>
-                        <tspan x="0" dy="13">${aquarius}</tspan>
-                        <tspan x="0" dy="13">${aquila}</tspan>
-                        <tspan x="0" dy="13">${ara}</tspan>
-                        <tspan x="0" dy="13">${aries}</tspan>
-                        <tspan x="0" dy="13">${auriga}</tspan>
-                        <tspan x="0" dy="13">${boötes}</tspan>
-                        <tspan x="0" dy="13">${caelum}</tspan>
-                        <tspan x="0" dy="13">${camelopardalis}</tspan>
-                        <tspan x="0" dy="13">${cancer}</tspan>
-                        <tspan x="0" dy="13">${canesVenatici}</tspan>
-                        <tspan x="0" dy="13">${canisMajor}</tspan>
-                        <tspan x="0" dy="13">${canisMinor}</tspan>
-                        <tspan x="0" dy="13">${capricornus}</tspan>
-                        <tspan x="0" dy="13">${carina}</tspan>
-                        <tspan x="0" dy="13">${cassiopeia}</tspan>
-                        <tspan x="0" dy="13">${centaurus}</tspan>
-                        <tspan x="0" dy="13">${cepheus}</tspan>
-                        <tspan x="0" dy="13">${cetus}</tspan>
-                        <tspan x="0" dy="13">${chamaeleon}</tspan>
-                        <tspan x="0" dy="13">${circinus}</tspan>
-                        <tspan x="0" dy="13">${columba}</tspan>
-                        <tspan x="0" dy="13">${comaBerenices}</tspan>
-                        <tspan x="0" dy="13">${coronaAustralis}</tspan>
-                        <tspan x="0" dy="13">${coronaBorealis}</tspan>
-                        <tspan x="0" dy="13">${corvus}</tspan>
-                        <tspan x="0" dy="13">${crater}</tspan>
-                        <tspan x="0" dy="13">${crux}</tspan>
-                    </text>
-                </g>
-                <g transform="translate(217, 0)">
-                    <text class="constellations">
-                        <tspan x="0">Cyg</tspan>
-                        <tspan x="0" dy="13">Del</tspan>
-                        <tspan x="0" dy="13">Dor</tspan>
-                        <tspan x="0" dy="13">Dra</tspan>
-                        <tspan x="0" dy="13">Equ</tspan>
-                        <tspan x="0" dy="13">Eri</tspan>
-                        <tspan x="0" dy="13">For</tspan>
-                        <tspan x="0" dy="13">Gem</tspan>
-                        <tspan x="0" dy="13">Gru</tspan>
-                        <tspan x="0" dy="13">Her</tspan>
-                        <tspan x="0" dy="13">Hor</tspan>
-                        <tspan x="0" dy="13">Hya</tspan>
-                        <tspan x="0" dy="13">Hyi</tspan>
-                        <tspan x="0" dy="13">Ind</tspan>
-                        <tspan x="0" dy="13">Lac</tspan>
-                        <tspan x="0" dy="13">Leo</tspan>
-                        <tspan x="0" dy="13">LMi</tspan>
-                        <tspan x="0" dy="13">Lep</tspan>
-                        <tspan x="0" dy="13">Lib</tspan>
-                        <tspan x="0" dy="13">Lup</tspan>
-                        <tspan x="0" dy="13">Lyn</tspan>
-                        <tspan x="0" dy="13">Lyr</tspan>
-                        <tspan x="0" dy="13">Men</tspan>
-                        <tspan x="0" dy="13">Mic</tspan>
-                        <tspan x="0" dy="13">Mon</tspan>
-                        <tspan x="0" dy="13">Mus</tspan>
-                        <tspan x="0" dy="13">Nor</tspan>
-                        <tspan x="0" dy="13">Oct</tspan>
-                        <tspan x="0" dy="13">Oph</tspan>
-                    </text>
-                </g>
-                <g transform="translate(243, 0)">
-                    <text class="constellations">
-                        <tspan x="0">Cygnus</tspan>
-                        <tspan x="0" dy="13">Delphinus</tspan>
-                        <tspan x="0" dy="13">Dorado</tspan>
-                        <tspan x="0" dy="13">Draco</tspan>
-                        <tspan x="0" dy="13">Equuleus</tspan>
-                        <tspan x="0" dy="13">Eridanus</tspan>
-                        <tspan x="0" dy="13">Fornax</tspan>
-                        <tspan x="0" dy="13">Gemini</tspan>
-                        <tspan x="0" dy="13">Grus</tspan>
-                        <tspan x="0" dy="13">Hercules</tspan>
-                        <tspan x="0" dy="13">Horologium</tspan>
-                        <tspan x="0" dy="13">Hydra</tspan>
-                        <tspan x="0" dy="13">Hydrus</tspan>
-                        <tspan x="0" dy="13">Indus</tspan>
-                        <tspan x="0" dy="13">Lacerta</tspan>
-                        <tspan x="0" dy="13">Leo</tspan>
-                        <tspan x="0" dy="13">Leo Minor</tspan>
-                        <tspan x="0" dy="13">Lepus</tspan>
-                        <tspan x="0" dy="13">Libra</tspan>
-                        <tspan x="0" dy="13">Lupus</tspan>
-                        <tspan x="0" dy="13">Lynx</tspan>
-                        <tspan x="0" dy="13">Lyra</tspan>
-                        <tspan x="0" dy="13">Mensa</tspan>
-                        <tspan x="0" dy="13">Microscopium</tspan>
-                        <tspan x="0" dy="13">Monoceros</tspan>
-                        <tspan x="0" dy="13">Musca</tspan>
-                        <tspan x="0" dy="13">Norma</tspan>
-                        <tspan x="0" dy="13">Octans</tspan>
-                        <tspan x="0" dy="13">Ophiuchus</tspan>
-                    </text>
-                </g>
-                <g transform="translate(333, 0)">
-                    <text class="constellations">
-                        <tspan x="0">${cygnus}</tspan>
-                        <tspan x="0" dy="13">${delphinus}</tspan>
-                        <tspan x="0" dy="13">${dorado}</tspan>
-                        <tspan x="0" dy="13">${draco}</tspan>
-                        <tspan x="0" dy="13">${equuleus}</tspan>
-                        <tspan x="0" dy="13">${eridanus}</tspan>
-                        <tspan x="0" dy="13">${fornax}</tspan>
-                        <tspan x="0" dy="13">${gemini}</tspan>
-                        <tspan x="0" dy="13">${grus}</tspan>
-                        <tspan x="0" dy="13">${hercules}</tspan>
-                        <tspan x="0" dy="13">${horologium}</tspan>
-                        <tspan x="0" dy="13">${hydra}</tspan>
-                        <tspan x="0" dy="13">${hydrus}</tspan>
-                        <tspan x="0" dy="13">${indus}</tspan>
-                        <tspan x="0" dy="13">${lacerta}</tspan>
-                        <tspan x="0" dy="13">${leo}</tspan>
-                        <tspan x="0" dy="13">${leoMinor}</tspan>
-                        <tspan x="0" dy="13">${lepus}</tspan>
-                        <tspan x="0" dy="13">${libra}</tspan>
-                        <tspan x="0" dy="13">${lupus}</tspan>
-                        <tspan x="0" dy="13">${lynx}</tspan>
-                        <tspan x="0" dy="13">${lyra}</tspan>
-                        <tspan x="0" dy="13">${mensa}</tspan>
-                        <tspan x="0" dy="13">${microscopium}</tspan>
-                        <tspan x="0" dy="13">${monoceros}</tspan>
-                        <tspan x="0" dy="13">${musca}</tspan>
-                        <tspan x="0" dy="13">${norma}</tspan>
-                        <tspan x="0" dy="13">${octans}</tspan>
-                        <tspan x="0" dy="13">${ophiuchus}</tspan>
-                    </text>
-                </g>
-                <g transform="translate(434, 0)">
-                    <text class="constellations">
-                        <tspan x="0">Ori</tspan>
-                        <tspan x="0" dy="13">Pav</tspan>
-                        <tspan x="0" dy="13">Peg</tspan>
-                        <tspan x="0" dy="13">Per</tspan>
-                        <tspan x="0" dy="13">Phe</tspan>
-                        <tspan x="0" dy="13">Pic</tspan>
-                        <tspan x="0" dy="13">Psc</tspan>
-                        <tspan x="0" dy="13">PsA</tspan>
-                        <tspan x="0" dy="13">Pup</tspan>
-                        <tspan x="0" dy="13">Pix</tspan>
-                        <tspan x="0" dy="13">Ret</tspan>
-                        <tspan x="0" dy="13">Sge</tspan>
-                        <tspan x="0" dy="13">Sgr</tspan>
-                        <tspan x="0" dy="13">Sco</tspan>
-                        <tspan x="0" dy="13">Scl</tspan>
-                        <tspan x="0" dy="13">Sct</tspan>
-                        <tspan x="0" dy="13">Ser</tspan>
-                        <tspan x="0" dy="13">Sex</tspan>
-                        <tspan x="0" dy="13">Tau</tspan>
-                        <tspan x="0" dy="13">Tel</tspan>
-                        <tspan x="0" dy="13">Tri</tspan>
-                        <tspan x="0" dy="13">TrA</tspan>
-                        <tspan x="0" dy="13">Tuc</tspan>
-                        <tspan x="0" dy="13">UMa</tspan>
-                        <tspan x="0" dy="13">UMi</tspan>
-                        <tspan x="0" dy="13">Vel</tspan>
-                        <tspan x="0" dy="13">Vir</tspan>
-                        <tspan x="0" dy="13">Vol</tspan>
-                        <tspan x="0" dy="13">Vul</tspan>
-                    </text>
-                </g>
-                <g transform="translate(460, 0)">
-                    <text class="constellations">
-                        <tspan x="0">Orion</tspan>
-                        <tspan x="0" dy="13">Pavo</tspan>
-                        <tspan x="0" dy="13">Pegasus</tspan>
-                        <tspan x="0" dy="13">Perseus</tspan>
-                        <tspan x="0" dy="13">Phoenix</tspan>
-                        <tspan x="0" dy="13">Pictor</tspan>
-                        <tspan x="0" dy="13">Pisces</tspan>
-                        <tspan x="0" dy="13">Piscis Austrinus</tspan>
-                        <tspan x="0" dy="13">Puppis</tspan>
-                        <tspan x="0" dy="13">Pyxis</tspan>
-                        <tspan x="0" dy="13">Reticulum</tspan>
-                        <tspan x="0" dy="13">Sagitta</tspan>
-                        <tspan x="0" dy="13">Sagittarius</tspan>
-                        <tspan x="0" dy="13">Scorpius</tspan>
-                        <tspan x="0" dy="13">Sculptor</tspan>
-                        <tspan x="0" dy="13">Scutum</tspan>
-                        <tspan x="0" dy="13">Serpens</tspan>
-                        <tspan x="0" dy="13">Sextans</tspan>
-                        <tspan x="0" dy="13">Taurus</tspan>
-                        <tspan x="0" dy="13">Telescopium</tspan>
-                        <tspan x="0" dy="13">Triangulum</tspan>
-                        <tspan x="0" dy="13">Triangulum Australe</tspan>
-                        <tspan x="0" dy="13">Tucana</tspan>
-                        <tspan x="0" dy="13">Ursa Major</tspan>
-                        <tspan x="0" dy="13">Ursa Minor</tspan>
-                        <tspan x="0" dy="13">Vela</tspan>
-                        <tspan x="0" dy="13">Virgo</tspan>
-                        <tspan x="0" dy="13">Volans</tspan>
-                        <tspan x="0" dy="13">Vulpecula</tspan>
-                    </text>
-                </g>
-                <g transform="translate(550, 0)">
-                    <text class="constellations">
-                        <tspan x="0">${orion}</tspan>
-                        <tspan x="0" dy="13">${pavo}</tspan>
-                        <tspan x="0" dy="13">${pegasus}</tspan>
-                        <tspan x="0" dy="13">${perseus}</tspan>
-                        <tspan x="0" dy="13">${phoenix}</tspan>
-                        <tspan x="0" dy="13">${pictor}</tspan>
-                        <tspan x="0" dy="13">${pisces}</tspan>
-                        <tspan x="0" dy="13">${piscisAustrinus}</tspan>
-                        <tspan x="0" dy="13">${puppis}</tspan>
-                        <tspan x="0" dy="13">${pyxis}</tspan>
-                        <tspan x="0" dy="13">${reticulum}</tspan>
-                        <tspan x="0" dy="13">${sagitta}</tspan>
-                        <tspan x="0" dy="13">${sagittarius}</tspan>
-                        <tspan x="0" dy="13">${scorpius}</tspan>
-                        <tspan x="0" dy="13">${sculptor}</tspan>
-                        <tspan x="0" dy="13">${scutum}</tspan>
-                        <tspan x="0" dy="13">${serpens}</tspan>
-                        <tspan x="0" dy="13">${sextans}</tspan>
-                        <tspan x="0" dy="13">${taurus}</tspan>
-                        <tspan x="0" dy="13">${telescopium}</tspan>
-                        <tspan x="0" dy="13">${triangulum}</tspan>
-                        <tspan x="0" dy="13">${triangulumAustrale}</tspan>
-                        <tspan x="0" dy="13">${tucana}</tspan>
-                        <tspan x="0" dy="13">${ursaMajor}</tspan>
-                        <tspan x="0" dy="13">${ursaMinor}</tspan>
-                        <tspan x="0" dy="13">${vela}</tspan>
-                        <tspan x="0" dy="13">${virgo}</tspan>
-                        <tspan x="0" dy="13">${volans}</tspan>
-                        <tspan x="0" dy="13">${vulpecula}</tspan>
-                    </text>
+                <g direction="!ltr">
+                    <g transform="translate(630, 0)">
+                        <use xlink:href="#constallationAbbrev01"/>
+                    </g>
+                    <g transform="translate(604, 0)">
+                        <use xlink:href="#constallationLatin01"/>
+                    </g>
+                    <g transform="translate(515, 0)">
+                        <use xlink:href="#constallationLocal01"/>
+                    </g>
+                    <g transform="translate(413, 0)">
+                        <use xlink:href="#constallationAbbrev02"/>
+                    </g>
+                    <g transform="translate(387, 0)">
+                        <use xlink:href="#constallationLatin02"/>
+                    </g>
+                    <g transform="translate(297, 0)">
+                        <use xlink:href="#constallationLocal02"/>
+                    </g>
+                    <g transform="translate(196, 0)">
+                        <use xlink:href="#constallationAbbrev03"/>
+                    </g>
+                    <g transform="translate(170, 0)">
+                        <use xlink:href="#constallationLatin03"/>
+                    </g>
+                    <g transform="translate(80, 0)">
+                        <use xlink:href="#constallationLocal03"/>
+                    </g>
                 </g>
             </g>
         </g>
@@ -531,45 +603,33 @@
                 <rect class="boxArea" x="0" y="0" width="190" height="126"/>
                 <rect class="boxHeader" x="0" y="0" width="190" height="32"/>
                 <text x="95" y="21" class="boxTitle">${zoodiacSignsTitle}</text>
-                <g transform="translate(7, 36)" class="astroSymbols">
-                    <text>
-                        <tspan x="0" dy="13">&#x2648;</tspan>
-                        <tspan x="0" dy="13">&#x2649;</tspan>
-                        <tspan x="0" dy="13">&#x264A;</tspan>
-                        <tspan x="0" dy="13">&#x264B;</tspan>
-                        <tspan x="0" dy="13">&#x264C;</tspan>
-                        <tspan x="0" dy="13">&#x264D;</tspan>
-                    </text>
+                <g direction="!rtl">
+                    <g transform="translate(7, 36)" class="astroSymbols">
+                        <use xlink:href="#astroSymbols01"/>
+                    </g>
+                    <g transform="translate(24, 36)" class="boxBody">
+                        <use xlink:href="#astroSymbolsDescription01"/>
+                    </g>
+                    <g transform="translate(95, 36)" class="astroSymbols">
+                        <use xlink:href="#astroSymbols02"/>
+                    </g>
+                    <g transform="translate(112, 36)" class="boxBody">
+                        <use xlink:href="#astroSymbolsDescription02"/>
+                    </g>
                 </g>
-                <g transform="translate(24, 36)" class="boxBody">
-                    <text>
-                        <tspan x="0" dy="13">${aries}</tspan>
-                        <tspan x="0" dy="13">${taurus}</tspan>
-                        <tspan x="0" dy="13">${gemini}</tspan>
-                        <tspan x="0" dy="13">${cancer}</tspan>
-                        <tspan x="0" dy="13">${leo}</tspan>
-                        <tspan x="0" dy="13">${virgo}</tspan>
-                    </text>
-                </g>
-                <g transform="translate(95, 36)" class="astroSymbols">
-                    <text>
-                        <tspan x="0" dy="13">&#x264E;</tspan>
-                        <tspan x="0" dy="13">&#x264F;</tspan>
-                        <tspan x="0" dy="13">&#x2650;</tspan>
-                        <tspan x="0" dy="13">&#x2651;</tspan>
-                        <tspan x="0" dy="13">&#x2652;</tspan>
-                        <tspan x="0" dy="13">&#x2653;</tspan>
-                    </text>
-                </g>
-                <g transform="translate(112, 36)" class="boxBody">
-                    <text>
-                        <tspan x="0" dy="13">${libra}</tspan>
-                        <tspan x="0" dy="13">${scorpius}</tspan>
-                        <tspan x="0" dy="13">${sagittarius}</tspan>
-                        <tspan x="0" dy="13">${aquarius}</tspan>
-                        <tspan x="0" dy="13">${capricornus}</tspan>
-                        <tspan x="0" dy="13">${pisces}</tspan>
-                    </text>
+                <g direction="!ltr">
+                    <g transform="translate(183, 36)" class="astroSymbols">
+                        <use xlink:href="#astroSymbols01"/>
+                    </g>
+                    <g transform="translate(166, 36)" class="boxBody">
+                        <use xlink:href="#astroSymbolsDescription01"/>
+                    </g>
+                    <g transform="translate(95, 36)" class="astroSymbols">
+                        <use xlink:href="#astroSymbols02"/>
+                    </g>
+                    <g transform="translate(78, 36)" class="boxBody">
+                        <use xlink:href="#astroSymbolsDescription02"/>
+                    </g>
                 </g>
             </g>
         </g>
