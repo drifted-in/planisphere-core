@@ -6,11 +6,11 @@
     <defs>
         <style type="text/css" xml:space="preserve">
             <![CDATA[
-            @font-face {font-family: "${screen.droid-sans.name}"; src: url(${screen.droid-sans});}
+            ${droid-sans.font-face}
             svg {
                 margin: auto;
                 background: #4D4D4D;
-                font-family: "${screen.droid-sans.name}";
+                font-family: ${droid-sans.font-family};
                 -moz-user-select: none;
                 -webkit-user-select: none;
                 -ms-user-select: none;

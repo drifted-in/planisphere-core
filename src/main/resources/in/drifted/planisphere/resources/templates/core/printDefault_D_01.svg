@@ -4,12 +4,12 @@
     <defs>
         <style type="text/css" xml:space="preserve">
             <![CDATA[
-            @font-face {font-family: "${print.droid-sans.name}"; src: url(${print.droid-sans});}
-            @font-face {font-family: "${print.planisphere.name}"; src: url(${print.planisphere});}
+            ${droid-sans.font-face}
+            ${planisphere.font-face}
             svg {
                 margin: auto;
                 background: white;
-                font-family: "${print.droid-sans.name}";
+                font-family: ${droid-sans.font-family};
             }
             .invisible {
                 fill: none;
@@ -75,7 +75,7 @@
             }
             .astroSymbols {
                 fill: white;
-                font-family: "${print.planisphere.name}";
+                font-family: ${planisphere.font-family};
                 font-size: 10px;
             }
             .copyright {

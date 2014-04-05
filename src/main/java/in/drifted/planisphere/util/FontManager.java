@@ -2,6 +2,9 @@ package in.drifted.planisphere.util;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -17,7 +20,11 @@ public final class FontManager {
 
     public FontManager(Locale locale) {
         resources = ResourceBundle.getBundle("in.drifted.planisphere.resources.fonts.mapping");
-        country = locale.getCountry();
+        if (locale.getLanguage().equals("ar")) {
+            country = "ar";
+        } else {
+            country = locale.getCountry();
+        }
     }
 
     public String translate(String content) throws IOException {
@@ -34,10 +41,22 @@ public final class FontManager {
             } else {
                 int index = chunk.indexOf("}");
                 String key = chunk.substring(0, index);
-                if (key.contains(".name")) {
-                    chunkList.add(getValue(key.replace(".name", "")).replace(".ttf", ""));
+                String fontKey = key.substring(0, key.indexOf("."));
+                Collection<String> fontFileNameCollection = getFontFileNameCollection(fontKey);
+                if (key.contains(".font-family")) {
+                    Iterator<String> it = fontFileNameCollection.iterator();
+                    while (it.hasNext()) {
+                        String fontName = it.next().substring(0, key.indexOf("."));
+                        chunkList.add("\"" + fontName + "\"");
+                        if (it.hasNext()) {
+                            chunkList.add(", ");
+                        }
+                    }
                 } else {
-                    chunkList.add(getFontBase64Encoded(getValue(key)));
+                    for (String fontFileName : fontFileNameCollection) {
+                        String fontName = fontFileName.substring(0, key.indexOf("."));
+                        chunkList.add("@font-face {font-family: \"" + fontName + "\"; src: url(" + getFontBase64Encoded(fontFileName) + ");}\n");
+                    }
                 }
                 if (index != chunk.length() - 1) {
                     chunkList.add(chunk.substring(index + 1));
@@ -50,6 +69,11 @@ public final class FontManager {
         }
 
         return contentUpdated.toString();
+    }
+
+    private Collection<String> getFontFileNameCollection(String key) {
+
+        return Arrays.asList(getValue(key).split("\\|"));
     }
 
     private String getValue(String key) {
