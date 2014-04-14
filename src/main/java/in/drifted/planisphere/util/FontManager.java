@@ -43,18 +43,29 @@ public final class FontManager {
                 String key = chunk.substring(0, index);
                 String fontKey = key.substring(0, key.indexOf("."));
                 Collection<String> fontFileNameCollection = getFontFileNameCollection(fontKey);
+                Boolean isSingle = fontFileNameCollection.size() == 1;
+                String indexMarker = "";
+
                 if (key.contains(".font-family")) {
+                    int i = 0;
                     Iterator<String> it = fontFileNameCollection.iterator();
                     while (it.hasNext()) {
-                        String fontName = it.next().substring(0, key.indexOf("."));
+                        if (!isSingle) {
+                            indexMarker = "-" + (++i);
+                        }
+                        String fontName = it.next().substring(0, key.indexOf(".")) + indexMarker;
                         chunkList.add("\"" + fontName + "\"");
                         if (it.hasNext()) {
                             chunkList.add(", ");
                         }
                     }
                 } else {
+                    int i = 0;
                     for (String fontFileName : fontFileNameCollection) {
-                        String fontName = fontFileName.substring(0, key.indexOf("."));
+                        if (!isSingle) {
+                            indexMarker = "-" + (++i);
+                        }
+                        String fontName = fontFileName.substring(0, key.indexOf(".")) + indexMarker;
                         chunkList.add("@font-face {font-family: \"" + fontName + "\"; src: url(" + getFontBase64Encoded(fontFileName) + ");}\n");
                     }
                 }
