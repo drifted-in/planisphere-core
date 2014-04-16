@@ -10,6 +10,7 @@ thanks = Thanks
 
 # interface
 applicationName = Planisphere
+buttonFlip = Flip
 buttonMoreInfo = More info
 buttonExport = Export
 buttonSettings = Settings
@@ -138,3 +139,15 @@ vulpecula = the Fox
 # printed output labels
 constellationOverviewTitle = CONSTELLATION OVERVIEW
 zoodiacSignsTitle = Signs of the Zodiac
+starSizeComparisonTitle = Star Size Comparison
+
+#stars
+sun = Sun
+sirius = Sirius
+procyon = Procyon
+vega = Vega
+capella = Capella
+arcturus = Arcturus
+aldebaran = Aldebaran
+rigel = Rigel
+betelgeuse = Betelgeuse
