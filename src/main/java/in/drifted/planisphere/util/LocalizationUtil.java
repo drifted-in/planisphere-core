@@ -12,12 +12,17 @@ public final class LocalizationUtil {
 
     private static final String LOCALE_BUNDLE = "in.drifted.planisphere.resources.localizations.messages";
     private ResourceBundle resources;
+    private ResourceBundle resourcesFallback;
 
     public LocalizationUtil(Locale locale) {
+
         try {
             resources = ResourceBundle.getBundle(LOCALE_BUNDLE, locale);
+            resourcesFallback = ResourceBundle.getBundle(LOCALE_BUNDLE, Locale.ENGLISH);
+
         } catch (MissingResourceException e) {
             resources = ResourceBundle.getBundle(LOCALE_BUNDLE, Locale.ENGLISH);
+            resourcesFallback = resources;
         }
     }
 
@@ -26,28 +31,28 @@ public final class LocalizationUtil {
     }
 
     public String getValue(String key) {
-        if (resources.containsKey(key)) {
-            return resources.getString(key);
-        } else if (key.equals("year")) {
-            Calendar calendar = Calendar.getInstance();
-            return String.valueOf(calendar.get(Calendar.YEAR));
-        } else {
-            return key;
+        switch (key) {
+            case "year":
+                return String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
+            default:
+                if (resources.containsKey(key)) {
+                    return resources.getString(key);
+                } else if (resourcesFallback.containsKey(key)) {
+                    return resourcesFallback.getString(key);
+                } else {
+                    return key;
+                }
         }
     }
 
     public String getValue(String key, Double latitude) {
-        if (resources.containsKey(key)) {
-            return resources.getString(key);
-        } else if (key.equals("year")) {
-            Calendar calendar = Calendar.getInstance();
-            return String.valueOf(calendar.get(Calendar.YEAR));
-        } else if (key.equals("latitudeValue")) {
-            String strNorth = resources.getString("cardinalPointNorth");
-            String strSouth = resources.getString("cardinalPointSouth");
-            return Math.abs(latitude.intValue()) + " " + ((latitude < 0) ? strSouth : strNorth);
-        } else {
-            return key;
+        switch (key) {
+            case "latitudeValue":
+                String strNorth = getValue("cardinalPointNorth");
+                String strSouth = getValue("cardinalPointSouth");
+                return Math.abs(latitude.intValue()) + " " + ((latitude < 0) ? strSouth : strNorth);
+            default:
+                return getValue(key);
         }
     }
 
@@ -76,6 +81,7 @@ public final class LocalizationUtil {
         for (String chunk : chunkList) {
             contentUpdated.append(chunk);
         }
+
         return contentUpdated.toString();
     }
 }
