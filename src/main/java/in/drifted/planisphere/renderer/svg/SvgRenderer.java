@@ -75,6 +75,16 @@ public final class SvgRenderer {
         cacheHandler = CacheHandler.getInstance();
     }
 
+    private void initVariables(Options options) {
+        latitudeFixed = options.getLatitude();
+        isDoubleSided = options.getDoubleSided();
+        Integer latitudeFixedSign = (latitudeFixed >= 0) ? 1 : -1;
+        doubleSidedSign = (int) (options.getDoubleSidedSign() * latitudeFixedSign);
+        latitude = isDoubleSided ? doubleSidedSign * 65.0 : latitudeFixed;
+        latitudeSign = (latitude >= 0) ? 1 : -1; // Math.signum() returns 0 for zero latitude     
+        localizationUtil = new LocalizationUtil(options.getCurrentLocale());
+    }
+
     public void createFromTemplate(String resourcePath, OutputStream output, Options options) throws XMLStreamException, IOException {
         writer = outputFactory.createXMLStreamWriter(output);
         try (InputStream input = getClass().getResourceAsStream(Settings.RESOURCE_BASE_PATH + "templates/core/" + resourcePath)) {
@@ -86,14 +96,9 @@ public final class SvgRenderer {
 
     private void createFromTemplate(InputStream input, Options options) throws XMLStreamException, IOException {
 
-        latitudeFixed = options.getLatitude();
-        isDoubleSided = options.getDoubleSided();
-        Integer latitudeFixedSign = (latitudeFixed >= 0) ? 1 : -1;
-        doubleSidedSign = (int) (options.getDoubleSidedSign() * latitudeFixedSign);
-        latitude = isDoubleSided ? doubleSidedSign * 65.0 : latitudeFixed;
-        latitudeSign = (latitude >= 0) ? 1 : -1; // Math.signum() returns 0 for zero latitude
+        initVariables(options);
+
         Locale locale = options.getCurrentLocale();
-        localizationUtil = new LocalizationUtil(locale);
         FontManager fontManager = new FontManager(locale);
         XMLEventReader parser = inputFactory.createXMLEventReader(input);
 
@@ -120,7 +125,7 @@ public final class SvgRenderer {
                     elementName = startElement.getName().getLocalPart();
                     idAttr = startElement.getAttributeByName(new QName("id"));
                     dirAttr = startElement.getAttributeByName(new QName("direction"));
-                    
+
                     if (dirAttr != null && dirAttr.getValue().equals("!" + direction)) {
                         isUsed = false;
                         isSuppressed = true;
@@ -505,31 +510,40 @@ public final class SvgRenderer {
 
         if (isDoubleSided) {
             if (doubleSidedSign > 0 && latitudeFixed != 0) {
-                List<String> copyList = new LinkedList<>();
-                for (int i = 0; i < 4; i++) {
-                    copyList.add(i, cardinalPointLabelList.get(i + 4));
-                }
-                for (int i = 0; i < 4; i++) {
-                    copyList.add(i + 4, cardinalPointLabelList.get(i));
-                }
-                cardinalPointLabelList = copyList;
+                cardinalPointLabelList = getSwappedList(cardinalPointLabelList);
             }
         } else {
             if (latitude < 0) {
-                String tmp;
-                tmp = cardinalPointLabelList.get(0);
-                cardinalPointLabelList.set(0, cardinalPointLabelList.get(4));
-                cardinalPointLabelList.set(4, tmp);
-                tmp = cardinalPointLabelList.get(1);
-                cardinalPointLabelList.set(1, cardinalPointLabelList.get(3));
-                cardinalPointLabelList.set(3, tmp);
-                tmp = cardinalPointLabelList.get(5);
-                cardinalPointLabelList.set(5, cardinalPointLabelList.get(7));
-                cardinalPointLabelList.set(7, tmp);
+                cardinalPointLabelList = getSwappedList(cardinalPointLabelList);
             }
         }
 
         return cardinalPointLabelList;
+    }
+
+    private List<String> getSwappedList(List<String> cardinalPointLabelList) {
+
+        List<String> swappedList = new LinkedList<>();
+
+        for (int i = 0; i < 4; i++) {
+            swappedList.add(i, cardinalPointLabelList.get(i + 4));
+        }
+        for (int i = 0; i < 4; i++) {
+            swappedList.add(i + 4, cardinalPointLabelList.get(i));
+        }
+
+        return swappedList;
+    }
+
+    public String getDelimitedCardinalPointLabelList() {
+
+        StringBuilder sb = new StringBuilder();
+        for (CardinalPoint cardinalPoint : cardinalPointList) {
+            sb.append(cardinalPoint.getLabel());
+            sb.append("|");
+        }
+
+        return sb.toString();
     }
 
     private void renderDefsMapArea() throws XMLStreamException {
