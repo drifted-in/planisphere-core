@@ -6,7 +6,7 @@ import java.util.Locale;
 public final class Options implements Serializable {
 
     private String localeValue = "en";
-    private Double latitude = 30.0;
+    private Double latitude = 50.0;
     private String screenImage;
     private String printImage;
     private Boolean constellationLines = true;
@@ -17,6 +17,7 @@ public final class Options implements Serializable {
     private Boolean dayLightSavingTimeScale = true;
     private Boolean coordsRADec = true;
     private Boolean ecliptic = true;
+    private Boolean allVisibleStars = false;
     // helper param
     private Integer doubleSidedSign = 1;
     // calculated values, getters only
@@ -41,6 +42,7 @@ public final class Options implements Serializable {
         this.dayLightSavingTimeScale = options.getDayLightSavingTimeScale();
         this.coordsRADec = options.getCoordsRADec();
         this.ecliptic = options.getEcliptic();
+        this.allVisibleStars = options.getAllVisibleStars();
         this.doubleSidedSign = options.getDoubleSidedSign();
     }
 
@@ -149,6 +151,14 @@ public final class Options implements Serializable {
 
     public void setEcliptic(Boolean ecliptic) {
         this.ecliptic = ecliptic;
+    }
+
+    public Boolean getAllVisibleStars() {
+        return allVisibleStars;
+    }
+
+    public void setAllVisibleStars(Boolean allVisibleStars) {
+        this.allVisibleStars = allVisibleStars;
     }
 
     public Boolean getDoubleSided() {

@@ -29,6 +29,7 @@ milkyWay = Milky way
 dayLightSavingTimeScale = DST scale
 coordsRADec = RA/Dec coordinates
 ecliptic = Ecliptic
+allVisibleStars = All visible stars
 
 # exchange files
 sampleFiles = Sample files

@@ -180,7 +180,7 @@ public final class SvgRenderer {
                                     if (options.getConstellationLines()) {
                                         renderConstellationLines();
                                     }
-                                    renderStars();
+                                    renderStars(options.getAllVisibleStars());
                                     if (options.getConstellationLabels()) {
                                         renderConstellationNames(options.getConstellationLabelsOptions());
                                     }
@@ -1026,7 +1026,7 @@ public final class SvgRenderer {
         }
     }
 
-    private void renderStars() throws XMLStreamException, IOException {
+    private void renderStars(Boolean allVisibleStars) throws XMLStreamException, IOException {
 
         Map<Integer, StringBuilder> pathMap = new HashMap<>();
 
@@ -1050,7 +1050,10 @@ public final class SvgRenderer {
             }
         }
         for (Map.Entry<Integer, StringBuilder> entry : pathMap.entrySet()) {
-            RendererUtil.renderPath(writer, entry.getValue().toString(), null, "star level" + entry.getKey());
+            Integer magnitude = entry.getKey();
+            if (!(!allVisibleStars && magnitude > 5)) {
+                RendererUtil.renderPath(writer, entry.getValue().toString(), null, "star level" + magnitude);
+            }
         }
     }
 
