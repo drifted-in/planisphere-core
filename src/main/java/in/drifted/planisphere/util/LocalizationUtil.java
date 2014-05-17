@@ -1,11 +1,16 @@
 package in.drifted.planisphere.util;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.MissingResourceException;
+import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
 public final class LocalizationUtil {
@@ -17,13 +22,33 @@ public final class LocalizationUtil {
     public LocalizationUtil(Locale locale) {
 
         try {
+            // the following line cannot deal with UTF-8 encoded properties files
             resources = ResourceBundle.getBundle(LOCALE_BUNDLE, locale);
-            resourcesFallback = ResourceBundle.getBundle(LOCALE_BUNDLE, Locale.ENGLISH);
+
+            String bundleLocale = resources.getLocale().toString();
+            resources = getUnicodeResourceBundle(bundleLocale);
+            resourcesFallback = getUnicodeResourceBundle("en");
 
         } catch (MissingResourceException e) {
-            resources = ResourceBundle.getBundle(LOCALE_BUNDLE, Locale.ENGLISH);
+            resources = getUnicodeResourceBundle("en");
             resourcesFallback = resources;
         }
+    }
+
+    public ResourceBundle getUnicodeResourceBundle(String locale) {
+
+        ResourceBundle resourceBundle = null;
+
+        String resourcePath = "/" + LOCALE_BUNDLE.replace(".", "/") + "_" + locale + ".properties";
+
+        try (Reader reader = new InputStreamReader(LocalizationUtil.class.getResourceAsStream(resourcePath), StandardCharsets.UTF_8)) {
+            resourceBundle = new PropertyResourceBundle(reader);
+
+        } catch (IOException e) {
+            // should never happen
+        }
+
+        return resourceBundle;
     }
 
     public Collection<String> getKeyCollection() {
