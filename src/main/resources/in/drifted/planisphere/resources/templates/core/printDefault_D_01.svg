@@ -2,109 +2,7 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" width="210mm" height="297mm" viewBox="0 0 840 1180">
     <defs>
-        <style type="text/css" xml:space="preserve">
-            <![CDATA[
-            ${droid-sans.font-face}
-            ${planisphere.font-face}
-            svg {
-                margin: auto;
-                background: white;
-                font-family: ${droid-sans.font-family};
-            }
-            .invisible {
-                fill: none;
-                stroke: none;
-            }            
-            .dialHoursMarkerMajor path {
-                fill: #FA8700;
-            }
-            .dialHoursMarkerMajor text {
-                fill: #DC2D00;
-                text-anchor: middle;
-                font-size: 16px;
-            }
-            .dialHoursMarkerMinor text {
-                fill: #DC2D00;
-                text-anchor: middle;
-                font-size: 12px;
-            }
-            .dialHoursMarkerHalf {
-                fill: #FA8700;
-            }
-            .cardinalPointLabel {
-                font-size: 18px;
-                fill: #FA8700;
-                stroke: none;
-                text-anchor: middle;
-            }
-            .cardinalPointTick,
-            .mapAreaBorder {
-                fill: white;
-                stroke: #FA8700;
-                stroke-width: 3;
-            }
-            .bendLine {
-                stroke: #FA8700;
-                stroke-width: 1;
-                stroke-dasharray: 8 10;
-                stroke-linecap: round;
-                fill: none;
-            }
-            .pinMark {
-                stroke: #DC2D00;
-                stroke-width: 1;
-                stroke-linecap: round;
-            }
-            .boxArea {
-                fill: #4D4D4D;
-                stroke: #606060;
-                stroke-width: 1.5;
-            }
-            .boxHeader {
-                fill: #606060;
-                stroke: none;
-            }
-            .boxTitle {
-                fill: white;
-                font-size: 13px;
-                text-anchor: middle;
-            }
-            .boxBody {
-                fill: white;
-                font-size: 9px;
-            }
-            .astroSymbols {
-                fill: white;
-                font-family: ${planisphere.font-family};
-                font-size: 10px;
-            }
-            .copyright {
-                font-size: 10px;
-                text-anchor: middle;
-                fill: white;
-            }
-            #latitudeMarkerDef text {
-                fill: white;
-                font-size: 13px;
-            }
-            #latitudeMarkerDef path {
-                fill: #FA8700;
-            }
-            #latitudeMarkerDef line {
-                stroke: #FA8700;
-                stroke-width: 2;
-            }
-            .worldmap {
-                fill: silver;
-                stroke: none;
-            }
-            #spacer {
-                fill: white;
-                stroke: black;
-                stroke-width: 1;
-            }
-            ]]>
-        </style>
+        <?colorScheme?>
         <path id="mapArea" d=""/>
         <path id="monthsArea" d=""/>
         <path id="dialMonthsLabelMajorPath" d=""/>
@@ -131,12 +29,12 @@
             <path d="M0 0L-4.434 7.68H4.434Z" stroke="none"/>
         </g>
         <g id="cardinalPointLabelPaths"/>
-        <linearGradient id="grey" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" style="stop-color:rgb(200,200,200);stop-opacity:1"/>
-            <stop offset="100%" style="stop-color:rgb(255,255,255);stop-opacity:1"/>
+        <linearGradient id="gradient_01" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop id="gradient_01c01" offset="0"/>
+            <stop id="gradient_01c02" offset="1"/>
         </linearGradient>
-        <rect id="rect" x="-500" y="0" width="2000" height="50" fill="url(#grey)"/>
-        <path id="dottedLine" d="M0 0L1180 0" stroke-dasharray="0 10" stroke-width="2" stroke="grey" stroke-linecap="round" fill="none" />
+        <rect id="rect" x="-500" y="0" width="2000" height="50" fill="url(#gradient_01)"/>
+        <path id="dottedLine" d="M0 0L1180 0" class="dottedLine"/>
         <g id="dottedGroup">
             <use x="0" y="0" xlink:href="#dottedLine"/>
             <use x="0" y="10" xlink:href="#dottedLine"/>
@@ -162,11 +60,43 @@
             <use x="0" y="1000" xlink:href="#dottedBlock"/>
         </g>
         <g id="latitudeMarkerDef">
-            <text x="-13" y="4" text-anchor="end">${latitudeValue}</text>
+            <text direction="ltr" x="-13" y="4" text-anchor="end">${latitudeValue}</text>
             <path d="M0 0L-8 -5L-8 5Z"/>
             <path d="M190 0L198 -5L198 5Z"/>
             <line x1="0" y1="0" x2="190" y2="0"/>
         </g>
+        <text id="astroSymbols01">
+            <tspan x="0" dy="13">&#x2648;</tspan>
+            <tspan x="0" dy="13">&#x2649;</tspan>
+            <tspan x="0" dy="13">&#x264A;</tspan>
+            <tspan x="0" dy="13">&#x264B;</tspan>
+            <tspan x="0" dy="13">&#x264C;</tspan>
+            <tspan x="0" dy="13">&#x264D;</tspan>
+        </text>
+        <text id="astroSymbolsDescription01">
+            <tspan x="0" dy="13">${aries}</tspan>
+            <tspan x="0" dy="13">${taurus}</tspan>
+            <tspan x="0" dy="13">${gemini}</tspan>
+            <tspan x="0" dy="13">${cancer}</tspan>
+            <tspan x="0" dy="13">${leo}</tspan>
+            <tspan x="0" dy="13">${virgo}</tspan>
+        </text>
+        <text id="astroSymbols02">
+            <tspan x="0" dy="13">&#x264E;</tspan>
+            <tspan x="0" dy="13">&#x264F;</tspan>
+            <tspan x="0" dy="13">&#x2650;</tspan>
+            <tspan x="0" dy="13">&#x2651;</tspan>
+            <tspan x="0" dy="13">&#x2652;</tspan>
+            <tspan x="0" dy="13">&#x2653;</tspan>
+        </text>
+        <text id="astroSymbolsDescription02">
+            <tspan x="0" dy="13">${libra}</tspan>
+            <tspan x="0" dy="13">${scorpius}</tspan>
+            <tspan x="0" dy="13">${sagittarius}</tspan>
+            <tspan x="0" dy="13">${aquarius}</tspan>
+            <tspan x="0" dy="13">${capricornus}</tspan>
+            <tspan x="0" dy="13">${pisces}</tspan>
+        </text>
     </defs>
     <g transform="rotate(20, 420, 590)">
         <use x="0" y="-150" xlink:href="#rect"/>
@@ -212,7 +142,7 @@
                 <g id="mapAreaBorder"/>
             </g>
         </g>
-        <g transform="translate(0, -430)">
+        <g direction="ltr" transform="translate(0, -430)">
             <text class="copyright">Copyright (c) ${year}, Jan Tosovsky</text>
             <text y="16" class="copyright">http://drifted.in/planisphere/</text>
         </g>
@@ -221,45 +151,33 @@
                 <rect class="boxArea" x="0" y="0" width="190" height="126"/>
                 <rect class="boxHeader" x="0" y="0" width="190" height="32"/>
                 <text x="95" y="21" class="boxTitle">${zoodiacSignsTitle}</text>
-                <g transform="translate(7, 36)" class="astroSymbols">
-                    <text>
-                        <tspan x="0" dy="13">&#x2648;</tspan>
-                        <tspan x="0" dy="13">&#x2649;</tspan>
-                        <tspan x="0" dy="13">&#x264A;</tspan>
-                        <tspan x="0" dy="13">&#x264B;</tspan>
-                        <tspan x="0" dy="13">&#x264C;</tspan>
-                        <tspan x="0" dy="13">&#x264D;</tspan>
-                    </text>
+                <g direction="!rtl">
+                    <g transform="translate(7, 36)" class="astroSymbols">
+                        <use xlink:href="#astroSymbols01"/>
+                    </g>
+                    <g transform="translate(24, 36)" class="boxBody">
+                        <use xlink:href="#astroSymbolsDescription01"/>
+                    </g>
+                    <g transform="translate(95, 36)" class="astroSymbols">
+                        <use xlink:href="#astroSymbols02"/>
+                    </g>
+                    <g transform="translate(112, 36)" class="boxBody">
+                        <use xlink:href="#astroSymbolsDescription02"/>
+                    </g>
                 </g>
-                <g transform="translate(24, 36)" class="boxBody">
-                    <text>
-                        <tspan x="0" dy="13">${aries}</tspan>
-                        <tspan x="0" dy="13">${taurus}</tspan>
-                        <tspan x="0" dy="13">${gemini}</tspan>
-                        <tspan x="0" dy="13">${cancer}</tspan>
-                        <tspan x="0" dy="13">${leo}</tspan>
-                        <tspan x="0" dy="13">${virgo}</tspan>
-                    </text>
-                </g>
-                <g transform="translate(95, 36)" class="astroSymbols">
-                    <text>
-                        <tspan x="0" dy="13">&#x264E;</tspan>
-                        <tspan x="0" dy="13">&#x264F;</tspan>
-                        <tspan x="0" dy="13">&#x2650;</tspan>
-                        <tspan x="0" dy="13">&#x2651;</tspan>
-                        <tspan x="0" dy="13">&#x2652;</tspan>
-                        <tspan x="0" dy="13">&#x2653;</tspan>
-                    </text>
-                </g>
-                <g transform="translate(112, 36)" class="boxBody">
-                    <text>
-                        <tspan x="0" dy="13">${libra}</tspan>
-                        <tspan x="0" dy="13">${scorpius}</tspan>
-                        <tspan x="0" dy="13">${sagittarius}</tspan>
-                        <tspan x="0" dy="13">${aquarius}</tspan>
-                        <tspan x="0" dy="13">${capricornus}</tspan>
-                        <tspan x="0" dy="13">${pisces}</tspan>
-                    </text>
+                <g direction="!ltr">
+                    <g transform="translate(183, 36)" class="astroSymbols">
+                        <use xlink:href="#astroSymbols01"/>
+                    </g>
+                    <g transform="translate(166, 36)" class="boxBody">
+                        <use xlink:href="#astroSymbolsDescription01"/>
+                    </g>
+                    <g transform="translate(95, 36)" class="astroSymbols">
+                        <use xlink:href="#astroSymbols02"/>
+                    </g>
+                    <g transform="translate(78, 36)" class="boxBody">
+                        <use xlink:href="#astroSymbolsDescription02"/>
+                    </g>
                 </g>
             </g>
         </g>

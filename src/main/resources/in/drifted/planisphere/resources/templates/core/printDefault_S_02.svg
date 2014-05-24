@@ -2,142 +2,16 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" width="210mm" height="297mm" viewBox="0 0 840 1180">
     <defs>
-        <style type="text/css" xml:space="preserve">
-            <![CDATA[
-            ${droid-sans.font-face}
-            svg {
-                margin: auto;
-                background: white;
-                font-family: ${droid-sans.font-family};
-            }
-            .mapBackground {
-                fill: #003264;
-            }
-            .dialMonthsTick {
-                fill: none;
-                stroke: white;
-                stroke-width: 2;
-            }
-            .dialMonthsLabelMajor {
-                font-size: 18px;
-                fill: white;
-                text-anchor: middle;
-            } 
-            .dialMonthsLabelMinor {
-                font-size: 10px;
-                fill: white;
-                text-anchor: middle;
-            }
-            .coordLabelRa {
-                font-size: 9px;
-                fill: #2abacf;
-                text-anchor: start;
-            }
-            .coordLabelDec {
-                font-size: 9px;
-                fill: #2abacf;
-                text-anchor: end;
-            }
-            .constellationNames {
-                fill: white;
-                font-size: 9px;
-                text-anchor: middle;
-            }
-            .constellationNamesPath {
-                fill: none;
-                stroke: none;
-            }
-            .constellationBoundaries {
-                fill: none;
-                stroke-width: 1;
-                stroke: gray;
-                stroke-dasharray: 5 3;
-            }
-            .constellationLines {
-                fill: none;
-                stroke-width: 1.2;
-                stroke: #9a9a9a;
-            }
-            .ecliptic {
-                fill: none;
-                stroke-width: 0.7;
-                stroke: #2abacf;
-            }
-            .coords {
-                fill: none;
-                stroke-width: 0.7;
-                stroke: gray;
-            }
-            .milkyWayBright {
-                fill: #194682;
-                stroke: none;
-            }
-            .milkyWayDark {
-                fill: #0A3C73;
-                stroke: none;
-            }
-            .pinMark {
-                stroke: orange;
-                stroke-width: 1;
-                stroke-linecap: round;
-            }
-            .star {
-                stroke-linecap: round;
-                stroke: yellow;
-            }
-            .level0 {
-                stroke-width: 8;
-            }
-            .level1 {
-                stroke-width: 7;
-            }
-            .level2 {
-                stroke-width: 6;
-            }
-            .level3 {
-                stroke-width: 5;
-            }
-            .level4 {
-                stroke-width: 4;
-            }
-            .level5 {
-                stroke-width: 3;
-            }
-            .level6 {
-                stroke-width: 2;
-            }
-            .level7 {
-                stroke-width: 1;
-            }
-            #spacer,
-            #guideBackground,
-            #guide path,
-            #guide line {
-                fill: none;
-                stroke: black;
-                stroke-width: 1;
-            }
-            #spacer,
-            #guideBackground {
-                fill: white;
-            }
-            #guide .axis {
-                fill: none;
-                stroke: gray;
-                stroke-width: 1;
-                stroke-dasharray: 10 5 3 5;
-            }
-            ]]>
-        </style>
+        <?colorScheme?>
         <path id="dialMonthsLabelMajorPath" d=""/>
         <path id="dialMonthsLabelMinorPath" d=""/>
         <g id="coordLabelPaths"/>
-        <linearGradient id="grey" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" style="stop-color:rgb(200,200,200);stop-opacity:1"/>
-            <stop offset="100%" style="stop-color:rgb(255,255,255);stop-opacity:1"/>
+        <linearGradient id="gradient_01" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop id="gradient_01c01" offset="0"/>
+            <stop id="gradient_01c02" offset="1"/>
         </linearGradient>
-        <rect id="rect" x="-500" y="0" width="2000" height="50" fill="url(#grey)"/>    
-        <path id="dottedLine" d="M0 0L1180 0" stroke-dasharray="0 10" stroke-width="2" stroke="grey" stroke-linecap="round" fill="none" />
+        <rect id="rect" x="-500" y="0" width="2000" height="50" fill="url(#gradient_01)"/>
+        <path id="dottedLine" d="M0 0L1180 0" class="dottedLine"/>
         <g id="dottedGroup">
             <use x="0" y="0" xlink:href="#dottedLine"/>
             <use x="0" y="10" xlink:href="#dottedLine"/>

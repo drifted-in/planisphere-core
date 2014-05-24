@@ -17,10 +17,10 @@
             }            
             #cover {
                 fill: white;
-                stroke: gray;
+                stroke: black;
             }
             .dialHoursMarkerMajor path {
-                fill: gray;
+                fill: black;
             }
             .dialHoursMarkerMajor text {
                 fill: white;
@@ -28,7 +28,7 @@
                 font-size: 16px;
             }
             .dialHoursMarkerMinor text {
-                fill: gray;
+                fill: black;
                 text-anchor: middle;
                 font-size: 12px;
             }
@@ -37,14 +37,14 @@
             }
             .cardinalPointLabel {
                 font-size: 18px;
-                fill: gray;
+                fill: black;
                 stroke: none;
                 text-anchor: middle;
             }
             .cardinalPointTick,
             .mapAreaBorder {
                 fill: white;
-                stroke: gray;
+                stroke: black;
                 stroke-width: 3;
             }
             .bendLine {
@@ -70,11 +70,11 @@
             }
             .boxArea {
                 fill: none;
-                stroke: gray;
+                stroke: black;
                 stroke-width: 1.5;
             }
             .boxHeader {
-                fill: gray;
+                fill: black;
                 stroke: none;
             }
             .boxTitle {
@@ -83,28 +83,28 @@
                 text-anchor: middle;
             }
             .boxBody {
-                fill: gray;
+                fill: black;
                 font-size: 9px;
             }
             .astroSymbols {
-                fill: gray;
+                fill: black;
                 font-family: ${planisphere.font-family};
                 font-size: 10px;
             }
             .copyright {
                 font-size: 12px;
                 text-anchor: middle;
-                fill: gray;
+                fill: black;
             }
             #latitudeMarkerDef text {
                 fill: black;
                 font-size: 12px;
             }
             #latitudeMarkerDef path {
-                fill: gray;
+                fill: black;
             }
             #latitudeMarkerDef line {
-                stroke: gray;
+                stroke: black;
                 stroke-width: 2;
             }
             .worldmap {

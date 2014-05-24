@@ -1,7 +1,6 @@
 package in.drifted.planisphere.util;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
@@ -9,8 +8,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import javax.xml.bind.DatatypeConverter;
-import org.apache.commons.io.IOUtils;
 
 public final class FontManager {
 
@@ -61,12 +58,13 @@ public final class FontManager {
                     }
                 } else {
                     int i = 0;
+                    CacheHandler cacheHandler = CacheHandler.getInstance();
                     for (String fontFileName : fontFileNameCollection) {
                         if (!isSingle) {
                             indexMarker = "-" + (++i);
                         }
                         String fontName = fontFileName.substring(0, key.indexOf(".")) + indexMarker;
-                        chunkList.add("@font-face {font-family: \"" + fontName + "\"; src: url(" + getFontBase64Encoded(fontFileName) + ");}\n");
+                        chunkList.add("@font-face {font-family: \"" + fontName + "\"; src: url(" + cacheHandler.getFontData(FONT_BASE_PATH + fontFileName) + ");}\n");
                     }
                 }
                 if (index != chunk.length() - 1) {
@@ -99,19 +97,4 @@ public final class FontManager {
         }
     }
 
-    private String getFontBase64Encoded(String fontFileName) throws IOException {
-
-        String fontPath = FONT_BASE_PATH + fontFileName;
-        String[] fileNameFragments = fontFileName.split("\\.");
-        String fontFormat = fileNameFragments[fileNameFragments.length - 1];
-
-        StringBuilder fontInfo = new StringBuilder();
-        fontInfo.append("data:font/");
-        fontInfo.append(fontFormat);
-        fontInfo.append(";base64,");
-        InputStream fontData = FontManager.class.getResourceAsStream(fontPath);
-        fontInfo.append(DatatypeConverter.printBase64Binary(IOUtils.toByteArray(fontData)));
-
-        return fontInfo.toString();
-    }
 }

@@ -12,7 +12,7 @@
             }
             .mapBackground {
                 fill: white;
-                stroke: gray;
+                stroke: black;
             }
             .dialMonthsTick {
                 fill: none;

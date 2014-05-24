@@ -2,113 +2,7 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" width="210mm" height="297mm" viewBox="0 0 840 1180">
     <defs>
-        <style type="text/css" xml:space="preserve">
-            <![CDATA[
-            ${droid-sans.font-face}
-            ${planisphere.font-face}
-            svg {
-                margin: auto;
-                background: white;
-                font-family: ${droid-sans.font-family};                
-            }
-            .invisible {
-                fill: none;
-                stroke: none;
-            }            
-            .dialHoursMarkerMajor path {
-                fill: #FA8700;
-            }
-            .dialHoursMarkerMajor text {
-                fill: #DC2D00;
-                text-anchor: middle;
-                font-size: 16px;
-            }
-            .dialHoursMarkerMinor text {
-                fill: #DC2D00;
-                text-anchor: middle;
-                font-size: 12px;
-            }
-            .dialHoursMarkerHalf {
-                fill: #FA8700;
-            }
-            .cardinalPointLabel {
-                font-size: 18px;
-                fill: #FA8700;
-                stroke: none;
-                text-anchor: middle;
-            }
-            .cardinalPointTick,
-            .mapAreaBorder {
-                fill: white;
-                stroke: #FA8700;
-                stroke-width: 3;
-            }
-            .bendLine {
-                stroke: #FA8700;
-                stroke-width: 1;
-                stroke-dasharray: 8 10;
-                stroke-linecap: round;
-                fill: none;
-            }
-            .pinMark {
-                stroke: #FA8700;
-                stroke-width: 1;
-                stroke-linecap: round;
-            }
-            .constellationOverview {
-                font-size: 18px;
-                text-anchor: middle;
-                fill: white;
-            }
-            .constellations {
-                fill: white;
-                font-size: 9px;
-            }
-            .boxArea {
-                fill: #4D4D4D;
-                stroke: #606060;
-                stroke-width: 1.5;
-            }
-            .boxHeader {
-                fill: #606060;
-                stroke: none;
-            }
-            .boxTitle {
-                fill: white;
-                font-size: 13px;
-                text-anchor: middle;
-            }
-            .boxBody {
-                fill: white;
-                font-size: 9px;
-            }
-            .astroSymbols {
-                fill: white;
-                font-family: ${planisphere.font-family};
-                font-size: 10px;
-            }
-            .copyright {
-                font-size: 12px;
-                text-anchor: middle;
-                fill: white;
-            }
-            #latitudeMarkerDef text {
-                fill: white;
-                font-size: 13px;
-            }
-            #latitudeMarkerDef path {
-                fill: #FA8700;
-            }
-            #latitudeMarkerDef line {
-                stroke: #FA8700;
-                stroke-width: 2;
-            }
-            .worldmap {
-                fill: silver;
-                stroke: silver;
-            }
-            ]]>
-        </style>
+        <?colorScheme?>
         <path id="mapArea" d=""/>
         <path id="monthsArea" d=""/>
         <path id="dialMonthsLabelMajorPath" d=""/>
@@ -135,12 +29,12 @@
             <path d="M0 0L-4.434 7.68H4.434Z" stroke="none"/>
         </g>
         <g id="cardinalPointLabelPaths"/>
-        <linearGradient id="grey" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" style="stop-color:rgb(200,200,200);stop-opacity:1"/>
-            <stop offset="100%" style="stop-color:rgb(255,255,255);stop-opacity:1"/>
+        <linearGradient id="gradient_01" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop id="gradient_01c01" offset="0"/>
+            <stop id="gradient_01c02" offset="1"/>
         </linearGradient>
-        <rect id="rect" x="-500" y="0" width="2000" height="50" fill="url(#grey)"/>
-        <path id="dottedLine" d="M0 0L1180 0" stroke-dasharray="0 10" stroke-width="2" stroke="grey" stroke-linecap="round" fill="none" />
+        <rect id="rect" x="-500" y="0" width="2000" height="50" fill="url(#gradient_01)"/>
+        <path id="dottedLine" d="M0 0L1180 0" class="dottedLine"/>
         <g id="dottedGroup">
             <use x="0" y="0" xlink:href="#dottedLine"/>
             <use x="0" y="10" xlink:href="#dottedLine"/>
@@ -203,7 +97,7 @@
             <tspan x="0" dy="13">${capricornus}</tspan>
             <tspan x="0" dy="13">${pisces}</tspan>
         </text>
-        <text id="constallationAbbrev01" class="constellations">
+        <text id="constallationAbbrev01" class="constellations_S">
             <tspan x="0">And</tspan>
             <tspan x="0" dy="13">Ant</tspan>
             <tspan x="0" dy="13">Aps</tspan>
@@ -235,7 +129,7 @@
             <tspan x="0" dy="13">Crt</tspan>
             <tspan x="0" dy="13">Cru</tspan>
         </text>
-        <text id="constallationLatin01" class="constellations">
+        <text id="constallationLatin01" class="constellations_S">
             <tspan x="0">Andromeda</tspan>
             <tspan x="0" dy="13">Antlia</tspan>
             <tspan x="0" dy="13">Apus</tspan>
@@ -267,7 +161,7 @@
             <tspan x="0" dy="13">Crater</tspan>
             <tspan x="0" dy="13">Crux</tspan>
         </text>
-        <text id="constallationLocal01" class="constellations">
+        <text id="constallationLocal01" class="constellations_S">
             <tspan x="0">${andromeda}</tspan>
             <tspan x="0" dy="13">${antlia}</tspan>
             <tspan x="0" dy="13">${apus}</tspan>
@@ -299,7 +193,7 @@
             <tspan x="0" dy="13">${crater}</tspan>
             <tspan x="0" dy="13">${crux}</tspan>
         </text>
-        <text id="constallationAbbrev02" class="constellations">
+        <text id="constallationAbbrev02" class="constellations_S">
             <tspan x="0">Cyg</tspan>
             <tspan x="0" dy="13">Del</tspan>
             <tspan x="0" dy="13">Dor</tspan>
@@ -330,7 +224,7 @@
             <tspan x="0" dy="13">Oct</tspan>
             <tspan x="0" dy="13">Oph</tspan>
         </text>
-        <text id="constallationLatin02" class="constellations">
+        <text id="constallationLatin02" class="constellations_S">
             <tspan x="0">Cygnus</tspan>
             <tspan x="0" dy="13">Delphinus</tspan>
             <tspan x="0" dy="13">Dorado</tspan>
@@ -361,7 +255,7 @@
             <tspan x="0" dy="13">Octans</tspan>
             <tspan x="0" dy="13">Ophiuchus</tspan>
         </text>
-        <text id="constallationLocal02" class="constellations">
+        <text id="constallationLocal02" class="constellations_S">
             <tspan x="0">${cygnus}</tspan>
             <tspan x="0" dy="13">${delphinus}</tspan>
             <tspan x="0" dy="13">${dorado}</tspan>
@@ -392,7 +286,7 @@
             <tspan x="0" dy="13">${octans}</tspan>
             <tspan x="0" dy="13">${ophiuchus}</tspan>
         </text>
-        <text id="constallationAbbrev03" class="constellations">
+        <text id="constallationAbbrev03" class="constellations_S">
             <tspan x="0">Ori</tspan>
             <tspan x="0" dy="13">Pav</tspan>
             <tspan x="0" dy="13">Peg</tspan>
@@ -423,7 +317,7 @@
             <tspan x="0" dy="13">Vol</tspan>
             <tspan x="0" dy="13">Vul</tspan>
         </text>
-        <text id="constallationLatin03" class="constellations">
+        <text id="constallationLatin03" class="constellations_S">
             <tspan x="0">Orion</tspan>
             <tspan x="0" dy="13">Pavo</tspan>
             <tspan x="0" dy="13">Pegasus</tspan>
@@ -454,7 +348,7 @@
             <tspan x="0" dy="13">Volans</tspan>
             <tspan x="0" dy="13">Vulpecula</tspan>
         </text>
-        <text id="constallationLocal03" class="constellations">
+        <text id="constallationLocal03" class="constellations_S">
             <tspan x="0">${orion}</tspan>
             <tspan x="0" dy="13">${pavo}</tspan>
             <tspan x="0" dy="13">${pegasus}</tspan>
@@ -532,10 +426,10 @@
                 <text class="copyright">Copyright (c) ${year}, Jan Tosovsky</text>
                 <text y="18" class="copyright">http://drifted.in/planisphere/</text>
             </g>
-            <path d="M-315 0h630" style="stroke:#FA8700;stroke-width:2;"/>
-            <path d="M-315 415h630" style="stroke:#FA8700;stroke-width:2;"/>
+            <path d="M-315 0h630" class="constellationOverviewSeparator"/>
+            <path d="M-315 415h630" class="constellationOverviewSeparator"/>
             <g transform="translate(0, -20)">
-                <text class="constellationOverview">${constellationOverviewTitle}</text>
+                <text class="constellationOverview_S">${constellationOverviewTitle}</text>
             </g>
             <g transform="translate(-315, 21)">
                 <g direction="!rtl">

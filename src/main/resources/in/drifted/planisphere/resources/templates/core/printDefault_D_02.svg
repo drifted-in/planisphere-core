@@ -2,121 +2,7 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" width="210mm" height="297mm" viewBox="0 0 840 1180">
     <defs>
-        <style type="text/css" xml:space="preserve">
-            <![CDATA[
-            ${droid-sans.font-face}
-            ${planisphere.font-face}
-            svg {
-                margin: auto;
-                background: white;
-                font-family: ${droid-sans.font-family};
-            }
-            .invisible {
-                fill: none;
-                stroke: none;
-            }            
-            .dialHoursMarkerMajor path {
-                fill: #FA8700;
-            }
-            .dialHoursMarkerMajor text {
-                fill: #DC2D00;
-                text-anchor: middle;
-                font-size: 16px;
-            }
-            .dialHoursMarkerMinor text {
-                fill: #DC2D00;
-                text-anchor: middle;
-                font-size: 12px;
-            }
-            .dialHoursMarkerHalf {
-                fill: #FA8700;
-            }
-            .cardinalPointLabel {
-                font-size: 18px;
-                fill: #FA8700;
-                stroke: none;
-                text-anchor: middle;
-            }
-            .cardinalPointTick,
-            .mapAreaBorder {
-                fill: white;
-                stroke: #FA8700;
-                stroke-width: 3;
-            }
-            .bendLine {
-                stroke: #FA8700;
-                stroke-width: 1;
-                stroke-dasharray: 8 10;
-                stroke-linecap: round;
-                fill: none;
-            }
-            .pinMark {
-                stroke: #DC2D00;
-                stroke-width: 1;
-                stroke-linecap: round;
-            }
-            .boxArea {
-                fill: #4D4D4D;
-                stroke: #606060;
-                stroke-width: 1.5;
-            }
-            .boxHeader {
-                fill: #606060;
-                stroke: none;
-            }
-            .boxTitle {
-                fill: white;
-                font-size: 13px;
-                text-anchor: middle;
-            }
-            .boxBody {
-                fill: white;
-                font-size: 9px;
-            }
-            .astroSymbols {
-                fill: white;
-                font-family: ${planisphere.font-family};
-                font-size: 10px;
-            }
-            .copyright {
-                font-size: 10px;
-                text-anchor: middle;
-                fill: white;
-            }
-            #latitudeMarkerDef text {
-                fill: white;
-                font-size: 13px;
-            }
-            #latitudeMarkerDef path {
-                fill: #FA8700;
-            }
-            #latitudeMarkerDef line {
-                stroke: #FA8700;
-                stroke-width: 2;
-            }
-            .worldmap {
-                fill: silver;
-                stroke: none;
-            }
-            .star {
-                fill: silver;
-                stroke: none;
-            }
-            .star-label {
-                fill: #FA8700;
-                text-anchor: middle;
-                font-size: 9px;
-            }
-            .end {
-                text-anchor: end;
-            }
-            #spacer {
-                fill: white;
-                stroke: black;
-                stroke-width: 1;
-            }
-            ]]>
-        </style>
+        <?colorScheme?>
         <path id="mapArea" d=""/>
         <path id="monthsArea" d=""/>
         <path id="dialMonthsLabelMajorPath" d=""/>
@@ -143,12 +29,12 @@
             <path d="M0 0L-4.434 7.68H4.434Z" stroke="none"/>
         </g>
         <g id="cardinalPointLabelPaths"/>
-        <linearGradient id="grey" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" style="stop-color:rgb(200,200,200);stop-opacity:1"/>
-            <stop offset="100%" style="stop-color:rgb(255,255,255);stop-opacity:1"/>
+        <linearGradient id="gradient_01" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop id="gradient_01c01" offset="0"/>
+            <stop id="gradient_01c02" offset="1"/>
         </linearGradient>
-        <rect id="rect" x="-500" y="0" width="2000" height="50" fill="url(#grey)"/>
-        <path id="dottedLine" d="M0 0L1180 0" stroke-dasharray="0 10" stroke-width="2" stroke="grey" stroke-linecap="round" fill="none" />
+        <rect id="rect" x="-500" y="0" width="2000" height="50" fill="url(#gradient_01)"/>
+        <path id="dottedLine" d="M0 0L1180 0" class="dottedLine"/>
         <g id="dottedGroup">
             <use x="0" y="0" xlink:href="#dottedLine"/>
             <use x="0" y="10" xlink:href="#dottedLine"/>

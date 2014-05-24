@@ -10,9 +10,17 @@ import in.drifted.planisphere.model.Coord;
 import in.drifted.planisphere.model.MilkyWay;
 import in.drifted.planisphere.model.Star;
 import in.drifted.planisphere.Settings;
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Base64;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public final class CacheHandler {
 
@@ -23,6 +31,8 @@ public final class CacheHandler {
     private List<Coord> constellationLineList;
     private List<Coord> constellationBoundaryList;
     private MilkyWay milkyWay;
+    private final Map<String, String> colorSchemeMap = new HashMap<>();
+    private final Map<String, String> fontDataMap = new HashMap<>();
 
     public static CacheHandler getInstance() {
         if (instance == null) {
@@ -52,6 +62,70 @@ public final class CacheHandler {
 
         } catch (IOException e) {
         }
+    }
+
+    public void reset() {
+        colorSchemeMap.clear();
+        fontDataMap.clear();
+    }
+
+    public String getColorSchemeData(String templateName, String colorScheme) throws IOException {
+
+        if (!colorSchemeMap.containsKey(colorScheme)) {
+
+            String colorSchemePath = getColorSchemePath(colorScheme);
+            URL url = CacheHandler.class.getResource(colorSchemePath);
+            if (url == null) {
+                // every template has a default color scheme
+                colorSchemePath = getColorSchemePath(templateName.split("\\.|_")[0] + "_default");
+            }
+
+            try (
+                    InputStream inputStream = CacheHandler.class.getResourceAsStream(colorSchemePath);
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+
+                StringBuilder builder = new StringBuilder();
+                String line;
+
+                while ((line = reader.readLine()) != null) {
+                    builder.append(line);
+                    builder.append("\n");
+                }
+                colorSchemeMap.put(colorScheme, builder.toString());
+            }
+        }
+
+        return colorSchemeMap.get(colorScheme);
+    }
+
+    private String getColorSchemePath(String colorSchemePath) {
+        return Settings.RESOURCE_BASE_PATH + "templates/core/" + colorSchemePath + ".css";
+    }
+
+    public String getFontData(String fontDataPath) throws IOException {
+
+        if (!fontDataMap.containsKey(fontDataPath)) {
+
+            try (
+                    InputStream fontDataStream = CacheHandler.class.getResourceAsStream(fontDataPath);
+                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+
+                StringBuilder fontData = new StringBuilder("data:font/ttf;base64,");
+
+                byte[] buffer = new byte[4096];
+                int bytesRead;
+
+                while ((bytesRead = fontDataStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, bytesRead);
+                }
+
+                fontData.append(Base64.getEncoder().encodeToString(outputStream.toByteArray()));
+
+                fontDataMap.put(fontDataPath, fontData.toString());
+            }
+        }
+
+        return fontDataMap.get(fontDataPath);
     }
 
     public List<Star> getStarList() {

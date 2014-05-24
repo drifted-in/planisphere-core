@@ -21,7 +21,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.io.StringWriter;
-import java.text.DateFormatSymbols;
+import java.time.Month;
+import java.time.format.TextStyle;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -85,256 +86,276 @@ public final class SvgRenderer {
         localizationUtil = new LocalizationUtil(options.getCurrentLocale());
     }
 
-    public void createFromTemplate(String resourcePath, OutputStream output, Options options) throws XMLStreamException, IOException {
-        writer = outputFactory.createXMLStreamWriter(output);
-        try (InputStream input = getClass().getResourceAsStream(Settings.RESOURCE_BASE_PATH + "templates/core/" + resourcePath)) {
-            createFromTemplate(input, options);
+    public void createFromTemplate(String templateName, String colorScheme, OutputStream output, Options options) throws IOException {
+
+        try {
+            writer = outputFactory.createXMLStreamWriter(output);
+
+            try (InputStream templateStream = SvgRenderer.class.getResourceAsStream(Settings.RESOURCE_BASE_PATH + "templates/core/" + templateName + ".svg")) {
+
+                FontManager fontManager = new FontManager(options.getCurrentLocale());
+                String colorSchemeData = cacheHandler.getColorSchemeData(templateName, colorScheme);
+
+                createFromTemplate(templateStream, fontManager.translate(colorSchemeData), options);
+            }
+            writer.flush();
+            writer.close();
+
+        } catch (XMLStreamException e) {
+            throw new IOException(e);
         }
-        writer.flush();
-        writer.close();
     }
 
-    private void createFromTemplate(InputStream input, Options options) throws XMLStreamException, IOException {
+    private void createFromTemplate(InputStream templateStream, String colorSchemeData, Options options) throws IOException {
 
-        initVariables(options);
+        try {
 
-        Locale locale = options.getCurrentLocale();
-        FontManager fontManager = new FontManager(locale);
-        XMLEventReader parser = inputFactory.createXMLEventReader(input);
+            initVariables(options);
 
-        Map<String, byte[]> paramMap = new HashMap<>();
+            Locale locale = options.getCurrentLocale();
 
-        Boolean isUsed = true;
-        Boolean isSuppressed = false;
-        Integer level = 0;
-        StartElement startElement;
-        Characters characters;
-        String elementName;
-        Attribute idAttr;
-        Attribute dirAttr;
-        String id;
+            XMLEventReader parser = inputFactory.createXMLEventReader(templateStream);
 
-        String writingDirection = localizationUtil.getValue("writingDirection");
-        String direction = writingDirection.equals("writingDirection") ? "ltr" : writingDirection;
+            Map<String, byte[]> paramMap = new HashMap<>();
 
-        while (parser.hasNext()) {
-            XMLEvent event = parser.nextEvent();
-            switch (event.getEventType()) {
-                case XMLStreamConstants.START_ELEMENT:
-                    startElement = (StartElement) event;
-                    elementName = startElement.getName().getLocalPart();
-                    idAttr = startElement.getAttributeByName(new QName("id"));
-                    dirAttr = startElement.getAttributeByName(new QName("direction"));
+            Boolean isUsed = true;
+            Boolean isSuppressed = false;
+            Integer level = 0;
+            StartElement startElement;
+            Characters characters;
+            String elementName;
+            Attribute idAttr;
+            Attribute dirAttr;
+            String id;
 
-                    if (dirAttr != null && dirAttr.getValue().equals("!" + direction)) {
-                        isUsed = false;
-                        isSuppressed = true;
-                        level++;
-                    } else {
+            String writingDirection = localizationUtil.getValue("writingDirection");
+            String direction = writingDirection.equals("writingDirection") ? "ltr" : writingDirection;
 
-                        if (idAttr != null) {
-                            id = idAttr.getValue();
+            while (parser.hasNext()) {
+                XMLEvent event = parser.nextEvent();
+                switch (event.getEventType()) {
+                    case XMLStreamConstants.START_ELEMENT:
+                        startElement = (StartElement) event;
+                        elementName = startElement.getName().getLocalPart();
+                        idAttr = startElement.getAttributeByName(new QName("id"));
+                        dirAttr = startElement.getAttributeByName(new QName("direction"));
+
+                        if (dirAttr != null && dirAttr.getValue().equals("!" + direction)) {
                             isUsed = false;
-                            switch (id) {
-                                case "mapArea":
-                                    renderDefsMapArea();
-                                    break;
-                                case "monthsArea":
-                                    renderDefsMonthsArea();
-                                    break;
-                                case "dialHoursMarkerMajorSingle":
-                                case "dialHoursMarkerMajorDouble":
-                                case "dialHoursMarkerMinorSingle":
-                                case "dialHoursMarkerMinorDouble":
-                                    paramMap.put(id, RendererUtil.getParamStream(outputFactory, eventFactory, parser, event));
-                                    break;
-                                case "dialMonthsLabelMajorPath":
-                                    renderDefsDialMonthsLabelMajorPath();
-                                    break;
-                                case "dialMonthsLabelMinorPath":
-                                    renderDefsDialMonthsLabelMinorPath();
-                                    break;
-                                case "coordLabelPaths":
-                                    RendererUtil.writeGroupStart(writer, "coordLabelPaths");
-                                    renderDefsCoordLabelPaths();
-                                    RendererUtil.writeGroupEnd(writer);
-                                    break;
-                                case "wheel":
-                                    RendererUtil.writeGroupStart(writer, "wheel");
-                                    renderMapBackground();
-                                    renderDialMonths(locale);
-                                    renderDialMonthsTicks();
-                                    if (options.getMilkyWay()) {
-                                        renderMilkyWay();
-                                    }
-                                    if (options.getCoordsRADec()) {
-                                        renderCoords();
-                                        renderCoordLabels();
-                                    }
-                                    if (options.getEcliptic()) {
-                                        renderEcliptic();
-                                    }
-                                    if (options.getConstellationBoundaries()) {
-                                        renderConstellationBoundaries();
-                                    }
-                                    if (options.getConstellationLines()) {
-                                        renderConstellationLines();
-                                    }
-                                    renderStars(options.getAllVisibleStars());
-                                    if (options.getConstellationLabels()) {
-                                        renderConstellationNames(options.getConstellationLabelsOptions());
-                                    }
-                                    RendererUtil.writeGroupEnd(writer);
-                                    break;
-                                case "scales":
-                                    RendererUtil.writeGroupStart(writer, "scales");
-                                    renderDialHours(paramMap, options.getDayLightSavingTimeScale());
-                                    renderCardinalPointsTicks();
-                                    renderCardinalPointsLabels();
-                                    RendererUtil.writeGroupEnd(writer);
-                                    break;
-                                case "monthsAreaBorder":
-                                    RendererUtil.writeGroupStart(writer, "monthsAreaBorder");
-                                    renderMonthsAreaBorder();
-                                    RendererUtil.writeGroupEnd(writer);
-                                    break;
-                                case "mapAreaBorder":
-                                    RendererUtil.writeGroupStart(writer, "mapAreaBorder");
-                                    renderMapAreaBorder();
-                                    RendererUtil.writeGroupEnd(writer);
-                                    break;
-                                case "spacer":
-                                    renderSpacer();
-                                    break;
-                                case "cover":
-                                    renderCover();
-                                    break;
-                                case "pinMark":
-                                    renderPinMark(false);
-                                    break;
-                                case "guide_S":
-                                case "guide_D":
-                                case "worldmap":
-                                case "starSizeComparison":
-                                case "buttonFlip":
-                                case "buttonSettings":
-                                case "buttonExport":
-                                case "buttonMoreInfo":
-                                    if (id.equals("buttonFlip") && !isDoubleSided) {
-                                        // ignore
-                                    } else {
-                                        writer.writeStartElement("g");
-                                        if (id.contains("button")) {
-                                            writer.writeStartElement("title");
-                                            writer.writeCharacters(localizationUtil.getValue(id));
+                            isSuppressed = true;
+                            level++;
+                        } else {
+
+                            if (idAttr != null) {
+                                id = idAttr.getValue();
+                                isUsed = false;
+                                switch (id) {
+                                    case "mapArea":
+                                        renderDefsMapArea();
+                                        break;
+                                    case "monthsArea":
+                                        renderDefsMonthsArea();
+                                        break;
+                                    case "dialHoursMarkerMajorSingle":
+                                    case "dialHoursMarkerMajorDouble":
+                                    case "dialHoursMarkerMinorSingle":
+                                    case "dialHoursMarkerMinorDouble":
+                                        paramMap.put(id, RendererUtil.getParamStream(outputFactory, eventFactory, parser, event));
+                                        break;
+                                    case "dialMonthsLabelMajorPath":
+                                        renderDefsDialMonthsLabelMajorPath();
+                                        break;
+                                    case "dialMonthsLabelMinorPath":
+                                        renderDefsDialMonthsLabelMinorPath();
+                                        break;
+                                    case "coordLabelPaths":
+                                        RendererUtil.writeGroupStart(writer, "coordLabelPaths");
+                                        renderDefsCoordLabelPaths();
+                                        RendererUtil.writeGroupEnd(writer);
+                                        break;
+                                    case "wheel":
+                                        RendererUtil.writeGroupStart(writer, "wheel");
+                                        renderMapBackground();
+                                        renderDialMonths(locale);
+                                        renderDialMonthsTicks();
+                                        if (options.getMilkyWay()) {
+                                            renderMilkyWay();
+                                        }
+                                        if (options.getCoordsRADec()) {
+                                            renderCoords();
+                                            renderCoordLabels();
+                                        }
+                                        if (options.getEcliptic()) {
+                                            renderEcliptic();
+                                        }
+                                        if (options.getConstellationBoundaries()) {
+                                            renderConstellationBoundaries();
+                                        }
+                                        if (options.getConstellationLines()) {
+                                            renderConstellationLines();
+                                        }
+                                        renderStars(options.getAllVisibleStars());
+                                        if (options.getConstellationLabels()) {
+                                            renderConstellationNames(options.getConstellationLabelsOptions());
+                                        }
+                                        RendererUtil.writeGroupEnd(writer);
+                                        break;
+                                    case "scales":
+                                        RendererUtil.writeGroupStart(writer, "scales");
+                                        renderDialHours(paramMap, options.getDayLightSavingTimeScale());
+                                        renderCardinalPointsTicks();
+                                        renderCardinalPointsLabels();
+                                        RendererUtil.writeGroupEnd(writer);
+                                        break;
+                                    case "monthsAreaBorder":
+                                        RendererUtil.writeGroupStart(writer, "monthsAreaBorder");
+                                        renderMonthsAreaBorder();
+                                        RendererUtil.writeGroupEnd(writer);
+                                        break;
+                                    case "mapAreaBorder":
+                                        RendererUtil.writeGroupStart(writer, "mapAreaBorder");
+                                        renderMapAreaBorder();
+                                        RendererUtil.writeGroupEnd(writer);
+                                        break;
+                                    case "spacer":
+                                        renderSpacer();
+                                        break;
+                                    case "cover":
+                                        renderCover();
+                                        break;
+                                    case "pinMark":
+                                        renderPinMark(false);
+                                        break;
+                                    case "guide_S":
+                                    case "guide_D":
+                                    case "worldmap":
+                                    case "starSizeComparison":
+                                    case "buttonFlip":
+                                    case "buttonSettings":
+                                    case "buttonExport":
+                                    case "buttonMoreInfo":
+                                        if (id.equals("buttonFlip") && !isDoubleSided) {
+                                            // ignore
+                                        } else {
+                                            writer.writeStartElement("g");
+                                            if (id.contains("button")) {
+                                                writer.writeStartElement("title");
+                                                writer.writeCharacters(localizationUtil.getValue(id));
+                                                writer.writeEndElement();
+                                            }
+                                            RendererUtil.renderSymbol(inputFactory, writer, id, localizationUtil);
                                             writer.writeEndElement();
                                         }
-                                        RendererUtil.renderSymbol(inputFactory, writer, id, localizationUtil);
-                                        writer.writeEndElement();
-                                    }
-                                    break;
-                                case "latitudeMarker":
-                                    writer.writeStartElement(elementName);
-                                    Iterator<Attribute> it = startElement.getAttributes();
-                                    while (it.hasNext()) {
-                                        Attribute a = it.next();
-                                        QName attr = a.getName();
-                                        if (attr.getLocalPart().equals("y")) {
-                                            Double range = Double.valueOf(a.getValue());
-                                            Double ratio = range / 180;
-                                            Double y = ratio * (Math.abs(latitudeFixed - 90) - 90);
-                                            writer.writeAttribute("y", y.toString());
-                                        } else {
-                                            writer.writeAttribute(attr.getPrefix(), attr.getNamespaceURI(), attr.getLocalPart(), a.getValue());
+                                        break;
+                                    case "latitudeMarker":
+                                        writer.writeStartElement(elementName);
+                                        Iterator<Attribute> it = startElement.getAttributes();
+                                        while (it.hasNext()) {
+                                            Attribute a = it.next();
+                                            QName attr = a.getName();
+                                            if (attr.getLocalPart().equals("y")) {
+                                                Double range = Double.valueOf(a.getValue());
+                                                Double ratio = range / 180;
+                                                Double y = ratio * (Math.abs(latitudeFixed - 90) - 90);
+                                                writer.writeAttribute("y", y.toString());
+                                            } else {
+                                                writer.writeAttribute(attr.getPrefix(), attr.getNamespaceURI(), attr.getLocalPart(), a.getValue());
+                                            }
                                         }
-                                    }
-                                    writer.writeEndElement();
-                                    break;
-                                default:
-                                    isUsed = true;
+                                        writer.writeEndElement();
+                                        break;
+                                    default:
+                                        isUsed = true;
+                                        writer.writeStartElement(elementName);
+                                        RendererUtil.writeAttributes(writer, startElement.getAttributes());
+                                        break;
+                                }
+                            } else if (elementName.equals("svg")) {
+                                String[] values = startElement.getAttributeByName(new QName("viewBox")).getValue().split(" ");
+                                scaleFixed = Math.min(Double.valueOf(values[2]) / 2, Double.valueOf(values[3]) / 2);
+                                // the 'scale' for a map is set to maximum by default, but if an extra space on cover is needed, the map can be smaller
+                                scale = 1.0 * scaleFixed;
+                                createMapAreaPointList();
+                                createCardinalPointList();
+                                writer.writeStartElement(elementName);
+                                RendererUtil.writeNamespaces(writer, startElement.getNamespaces());
+                                RendererUtil.writeAttributes(writer, startElement.getAttributes());
+                                writer.writeAttribute("direction", direction);
+                            } else {
+                                if (isSuppressed) {
+                                    level++;
+                                } else {
                                     writer.writeStartElement(elementName);
                                     RendererUtil.writeAttributes(writer, startElement.getAttributes());
-                                    break;
-                            }
-                        } else if (elementName.equals("svg")) {
-                            String[] values = startElement.getAttributeByName(new QName("viewBox")).getValue().split(" ");
-                            scaleFixed = Math.min(Double.valueOf(values[2]) / 2, Double.valueOf(values[3]) / 2);
-                            // the 'scale' for a map is set to maximum by default, but if an extra space on cover is needed, the map can be smaller
-                            scale = 1.0 * scaleFixed;
-                            createMapAreaPointList();
-                            createCardinalPointList();
-                            writer.writeStartElement(elementName);
-                            RendererUtil.writeNamespaces(writer, startElement.getNamespaces());
-                            RendererUtil.writeAttributes(writer, startElement.getAttributes());
-                            writer.writeAttribute("direction", direction);
-                        } else {
-                            if (isSuppressed) {
-                                level++;
-                            } else {
-                                writer.writeStartElement(elementName);
-                                RendererUtil.writeAttributes(writer, startElement.getAttributes());
-                            }
-                        }
-                    }
-                    break;
-                case XMLStreamConstants.END_ELEMENT:
-                    if (isUsed) {
-                        if (!isSuppressed) {
-                            writer.writeEndElement();
-                        }
-                    } else {
-                        isUsed = true;
-                    }
-                    if (isSuppressed) {
-                        level--;
-                        if (level == 0) {
-                            isSuppressed = false;
-                        }
-                    }
-                    break;
-                case XMLStreamConstants.CHARACTERS:
-                    if (isUsed && !isSuppressed) {
-                        characters = (Characters) event;
-                        String text = characters.getData();
-                        if (!(text.trim().isEmpty())) {
-                            writer.writeCharacters(localizationUtil.translate(text, latitudeFixed));
-                        }
-                    }
-                    break;
-                case XMLStreamConstants.CDATA:
-                    if (isUsed && !isSuppressed) {
-                        characters = (Characters) event;
-                        writer.writeCData(fontManager.translate(characters.getData()));
-                    }
-                    break;
-                case XMLStreamConstants.PROCESSING_INSTRUCTION:
-                    if (isUsed && !isSuppressed) {
-                        ProcessingInstruction pi = (ProcessingInstruction) event;
-                        if (pi.getTarget().equals("mouseEventsScript")) {
-                            writer.writeStartElement("script");
-                            writer.writeAttribute("type", "application/ecmascript");
-
-                            StringWriter cdata = new StringWriter();
-                            InputStream is = getClass().getResourceAsStream(Settings.RESOURCE_BASE_PATH + "templates/resources/js/mouseEvents.js");
-
-                            try (Reader reader = new InputStreamReader(is, "UTF-8")) {
-                                char[] buffer = new char[1024];
-                                Integer n;
-                                while ((n = reader.read(buffer)) >= 0) {
-                                    cdata.write(buffer, 0, n);
                                 }
                             }
-                            writer.writeCData(cdata.toString());
-                            writer.writeEndElement();
                         }
-                    }
-                    break;
+                        break;
+                    case XMLStreamConstants.END_ELEMENT:
+                        if (isUsed) {
+                            if (!isSuppressed) {
+                                writer.writeEndElement();
+                            }
+                        } else {
+                            isUsed = true;
+                        }
+                        if (isSuppressed) {
+                            level--;
+                            if (level == 0) {
+                                isSuppressed = false;
+                            }
+                        }
+                        break;
+                    case XMLStreamConstants.CHARACTERS:
+                        if (isUsed && !isSuppressed) {
+                            characters = (Characters) event;
+                            String text = characters.getData();
+                            if (!(text.trim().isEmpty())) {
+                                writer.writeCharacters(localizationUtil.translate(text, latitudeFixed));
+                            }
+                        }
+                        break;
+                    case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                        if (isUsed && !isSuppressed) {
+                            ProcessingInstruction pi = (ProcessingInstruction) event;
+                            switch (pi.getTarget()) {
+                                case "mouseEventsScript":
+                                    writer.writeStartElement("script");
+                                    writer.writeAttribute("type", "application/ecmascript");
 
-                default:
+                                    StringWriter cdata = new StringWriter();
+                                    InputStream is = getClass().getResourceAsStream(Settings.RESOURCE_BASE_PATH + "templates/resources/js/mouseEvents.js");
+
+                                    try (Reader reader = new InputStreamReader(is, "UTF-8")) {
+                                        char[] buffer = new char[1024];
+                                        Integer n;
+                                        while ((n = reader.read(buffer)) >= 0) {
+                                            cdata.write(buffer, 0, n);
+                                        }
+                                    }
+                                    writer.writeCData(cdata.toString());
+                                    writer.writeEndElement();
+                                    break;
+
+                                case "colorScheme":
+                                    writer.writeStartElement("style");
+                                    writer.writeAttribute("type", "text/css");
+                                    writer.writeCData(colorSchemeData);
+                                    writer.writeEndElement();
+                                    break;
+                            }
+                        }
+                        break;
+
+                    default:
+                }
             }
+            parser.close();
+            writer.writeEndDocument();
+
+        } catch (XMLStreamException e) {
+            throw new IOException(e);
         }
-        parser.close();
-        writer.writeEndDocument();
     }
 
     private void createMapAreaPointList() {
@@ -720,18 +741,14 @@ public final class SvgRenderer {
     private String[] getMonthNames(Locale locale) {
 
         String[] monthNames = new String[12];
-        String[] monthNamesEn = new DateFormatSymbols(Locale.ENGLISH).getMonths();
 
-        if (localizationUtil.getValue("january").equals("january")) {
-            monthNames = new DateFormatSymbols(locale).getMonths();
-            for (Integer i = 0; i < 12; i++) {
-                monthNames[i] = monthNames[i].substring(0, 1).toUpperCase(locale) + monthNames[i].substring(1);
-            }
-        } else {
-            for (Integer i = 0; i < 12; i++) {
-                monthNames[i] = localizationUtil.getValue(monthNamesEn[i].toLowerCase(Locale.ENGLISH));
-            }
+        int i = 0;
+        for (Month month : Month.values()) {
+            monthNames[i] = month.getDisplayName(TextStyle.FULL_STANDALONE, locale);
+            monthNames[i] = monthNames[i].substring(0, 1).toUpperCase(locale) + monthNames[i].substring(1);
+            i++;
         }
+
         return monthNames;
     }
 

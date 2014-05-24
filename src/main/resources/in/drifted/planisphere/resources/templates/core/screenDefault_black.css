@@ -1,0 +1,242 @@
+${droid-sans.font-face}
+svg {
+    margin: auto;
+    background: #4D4D4D;
+    font-family: ${droid-sans.font-family};
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+#cursorPreloader {
+    cursor: url(../closedhand.cur), crosshair;
+}
+#designer {
+    font-size: 12px;
+    fill: silver;
+}
+.invisible {
+    fill: none;
+    stroke: none;
+}
+.mapBackground {
+    fill: black;
+}
+.maskBlack {
+    fill: black;
+}
+.maskWhite {
+    fill: white;
+}
+.dummyRectBlue {
+    fill: #4D4D4D;
+}
+.eventsTarget {
+    fill: white;
+    opacity: 0;
+}
+.dialHoursMarkerMajor path {
+    fill: black;
+}
+.dialHoursMarkerMajor text {
+    fill: silver;
+    text-anchor: middle;
+    font-weight: bold;
+    font-size: 16px;
+}
+.dialHoursMarkerMinor text {
+    fill: black;
+    text-anchor: middle;
+    font-weight: bold;
+    font-size: 12px;
+}
+.dialHoursMarkerHalf {
+    fill: black;
+}
+.monthsAreaBorder {
+    fill: none;
+    stroke: none;
+}
+.dialMonthsTick {
+    fill: none;
+    stroke: silver;
+    stroke-width: 2;
+}
+.dialMonthsLabelMajor {
+    font-size: 18px;
+    fill: silver;
+    text-anchor: middle;
+}
+.dialMonthsLabelMinor {
+    font-size: 10px;
+    fill: silver;
+    text-anchor: middle;
+}
+.cardinalPointLabel {
+    font-size: 18px;
+    fill: silver;
+    stroke: none;
+    text-anchor: middle;
+}
+.cardinalPointTick,
+.mapAreaBorder {
+    fill: none;
+    stroke: #666666;
+    stroke-width: 3;
+}
+.coordLabelRa {
+    font-size: 9px;
+    fill: gray;
+    text-anchor: start;
+}
+.coordLabelDec {
+    font-size: 9px;
+    fill: gray;
+    text-anchor: end;
+}
+.constellationNames {
+    fill: silver;
+    font-size: 9px;
+    text-anchor: middle;
+}
+.constellationNamesPath {
+    fill: none;
+    stroke: none;
+}
+.constellationBoundaries {
+    fill: none;
+    stroke-width: 1;
+    stroke: gray;
+    stroke-dasharray: 5 3;
+}
+.constellationLines {
+    fill: none;
+    stroke-width: 1.2;
+    stroke: gray;
+}
+.ecliptic {
+    fill: none;
+    stroke-width: 0.7;
+    stroke: gray;
+}
+.coords {
+    fill: none;
+    stroke-width: 0.7;
+    stroke: gray;
+}
+.milkyWayBright {
+    fill: #404040;
+    stroke: none;
+}
+.milkyWayDark {
+    fill: #303030;
+    stroke: none;
+}
+.star {
+    stroke-linecap: round;
+    stroke: white;
+}
+.level0 {
+    stroke-width: 8;
+}
+.level1 {
+    stroke-width: 7;
+}
+.level2 {
+    stroke-width: 6;
+}
+.level3 {
+    stroke-width: 5;
+}
+.level4 {
+    stroke-width: 4;
+}
+.level5 {
+    stroke-width: 3;
+}
+.level6 {
+    stroke-width: 2;
+}
+.level7 {
+    stroke-width: 1;
+}
+
+/* buttons */
+#commandButtons {
+    cursor: pointer;
+}
+#buttonFlip:hover .gradientUp,
+#buttonMoreInfo:hover .gradientUp,
+#buttonSettings:hover .gradientUp,
+#buttonExport:hover .gradientUp {
+    stop-color: #444444;
+}
+#buttonFlip:hover .buttonBorder,
+#buttonMoreInfo:hover .buttonBorder,
+#buttonSettings:hover .buttonBorder,
+#buttonExport:hover .buttonBorder {
+    fill: gray;
+}
+#buttonFlip:hover .gradientDown,
+#buttonMoreInfo:hover .gradientDown,
+#buttonSettings:hover .gradientDown,
+#buttonExport:hover .gradientDown {
+    stop-color: gray;
+}
+#buttonFlip:hover .reflection,
+#buttonMoreInfo:hover .reflection,
+#buttonSettings:hover .reflection,
+#buttonExport:hover .reflection {
+    fill: #999999;
+}
+#buttonFlip .gradientUp,
+#buttonMoreInfo .gradientUp,
+#buttonSettings .gradientUp,
+#buttonExport .gradientUp {
+    stop-color: #222222;
+}
+#buttonFlip .buttonBorder,
+#buttonMoreInfo .buttonBorder,
+#buttonSettings .buttonBorder,
+#buttonExport .buttonBorder {
+    fill: #666666;
+}
+#buttonFlip .gradientDown,
+#buttonMoreInfo .gradientDown,
+#buttonSettings .gradientDown,
+#buttonExport .gradientDown {
+    stop-color: #666666;
+}
+#buttonFlip .reflection,
+#buttonMoreInfo .reflection,
+#buttonSettings .reflection,
+#buttonExport .reflection {
+    fill: gray;
+}
+.arrowBottom,
+.moreInfo,
+.gearLarge,
+.planisphere {
+    fill: gray;
+}
+.arrowTop,
+.gearSmall,
+.scissors {
+    fill: silver;
+}
+
+/* theme specific */
+#gradient_01c01 {
+   stop-color: white;
+}
+
+#gradient_01c02 {
+   stop-color: black;
+}
+
+#gradient_02c01 {
+   stop-color: black;
+}
+
+#gradient_02c02 {
+   stop-color: gray;
+}

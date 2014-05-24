@@ -2,7 +2,10 @@ package in.drifted.planisphere;
 
 import java.io.Serializable;
 import java.util.Locale;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
 
+@XmlRootElement
 public final class Options implements Serializable {
 
     private String localeValue = "en";
@@ -50,6 +53,7 @@ public final class Options implements Serializable {
         return localeValue;
     }
 
+    @XmlAttribute
     public void setLocaleValue(String localeValue) {
         this.localeValue = localeValue;
     }
@@ -69,6 +73,7 @@ public final class Options implements Serializable {
         return latitude;
     }
 
+    @XmlAttribute
     public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
@@ -77,6 +82,7 @@ public final class Options implements Serializable {
         return screenImage;
     }
 
+    @XmlAttribute
     public void setScreenImage(String screenImage) {
         this.screenImage = screenImage;
     }
@@ -85,6 +91,7 @@ public final class Options implements Serializable {
         return printImage;
     }
 
+    @XmlAttribute
     public void setPrintImage(String printImage) {
         this.printImage = printImage;
     }
@@ -93,6 +100,7 @@ public final class Options implements Serializable {
         return constellationLines;
     }
 
+    @XmlAttribute
     public void setConstellationLines(Boolean constellationLines) {
         this.constellationLines = constellationLines;
     }
@@ -101,6 +109,7 @@ public final class Options implements Serializable {
         return constellationLabels;
     }
 
+    @XmlAttribute
     public void setConstellationLabels(Boolean constellationLabels) {
         this.constellationLabels = constellationLabels;
     }
@@ -109,6 +118,7 @@ public final class Options implements Serializable {
         return constellationLabelsOptions;
     }
 
+    @XmlAttribute
     public void setConstellationLabelsOptions(Integer constellationLabelsOptions) {
         this.constellationLabelsOptions = constellationLabelsOptions;
     }
@@ -117,6 +127,7 @@ public final class Options implements Serializable {
         return constellationBoundaries;
     }
 
+    @XmlAttribute
     public void setConstellationBoundaries(Boolean constellationBoundaries) {
         this.constellationBoundaries = constellationBoundaries;
     }
@@ -125,6 +136,7 @@ public final class Options implements Serializable {
         return milkyWay;
     }
 
+    @XmlAttribute
     public void setMilkyWay(Boolean milkyWay) {
         this.milkyWay = milkyWay;
     }
@@ -133,6 +145,7 @@ public final class Options implements Serializable {
         return dayLightSavingTimeScale;
     }
 
+    @XmlAttribute
     public void setDayLightSavingTimeScale(Boolean dayLightSavingTimeScale) {
         this.dayLightSavingTimeScale = dayLightSavingTimeScale;
     }
@@ -141,6 +154,7 @@ public final class Options implements Serializable {
         return coordsRADec;
     }
 
+    @XmlAttribute
     public void setCoordsRADec(Boolean coordsRADec) {
         this.coordsRADec = coordsRADec;
     }
@@ -149,6 +163,7 @@ public final class Options implements Serializable {
         return ecliptic;
     }
 
+    @XmlAttribute
     public void setEcliptic(Boolean ecliptic) {
         this.ecliptic = ecliptic;
     }
@@ -157,6 +172,7 @@ public final class Options implements Serializable {
         return allVisibleStars;
     }
 
+    @XmlAttribute
     public void setAllVisibleStars(Boolean allVisibleStars) {
         this.allVisibleStars = allVisibleStars;
     }
@@ -169,6 +185,7 @@ public final class Options implements Serializable {
         return doubleSidedSign;
     }
 
+    @XmlAttribute
     public void setDoubleSidedSign(Integer doubleSidedSign) {
         this.doubleSidedSign = doubleSidedSign;
     }

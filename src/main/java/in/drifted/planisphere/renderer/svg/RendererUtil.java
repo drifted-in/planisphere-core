@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
 import java.util.Map;
-import javax.xml.parsers.DocumentBuilder; 
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.stream.XMLEventFactory;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLEventWriter;
@@ -218,7 +218,7 @@ public final class RendererUtil {
                         writer.writeCharacters(localizationUtil.translate(text, 0.0));
                     }
                     break;
-                default:
+                default: // CDATA containing button styling is ignored intentionally
             }
         }
         parser.close();

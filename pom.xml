@@ -18,18 +18,13 @@
             <groupId>math.geom2d</groupId>
             <artifactId>javaGeom</artifactId>
             <version>0.11.1</version>
-        </dependency>
-        <!-- for correct detection and handling of CDATA -->
+        </dependency>        
+        <!-- for correct detection and handling of CDATA (buttons in the screen mode) -->
+        <!-- 5 times faster then Java default stax engine -->
         <dependency>
             <groupId>org.codehaus.woodstox</groupId>
             <artifactId>woodstox-core-lgpl</artifactId>
             <version>4.2.0</version>
-        </dependency>
-        <!-- for converting font data InputStream to byte array -->
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>2.4</version>
         </dependency>
         <dependency>
             <groupId>in.drifted.util</groupId>
@@ -46,16 +41,27 @@
     </dependencies>
             
     <build>
+        <finalName>planisphere-core</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
+                <version>3.1</version>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+            </plugin>            
         </plugins>
     </build>
     <properties>
