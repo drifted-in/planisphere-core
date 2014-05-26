@@ -166,18 +166,27 @@ svg {
     stroke-width: 1;
     stroke-linecap: round;
 }
-.constellationOverview {
-    font-size: 18px;
-    text-anchor: middle;
-    fill: white;
-}
 .constellationOverviewSeparator {
     stroke: #FA8700;
     stroke-width: 2;
 }
-.constellations {
+.constellationOverview_S {
+    font-size: 18px;
+    text-anchor: middle;
     fill: white;
+}
+.constellationOverview_D {
+    font-size: 14px;
+    text-anchor: middle;
+    fill: white;
+}
+.constellations_S {
     font-size: 9px;
+    fill: white;
+}
+.constellations_D {
+    font-size: 7px;
+    fill: white;
 }
 .boxArea {
     fill: #4D4D4D;
