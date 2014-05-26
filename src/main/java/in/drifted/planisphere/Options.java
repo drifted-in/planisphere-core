@@ -14,7 +14,7 @@ public final class Options implements Serializable {
     private String printImage;
     private Boolean constellationLines = true;
     private Boolean constellationLabels = true;
-    private Integer constellationLabelsOptions = 0;
+    private Integer constellationLabelsMode = 0;
     private Boolean constellationBoundaries = false;
     private Boolean milkyWay = false;
     private Boolean dayLightSavingTimeScale = true;
@@ -39,7 +39,7 @@ public final class Options implements Serializable {
         this.printImage = options.getPrintImage();
         this.constellationLines = options.getConstellationLines();
         this.constellationLabels = options.getConstellationLabels();
-        this.constellationLabelsOptions = options.getConstellationLabelsOptions();
+        this.constellationLabelsMode = options.getConstellationLabelsMode();
         this.constellationBoundaries = options.getConstellationBoundaries();
         this.milkyWay = options.getMilkyWay();
         this.dayLightSavingTimeScale = options.getDayLightSavingTimeScale();
@@ -114,13 +114,13 @@ public final class Options implements Serializable {
         this.constellationLabels = constellationLabels;
     }
 
-    public Integer getConstellationLabelsOptions() {
-        return constellationLabelsOptions;
+    public Integer getConstellationLabelsMode() {
+        return constellationLabelsMode;
     }
 
     @XmlAttribute
-    public void setConstellationLabelsOptions(Integer constellationLabelsOptions) {
-        this.constellationLabelsOptions = constellationLabelsOptions;
+    public void setConstellationLabelsMode(Integer constellationLabelsMode) {
+        this.constellationLabelsMode = constellationLabelsMode;
     }
 
     public Boolean getConstellationBoundaries() {

@@ -196,7 +196,7 @@ public final class SvgRenderer {
                                         }
                                         renderStars(options.getAllVisibleStars());
                                         if (options.getConstellationLabels()) {
-                                            renderConstellationNames(options.getConstellationLabelsOptions());
+                                            renderConstellationNames(options.getConstellationLabelsMode());
                                         }
                                         RendererUtil.writeGroupEnd(writer);
                                         break;
