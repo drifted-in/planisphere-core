@@ -22,8 +22,9 @@ public final class HtmlRenderer {
         this.svgRenderer = svgRenderer;
     }
 
-    public void createFromTemplate(String templateName, String colorScheme, Options options, Path outputPath) throws IOException {
-        createFromTemplateMap(Settings.getTemplateOptionsMap(templateName, options), colorScheme, outputPath);
+    public void createFromTemplate(Options options, Path outputPath) throws IOException {
+        Settings.normalizePrintTheme(options);
+        createFromTemplateMap(Settings.getTemplateOptionsMap(options), options.getPrintTheme(), outputPath);
     }
     
     private void createFromTemplateMap(Map<String, Options> templateMap, String colorScheme, Path outputPath) throws IOException {

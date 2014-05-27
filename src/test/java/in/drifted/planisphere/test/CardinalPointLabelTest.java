@@ -48,7 +48,7 @@ public class CardinalPointLabelTest {
         options.setDoubleSidedSign(doubleSidedSign);
 
         try (OutputStream outputStream = new FileOutputStream("D:/planisphere.svg")) {
-            svg.createFromTemplate("screenBlue.svg", outputStream, options);
+            svg.createFromTemplate("screenDefault", null, outputStream, options);
             String result = svg.getDelimitedCardinalPointLabelList();
             //System.out.println(result);
             Assert.assertEquals(expected, result);

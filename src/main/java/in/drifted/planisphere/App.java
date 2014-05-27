@@ -11,10 +11,10 @@ public class App {
 
     public static void main(String[] args) throws IOException {
 
-        if (args.length == 4) {
+        if (args.length == 2) {
 
-            Path optionsPath = Paths.get(args[2]);
-            Path outputPath = Paths.get(args[3]);
+            Path optionsPath = Paths.get(args[0]);
+            Path outputPath = Paths.get(args[1]);
             Options options = new Options();
             
             try {
@@ -25,7 +25,7 @@ public class App {
                 System.out.println("Using default options instead.");
             }
             
-            new HtmlRenderer(new SvgRenderer()).createFromTemplate(args[0], args[1], options, outputPath);
+            new HtmlRenderer(new SvgRenderer()).createFromTemplate(options, outputPath);
             
             System.out.println("The file has been created successfully in the path: " + outputPath.toString());
             

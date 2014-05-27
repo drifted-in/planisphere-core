@@ -37,20 +37,16 @@ public class CommandLineUtil {
 
         StringBuilder usage = new StringBuilder();
         
-        usage.append("Usage: java -jar planisphere.jar templateName colorScheme xmlConfigPath htmlOutputPath \n\n");
+        usage.append("Usage: java -jar planisphere.jar xmlConfigPath htmlOutputPath \n\n");
+        usage.append("Sample XML config with default values: \n");
+        
+        Options options = new Options();
+        options.setPrintTheme(Settings.THEME_PRINT_DEFAULT);  
+        usage.append(CommandLineUtil.getOptionsAsXml(options));
+        usage.append("\n");
+        
         usage.append("Supported values: \n");
-        usage.append("(a) Template names with corresponding color schemes: \n");
-        for (String templateName : Settings.getTemplateNameCollection()) {
-            usage.append("\t");
-            usage.append(templateName);
-            usage.append("\n");
-            for (String colorScheme : Settings.getColorSchemeCollection(templateName)) {
-                usage.append("\t\t");
-                usage.append(colorScheme);
-                usage.append("\n");
-            }
-        }
-        usage.append("(b) Locale values (used in the config file): \n");
+        usage.append("(a) Locale values: \n");
         usage.append("\t");
         Boolean first = true;
         for (String localValue : Settings.getLocaleValueCollection()) {
@@ -61,14 +57,22 @@ public class CommandLineUtil {
             first = false;
         }
         usage.append("\n");
-        usage.append("(c) Constellation label options (used in the config file): \n");
+        
+        usage.append("(b) Themes: \n");
+        for (String templateName : Settings.getTemplateNameCollection()) {
+            for (String colorScheme : Settings.getColorSchemeCollection(templateName)) {
+                usage.append("\t");
+                usage.append(colorScheme);
+                usage.append("\n");
+            }
+        }
+        
+        usage.append("(c) Constellation labels mode: \n");
         usage.append("\t0 (full names in the current language) \n");
         usage.append("\t1 (full names in latin) \n");
         usage.append("\t2 (abbreviations) \n");
 
         usage.append("\n");
-        usage.append("Sample XML config: \n");
-        usage.append(CommandLineUtil.getOptionsAsXml(new Options()));
         
         return usage.toString();
     }

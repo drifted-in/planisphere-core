@@ -10,8 +10,8 @@ public final class Options implements Serializable {
 
     private String localeValue = "en";
     private Double latitude = 50.0;
-    private String screenImage;
-    private String printImage;
+    private String screenTheme;
+    private String printTheme;
     private Boolean constellationLines = true;
     private Boolean constellationLabels = true;
     private Integer constellationLabelsMode = 0;
@@ -35,8 +35,8 @@ public final class Options implements Serializable {
     public Options(Options options) {
         this.localeValue = options.getLocaleValue();
         this.latitude = options.getLatitude();
-        this.screenImage = options.getScreenImage();
-        this.printImage = options.getPrintImage();
+        this.screenTheme = options.getScreenTheme();
+        this.printTheme = options.getPrintTheme();
         this.constellationLines = options.getConstellationLines();
         this.constellationLabels = options.getConstellationLabels();
         this.constellationLabelsMode = options.getConstellationLabelsMode();
@@ -78,22 +78,22 @@ public final class Options implements Serializable {
         this.latitude = latitude;
     }
 
-    public String getScreenImage() {
-        return screenImage;
+    public String getScreenTheme() {
+        return screenTheme;
     }
 
     @XmlAttribute
-    public void setScreenImage(String screenImage) {
-        this.screenImage = screenImage;
+    public void setScreenTheme(String screenTheme) {
+        this.screenTheme = screenTheme;
     }
 
-    public String getPrintImage() {
-        return printImage;
+    public String getPrintTheme() {
+        return printTheme;
     }
 
     @XmlAttribute
-    public void setPrintImage(String printImage) {
-        this.printImage = printImage;
+    public void setPrintTheme(String printTheme) {
+        this.printTheme = printTheme;
     }
 
     public Boolean getConstellationLines() {

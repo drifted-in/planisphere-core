@@ -91,6 +91,11 @@ public final class SvgRenderer {
         try {
             writer = outputFactory.createXMLStreamWriter(output);
 
+            if (templateName == null) {
+                templateName = Settings.TEMPLATE_PRINT_DEFAULT;
+                colorScheme = Settings.THEME_PRINT_DEFAULT;
+            }
+
             try (InputStream templateStream = SvgRenderer.class.getResourceAsStream(Settings.RESOURCE_BASE_PATH + "templates/core/" + templateName + ".svg")) {
 
                 FontManager fontManager = new FontManager(options.getCurrentLocale());
