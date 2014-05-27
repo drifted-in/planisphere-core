@@ -21,7 +21,7 @@ public final class ConstellationBoundaryListLoader {
             Coord coordLast = new Coord();
             String strLine;
             while ((strLine = reader.readLine()) != null) {
-                if (!strLine.isEmpty()) {
+                if (!strLine.isEmpty() && !strLine.startsWith("#")) {
                     String[] values = strLine.split("\t");
                     Coord coord = new Coord(Double.parseDouble(values[1]) / 1000.0, Double.parseDouble(values[2]) / 100.0);
                     if (values[0].equals("1")) {

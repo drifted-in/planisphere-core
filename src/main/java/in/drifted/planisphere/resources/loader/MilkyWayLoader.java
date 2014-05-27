@@ -28,7 +28,7 @@ public final class MilkyWayLoader {
 
                 String strLine;
                 while ((strLine = reader.readLine()) != null) {
-                    if (!strLine.isEmpty()) {
+                    if (!strLine.isEmpty() && !strLine.startsWith("#")) {
                         String[] values = strLine.split(" ");
                         Double l = Math.toRadians(360.0 - 33.0 - (180.0 + Double.parseDouble(values[0]) / 100.0));
                         Double b = Math.toRadians(Double.parseDouble(values[1]) / 1000.0);

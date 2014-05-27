@@ -20,7 +20,7 @@ public final class ConstellationLineListLoader {
 
             String strLine;
             while ((strLine = reader.readLine()) != null) {
-                if (!strLine.isEmpty()) {
+                if (!strLine.isEmpty() && !strLine.startsWith("#")) {
                     String[] values = strLine.split(",");
                     for (int i = 0; i < 2; i++) {
                         constellationLineList.add(new Coord(Double.parseDouble(values[(2 * i)]) / 1000.0, Double.parseDouble(values[(2 * i + 1)]) / 100.0));

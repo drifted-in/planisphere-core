@@ -20,7 +20,7 @@ public final class StarListLoader {
 
             String strLine;
             while ((strLine = reader.readLine()) != null) {
-                if (!strLine.isEmpty()) {
+                if (!strLine.isEmpty() && !strLine.startsWith("#")) {
                     String[] values = strLine.split(",");
                     starList.add(new Star(Double.parseDouble(values[0]) / 1000.0, Double.parseDouble(values[1]) / 100.0, Double.parseDouble(values[2]) / 100.0));
                 }
