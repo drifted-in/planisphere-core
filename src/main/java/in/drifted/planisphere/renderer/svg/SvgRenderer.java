@@ -37,6 +37,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.io.StringWriter;
+import java.text.DateFormatSymbols;
 import java.time.Month;
 import java.time.format.TextStyle;
 import java.util.Calendar;
@@ -133,8 +134,6 @@ public final class SvgRenderer {
 
             initVariables(options);
 
-            Locale locale = options.getCurrentLocale();
-
             XMLEventReader parser = inputFactory.createXMLEventReader(templateStream);
 
             Map<String, byte[]> paramMap = new HashMap<>();
@@ -197,7 +196,7 @@ public final class SvgRenderer {
                                     case "wheel":
                                         RendererUtil.writeGroupStart(writer, "wheel");
                                         renderMapBackground();
-                                        renderDialMonths(locale);
+                                        renderDialMonths();
                                         renderDialMonthsTicks();
                                         if (options.getMilkyWay()) {
                                             renderMilkyWay();
@@ -705,9 +704,9 @@ public final class SvgRenderer {
         RendererUtil.renderPath(writer, PathUtil.getCirclePathData(1.0 * scaleFixed), null, "mapBackground");
     }
 
-    private void renderDialMonths(Locale locale) throws XMLStreamException {
+    private void renderDialMonths() throws XMLStreamException {
 
-        String[] monthNames = getMonthNames(locale);
+        String[] monthNames = getMonthNames();
         Integer[] daysInMonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
         Integer daysInYear = 365;
 
@@ -759,15 +758,13 @@ public final class SvgRenderer {
         }
     }
 
-    private String[] getMonthNames(Locale locale) {
+    private String[] getMonthNames() {
 
         String[] monthNames = new String[12];
+        String[] monthNamesEn = new DateFormatSymbols(Locale.ENGLISH).getMonths();
 
-        int i = 0;
-        for (Month month : Month.values()) {
-            monthNames[i] = month.getDisplayName(TextStyle.FULL_STANDALONE, locale);
-            monthNames[i] = monthNames[i].substring(0, 1).toUpperCase(locale) + monthNames[i].substring(1);
-            i++;
+        for (Integer i = 0; i < 12; i++) {
+            monthNames[i] = localizationUtil.getValue(monthNamesEn[i].toLowerCase(Locale.ENGLISH));
         }
 
         return monthNames;
