@@ -18,8 +18,8 @@ package in.drifted.planisphere.renderer.html;
 
 import in.drifted.planisphere.Options;
 import in.drifted.planisphere.Settings;
+import in.drifted.planisphere.l10n.LocalizationUtil;
 import in.drifted.planisphere.renderer.svg.SvgRenderer;
-import in.drifted.planisphere.util.LocalizationUtil;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
