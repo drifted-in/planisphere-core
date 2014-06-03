@@ -1,6 +1,7 @@
 package in.drifted.planisphere.test;
 
 import in.drifted.planisphere.Options;
+import in.drifted.planisphere.Settings;
 import in.drifted.planisphere.renderer.html.HtmlRenderer;
 import in.drifted.planisphere.renderer.svg.SvgRenderer;
 import in.drifted.planisphere.util.SubsetUtil;
@@ -41,10 +42,24 @@ public class PlanisphereTest {
     public void generateHTML() throws Exception {
         new HtmlRenderer(new SvgRenderer()).createFromTemplate(options, Paths.get("D:/planisphere_printDefault.html"));
     }
-    
+
     @Test
     public void generateSVG() throws Exception {
-        createSVG("printDefault_S_02", null, "D:/planisphere_printDefault_01.svg", options);
+        //createSVG("screenDefault", null, "D:/planisphere_printDefault_01.svg", options);
+        createSVG("printDefault_D_04", "printDefault_white", "D:/planisphere_printDefault_01.svg", options);
+    }
+
+    //@Test
+    public void generateAllSVGs() throws Exception {
+        for (String templateName : Settings.getTemplateNameCollection(Settings.MEDIA_SCREEN)) {
+            for (String colorScheme : Settings.getColorSchemeCollection(templateName)) {
+                createSVG(templateName, colorScheme, "D:/" + colorScheme + ".svg", options);
+            }
+        }
+        for (String colorScheme : Settings.getColorSchemeCollection("printDefault")) {
+            createSVG("printDefault_S_01", colorScheme, "D:/" + colorScheme + "_A.svg", options);
+            createSVG("printDefault_S_02", colorScheme, "D:/" + colorScheme + "_B.svg", options);
+        }
     }
 
     public void createSVG(String template, String colorScheme, String outputPath, Options options) throws Exception {

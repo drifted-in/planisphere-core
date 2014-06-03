@@ -178,7 +178,7 @@ svg {
 .constellationOverview_D {
     font-size: 14px;
     text-anchor: middle;
-    fill: white;
+    fill: black;
 }
 .constellations_S {
     font-size: 9px;
@@ -186,7 +186,7 @@ svg {
 }
 .constellations_D {
     font-size: 7px;
-    fill: white;
+    fill: black;
 }
 .boxArea {
     fill: #4D4D4D;

@@ -97,7 +97,7 @@
             <tspan x="0" dy="13">${capricornus}</tspan>
             <tspan x="0" dy="13">${pisces}</tspan>
         </text>
-        <text id="constallationAbbrev01" class="constellations_S">
+        <text id="constellationAbbrev01" class="constellations_S">
             <tspan x="0">And</tspan>
             <tspan x="0" dy="13">Ant</tspan>
             <tspan x="0" dy="13">Aps</tspan>
@@ -129,7 +129,7 @@
             <tspan x="0" dy="13">Crt</tspan>
             <tspan x="0" dy="13">Cru</tspan>
         </text>
-        <text id="constallationLatin01" class="constellations_S">
+        <text id="constellationLatin01" class="constellations_S">
             <tspan x="0">Andromeda</tspan>
             <tspan x="0" dy="13">Antlia</tspan>
             <tspan x="0" dy="13">Apus</tspan>
@@ -161,7 +161,7 @@
             <tspan x="0" dy="13">Crater</tspan>
             <tspan x="0" dy="13">Crux</tspan>
         </text>
-        <text id="constallationLocal01" class="constellations_S">
+        <text id="constellationLocal01" class="constellations_S">
             <tspan x="0">${andromeda}</tspan>
             <tspan x="0" dy="13">${antlia}</tspan>
             <tspan x="0" dy="13">${apus}</tspan>
@@ -193,7 +193,7 @@
             <tspan x="0" dy="13">${crater}</tspan>
             <tspan x="0" dy="13">${crux}</tspan>
         </text>
-        <text id="constallationAbbrev02" class="constellations_S">
+        <text id="constellationAbbrev02" class="constellations_S">
             <tspan x="0">Cyg</tspan>
             <tspan x="0" dy="13">Del</tspan>
             <tspan x="0" dy="13">Dor</tspan>
@@ -224,7 +224,7 @@
             <tspan x="0" dy="13">Oct</tspan>
             <tspan x="0" dy="13">Oph</tspan>
         </text>
-        <text id="constallationLatin02" class="constellations_S">
+        <text id="constellationLatin02" class="constellations_S">
             <tspan x="0">Cygnus</tspan>
             <tspan x="0" dy="13">Delphinus</tspan>
             <tspan x="0" dy="13">Dorado</tspan>
@@ -255,7 +255,7 @@
             <tspan x="0" dy="13">Octans</tspan>
             <tspan x="0" dy="13">Ophiuchus</tspan>
         </text>
-        <text id="constallationLocal02" class="constellations_S">
+        <text id="constellationLocal02" class="constellations_S">
             <tspan x="0">${cygnus}</tspan>
             <tspan x="0" dy="13">${delphinus}</tspan>
             <tspan x="0" dy="13">${dorado}</tspan>
@@ -286,7 +286,7 @@
             <tspan x="0" dy="13">${octans}</tspan>
             <tspan x="0" dy="13">${ophiuchus}</tspan>
         </text>
-        <text id="constallationAbbrev03" class="constellations_S">
+        <text id="constellationAbbrev03" class="constellations_S">
             <tspan x="0">Ori</tspan>
             <tspan x="0" dy="13">Pav</tspan>
             <tspan x="0" dy="13">Peg</tspan>
@@ -317,7 +317,7 @@
             <tspan x="0" dy="13">Vol</tspan>
             <tspan x="0" dy="13">Vul</tspan>
         </text>
-        <text id="constallationLatin03" class="constellations_S">
+        <text id="constellationLatin03" class="constellations_S">
             <tspan x="0">Orion</tspan>
             <tspan x="0" dy="13">Pavo</tspan>
             <tspan x="0" dy="13">Pegasus</tspan>
@@ -348,7 +348,7 @@
             <tspan x="0" dy="13">Volans</tspan>
             <tspan x="0" dy="13">Vulpecula</tspan>
         </text>
-        <text id="constallationLocal03" class="constellations_S">
+        <text id="constellationLocal03" class="constellations_S">
             <tspan x="0">${orion}</tspan>
             <tspan x="0" dy="13">${pavo}</tspan>
             <tspan x="0" dy="13">${pegasus}</tspan>
@@ -434,60 +434,60 @@
             <g transform="translate(-315, 21)">
                 <g direction="!rtl">
                     <g>
-                        <use xlink:href="#constallationAbbrev01"/>
+                        <use xlink:href="#constellationAbbrev01"/>
                     </g>
                     <g transform="translate(26, 0)">
-                        <use xlink:href="#constallationLatin01"/>
+                        <use xlink:href="#constellationLatin01"/>
                     </g>
                     <g transform="translate(115, 0)">
-                        <use xlink:href="#constallationLocal01"/>
+                        <use xlink:href="#constellationLocal01"/>
                     </g>
                     <g transform="translate(217, 0)">
-                        <use xlink:href="#constallationAbbrev02"/>
+                        <use xlink:href="#constellationAbbrev02"/>
                     </g>
                     <g transform="translate(243, 0)">
-                        <use xlink:href="#constallationLatin02"/>
+                        <use xlink:href="#constellationLatin02"/>
                     </g>
                     <g transform="translate(333, 0)">
-                        <use xlink:href="#constallationLocal02"/>
+                        <use xlink:href="#constellationLocal02"/>
                     </g>
                     <g transform="translate(434, 0)">
-                        <use xlink:href="#constallationAbbrev03"/>
+                        <use xlink:href="#constellationAbbrev03"/>
                     </g>
                     <g transform="translate(460, 0)">
-                        <use xlink:href="#constallationLatin03"/>
+                        <use xlink:href="#constellationLatin03"/>
                     </g>
                     <g transform="translate(550, 0)">
-                        <use xlink:href="#constallationLocal03"/>
+                        <use xlink:href="#constellationLocal03"/>
                     </g>
                 </g>
                 <g direction="!ltr">
                     <g transform="translate(630, 0)">
-                        <use xlink:href="#constallationAbbrev01"/>
+                        <use xlink:href="#constellationAbbrev01"/>
                     </g>
                     <g transform="translate(604, 0)">
-                        <use xlink:href="#constallationLatin01"/>
+                        <use xlink:href="#constellationLatin01"/>
                     </g>
                     <g transform="translate(515, 0)">
-                        <use xlink:href="#constallationLocal01"/>
+                        <use xlink:href="#constellationLocal01"/>
                     </g>
                     <g transform="translate(413, 0)">
-                        <use xlink:href="#constallationAbbrev02"/>
+                        <use xlink:href="#constellationAbbrev02"/>
                     </g>
                     <g transform="translate(387, 0)">
-                        <use xlink:href="#constallationLatin02"/>
+                        <use xlink:href="#constellationLatin02"/>
                     </g>
                     <g transform="translate(297, 0)">
-                        <use xlink:href="#constallationLocal02"/>
+                        <use xlink:href="#constellationLocal02"/>
                     </g>
                     <g transform="translate(196, 0)">
-                        <use xlink:href="#constallationAbbrev03"/>
+                        <use xlink:href="#constellationAbbrev03"/>
                     </g>
                     <g transform="translate(170, 0)">
-                        <use xlink:href="#constallationLatin03"/>
+                        <use xlink:href="#constellationLatin03"/>
                     </g>
                     <g transform="translate(80, 0)">
-                        <use xlink:href="#constallationLocal03"/>
+                        <use xlink:href="#constellationLocal03"/>
                     </g>
                 </g>
             </g>
