@@ -38,8 +38,6 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.text.DateFormatSymbols;
-import java.time.Month;
-import java.time.format.TextStyle;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;

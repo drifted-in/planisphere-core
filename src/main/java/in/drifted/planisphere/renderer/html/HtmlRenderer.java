@@ -40,9 +40,9 @@ public final class HtmlRenderer {
 
     public void createFromTemplate(Options options, Path outputPath) throws IOException {
         Settings.normalizePrintTheme(options);
-        createFromTemplateMap(Settings.getTemplateOptionsMap(options), options.getPrintTheme(), outputPath);
+        createFromTemplateMap(Settings.getTemplateOptionsMap(options), options.getThemePrint(), outputPath);
     }
-    
+
     private void createFromTemplateMap(Map<String, Options> templateMap, String colorScheme, Path outputPath) throws IOException {
 
         LocalizationUtil l10n = new LocalizationUtil(templateMap.values().iterator().next().getCurrentLocale());

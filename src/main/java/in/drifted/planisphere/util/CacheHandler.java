@@ -93,7 +93,8 @@ public final class CacheHandler {
             URL url = CacheHandler.class.getResource(colorSchemePath);
             if (url == null) {
                 // every template has a default color scheme
-                colorSchemePath = getColorSchemePath(templateName.split("\\.|_")[0] + "_default");
+                String defaultColorScheme = templateName.split("\\.|_")[0] + "_default";
+                return getColorSchemeData(templateName, defaultColorScheme);
             }
 
             try (
@@ -114,8 +115,8 @@ public final class CacheHandler {
         return colorSchemeMap.get(colorScheme);
     }
 
-    private String getColorSchemePath(String colorSchemePath) {
-        return Settings.RESOURCE_BASE_PATH + "templates/core/" + colorSchemePath + ".css";
+    private String getColorSchemePath(String colorScheme) {
+        return Settings.RESOURCE_BASE_PATH + "templates/core/" + colorScheme + ".css";
     }
 
     public String getFontData(String fontDataPath) throws IOException {

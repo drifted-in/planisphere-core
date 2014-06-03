@@ -16,6 +16,7 @@
  */
 package in.drifted.planisphere;
 
+import in.drifted.planisphere.util.ResourceUtil;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -43,29 +44,45 @@ public final class Settings {
     public static final String FILE_PATH_TEMPLATES_PROPERTIES = RESOURCE_BASE_PATH + "templates/templates.properties";
     public static final String TEMPLATE_PRINT_DEFAULT = "printDefault";
     public static final String THEME_PRINT_DEFAULT = TEMPLATE_PRINT_DEFAULT + "_default";
+    public static final String TEMPLATE_SCREEN_DEFAULT = "screenDefault";
+    public static final String THEME_SCREEN_DEFAULT = TEMPLATE_SCREEN_DEFAULT + "_default";
+    public static final String MEDIA_PRINT = "print";
+    public static final String MEDIA_SCREEN = "screen";
 
-    public static Collection<String> getTemplateNameCollection() throws IOException {
+    public static Collection<String> getAllTemplateNameCollection() throws IOException {
+
+        Collection<String> templateNameCollection = new HashSet<>();
+
+        templateNameCollection.addAll(getTemplateNameCollection(MEDIA_PRINT));
+        templateNameCollection.addAll(getTemplateNameCollection(MEDIA_SCREEN));
+
+        return templateNameCollection;
+    }
+
+    public static Collection<String> getTemplateNameCollection(String media) throws IOException {
+
+        Collection<String> templateNameCollection = new HashSet<>();
 
         Properties templatesProperties = new Properties();
-
         templatesProperties.load(Settings.class.getResourceAsStream(Settings.FILE_PATH_TEMPLATES_PROPERTIES));
 
-        return Arrays.asList(templatesProperties.getProperty("print").replace("_mode", "").split("\\|"));
+        String templateSpec = templatesProperties.getProperty(media).replace("_mode", "");
+        if (templateSpec.contains("|")) {
+            templateNameCollection = Arrays.asList(templateSpec.split("\\|"));
+        } else {
+            templateNameCollection.add(templateSpec);
+        }
+
+        return templateNameCollection;
     }
 
     public static Collection<String> getColorSchemeCollection(String templateName) throws IOException {
 
         Collection<String> colorSchemeCollection = new HashSet<>();
 
-        try (
-                InputStream in = Settings.class.getResourceAsStream("/in/drifted/planisphere/resources/templates/core");
-                BufferedReader br = new BufferedReader(new InputStreamReader(in))) {
-
-            String line;
-            while ((line = br.readLine()) != null) {
-                if (line.startsWith(templateName + "_") && line.endsWith(".css")) {
-                    colorSchemeCollection.add(line.replace(".css", ""));
-                }
+        for (String fileName : ResourceUtil.getResourceCollection(Settings.class, "/in/drifted/planisphere/resources/templates/core")) {
+            if (fileName.startsWith(templateName + "_") && fileName.endsWith(".css")) {
+                colorSchemeCollection.add(fileName.replace(".css", ""));
             }
         }
 
@@ -101,7 +118,7 @@ public final class Settings {
         Properties templatesProperties = new Properties();
         templatesProperties.load(Settings.class.getResourceAsStream(Settings.FILE_PATH_TEMPLATES_PROPERTIES));
 
-        String templateName = options.getPrintTheme().split("_")[0];
+        String templateName = options.getThemePrint().split("_")[0];
 
         String mode = options.getDoubleSided() ? "D" : "S";
         String templateKey = templateName + "_" + mode;
@@ -125,11 +142,11 @@ public final class Settings {
 
     public static void normalizePrintTheme(Options options) throws IOException {
 
-        String printTheme = options.getPrintTheme();
-        String templateName = printTheme.split("_")[0];
+        String themePrint = options.getThemePrint();
+        String templateName = themePrint.split("_")[0];
 
-        if (!getColorSchemeCollection(templateName).contains(printTheme)) {
-            options.setPrintTheme(THEME_PRINT_DEFAULT);
+        if (!getColorSchemeCollection(templateName).contains(themePrint)) {
+            options.setThemePrint(THEME_PRINT_DEFAULT);
         }
     }
 }

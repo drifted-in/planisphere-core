@@ -26,8 +26,8 @@ public final class Options implements Serializable {
 
     private String localeValue = "en";
     private Double latitude = 50.0;
-    private String screenTheme;
-    private String printTheme;
+    private String themeScreen;
+    private String themePrint;
     private Boolean constellationLines = true;
     private Boolean constellationLabels = true;
     private Integer constellationLabelsMode = 0;
@@ -51,8 +51,8 @@ public final class Options implements Serializable {
     public Options(Options options) {
         this.localeValue = options.getLocaleValue();
         this.latitude = options.getLatitude();
-        this.screenTheme = options.getScreenTheme();
-        this.printTheme = options.getPrintTheme();
+        this.themeScreen = options.getThemeScreen();
+        this.themePrint = options.getThemePrint();
         this.constellationLines = options.getConstellationLines();
         this.constellationLabels = options.getConstellationLabels();
         this.constellationLabelsMode = options.getConstellationLabelsMode();
@@ -94,22 +94,22 @@ public final class Options implements Serializable {
         this.latitude = latitude;
     }
 
-    public String getScreenTheme() {
-        return screenTheme;
+    public String getThemeScreen() {
+        return themeScreen;
     }
 
     @XmlAttribute
-    public void setScreenTheme(String screenTheme) {
-        this.screenTheme = screenTheme;
+    public void setThemeScreen(String themeScreen) {
+        this.themeScreen = themeScreen;
     }
 
-    public String getPrintTheme() {
-        return printTheme;
+    public String getThemePrint() {
+        return themePrint;
     }
 
     @XmlAttribute
-    public void setPrintTheme(String printTheme) {
-        this.printTheme = printTheme;
+    public void setThemePrint(String themePrint) {
+        this.themePrint = themePrint;
     }
 
     public Boolean getConstellationLines() {

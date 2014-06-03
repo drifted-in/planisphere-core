@@ -32,7 +32,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
 public class CommandLineUtil {
-    
+
     public static Options getOptions(Path optionsPath) throws IOException {
 
         Options options = new Options();
@@ -52,15 +52,15 @@ public class CommandLineUtil {
     public static String getUsage() throws IOException {
 
         StringBuilder usage = new StringBuilder();
-        
+
         usage.append("Usage: java -jar planisphere.jar xmlConfigPath htmlOutputPath \n\n");
         usage.append("Sample XML config with default values: \n");
-        
+
         Options options = new Options();
-        options.setPrintTheme(Settings.THEME_PRINT_DEFAULT);  
+        options.setThemePrint(Settings.THEME_PRINT_DEFAULT);
         usage.append(CommandLineUtil.getOptionsAsXml(options));
         usage.append("\n");
-        
+
         usage.append("Supported values: \n");
         usage.append("(a) Locale values: \n");
         usage.append("\t");
@@ -73,26 +73,26 @@ public class CommandLineUtil {
             first = false;
         }
         usage.append("\n");
-        
+
         usage.append("(b) Themes: \n");
-        for (String templateName : Settings.getTemplateNameCollection()) {
+        for (String templateName : Settings.getTemplateNameCollection(Settings.MEDIA_PRINT)) {
             for (String colorScheme : Settings.getColorSchemeCollection(templateName)) {
                 usage.append("\t");
                 usage.append(colorScheme);
                 usage.append("\n");
             }
         }
-        
+
         usage.append("(c) Constellation labels mode: \n");
         usage.append("\t0 (full names in the current language) \n");
         usage.append("\t1 (full names in latin) \n");
         usage.append("\t2 (abbreviations) \n");
 
         usage.append("\n");
-        
+
         return usage.toString();
     }
-    
+
     public static String getOptionsAsXml(Options options) throws IOException {
 
         StringBuilder optionsAsXml = new StringBuilder();
@@ -112,7 +112,7 @@ public class CommandLineUtil {
             }
         }
         optionsAsXml.append("/>\n");
-        
+
         return optionsAsXml.toString();
     }
 
