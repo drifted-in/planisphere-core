@@ -407,7 +407,7 @@
         <g transform="translate(715, 0)" onclick="synchronize(evt);">
             <g id="buttonFlip"/>
         </g>
-        <g transform="translate(785, 0)" onclick="top.settingsDialog.show();">
+        <g transform="translate(785, 0)" onclick="top.PF('settingsDialog').show();">
             <g id="buttonSettings"/>
         </g>
         <g transform="translate(855, 0)" onclick="top.document.getElementById('exportHTML').click();">
