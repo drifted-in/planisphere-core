@@ -1200,6 +1200,8 @@ public final class SvgRenderer {
         } else if (latitudeAbs > 60) {
             rangeMajor = 7;
             rangeMinor = 5;
+        } else if (!isDoubleSided) {
+            rangeMajor = 7;
         }
 
         // default labels
