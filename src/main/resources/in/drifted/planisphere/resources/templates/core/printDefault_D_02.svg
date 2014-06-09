@@ -60,7 +60,7 @@
             <use x="0" y="1000" xlink:href="#dottedBlock"/>
         </g>
         <g id="latitudeMarkerDef">
-            <text x="-13" y="4" text-anchor="end">${latitudeValue}</text>
+            <text direction="ltr" x="-13" y="4" text-anchor="end">${latitudeValue}</text>
             <path d="M0 0L-8 -5L-8 5Z"/>
             <path d="M190 0L198 -5L198 5Z"/>
             <line x1="0" y1="0" x2="190" y2="0"/>
