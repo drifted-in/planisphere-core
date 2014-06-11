@@ -432,6 +432,7 @@
                 <text class="constellationOverview_S">${constellationOverviewTitle}</text>
             </g>
             <g transform="translate(-315, 21)">
+                <!--  total width 630 (column widths 26|90|101); the block is not centered -->
                 <g direction="!rtl">
                     <g>
                         <use xlink:href="#constellationAbbrev01"/>
@@ -439,7 +440,7 @@
                     <g transform="translate(26, 0)">
                         <use xlink:href="#constellationLatin01"/>
                     </g>
-                    <g transform="translate(115, 0)">
+                    <g transform="translate(116, 0)">
                         <use xlink:href="#constellationLocal01"/>
                     </g>
                     <g transform="translate(217, 0)">
@@ -468,7 +469,7 @@
                     <g transform="translate(604, 0)">
                         <use xlink:href="#constellationLatin01"/>
                     </g>
-                    <g transform="translate(515, 0)">
+                    <g transform="translate(514, 0)">
                         <use xlink:href="#constellationLocal01"/>
                     </g>
                     <g transform="translate(413, 0)">

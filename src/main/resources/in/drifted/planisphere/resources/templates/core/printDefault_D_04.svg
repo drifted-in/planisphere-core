@@ -364,6 +364,7 @@
             <text class="constellationOverview_D">${constellationOverviewTitle}</text>
         </g>
         <g transform="translate(0, 20)">
+            <!--  total width 483 (column widths 21|69|78) -->
             <g direction="!rtl">
                 <g>
                     <use xlink:href="#constellationAbbrev01"/>
@@ -394,31 +395,31 @@
                 </g>
             </g>
             <g direction="!ltr">
-                <g transform="translate(630, 0)">
+                <g transform="translate(500, 0)">
                     <use xlink:href="#constellationAbbrev01"/>
                 </g>
-                <g transform="translate(604, 0)">
+                <g transform="translate(479, 0)">
                     <use xlink:href="#constellationLatin01"/>
                 </g>
-                <g transform="translate(515, 0)">
+                <g transform="translate(410, 0)">
                     <use xlink:href="#constellationLocal01"/>
                 </g>
-                <g transform="translate(413, 0)">
+                <g transform="translate(332, 0)">
                     <use xlink:href="#constellationAbbrev02"/>
                 </g>
-                <g transform="translate(387, 0)">
+                <g transform="translate(306, 0)">
                     <use xlink:href="#constellationLatin02"/>
                 </g>
-                <g transform="translate(297, 0)">
+                <g transform="translate(237, 0)">
                     <use xlink:href="#constellationLocal02"/>
                 </g>
-                <g transform="translate(196, 0)">
+                <g transform="translate(159, 0)">
                     <use xlink:href="#constellationAbbrev03"/>
                 </g>
-                <g transform="translate(170, 0)">
+                <g transform="translate(133, 0)">
                     <use xlink:href="#constellationLatin03"/>
                 </g>
-                <g transform="translate(80, 0)">
+                <g transform="translate(64, 0)">
                     <use xlink:href="#constellationLocal03"/>
                 </g>
             </g>
