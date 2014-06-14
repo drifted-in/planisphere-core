@@ -50,7 +50,7 @@ public class ResourceUtil {
                     resourceCollection.add(line);
                 }
             }
-            
+
         } else {
 
             switch (dirUrl.getProtocol()) {
