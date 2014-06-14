@@ -8,7 +8,7 @@
             </goals>
             <properties>
                 <exec.classpathScope>runtime</exec.classpathScope>
-                <exec.args>-classpath %classpath in.drifted.planisphere.App a printDefault_white a a.html</exec.args>
+                <exec.args>-classpath %classpath in.drifted.planisphere.App</exec.args>
                 <exec.executable>java</exec.executable>
             </properties>
         </action>
@@ -19,7 +19,7 @@
                 <goal>org.codehaus.mojo:exec-maven-plugin:1.2:exec</goal>
             </goals>
             <properties>
-                <exec.args>-classpath %classpath in.drifted.planisphere.App a printDefault_white a a.html</exec.args>
+                <exec.args>-classpath %classpath in.drifted.planisphere.App</exec.args>
                 <profiler.action>profile</profiler.action>
                 <exec.executable>java</exec.executable>
             </properties>
@@ -34,15 +34,16 @@
                 <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
             </goals>
             <properties>
-                <exec.args>-Xdebug -Xrunjdwp:transport=dt_socket,server=n,address=${jpda.address} -classpath %classpath in.drifted.planisphere.App a printDefault_white a a.html</exec.args>
+                <exec.args>-Xdebug -Xrunjdwp:transport=dt_socket,server=n,address=${jpda.address} -classpath %classpath in.drifted.planisphere.App</exec.args>
                 <exec.executable>java</exec.executable>
                 <jpda.listen>true</jpda.listen>
             </properties>
         </action>
         <action>
-            <actionName>CUSTOM-assembly:single</actionName>
-            <displayName>assembly:single</displayName>
+            <actionName>CUSTOM-package assembly:single</actionName>
+            <displayName>package assembly:single</displayName>
             <goals>
+                <goal>package</goal>
                 <goal>assembly:single</goal>
             </goals>
         </action>

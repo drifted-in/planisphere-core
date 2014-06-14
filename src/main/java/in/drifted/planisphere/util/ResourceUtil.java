@@ -37,7 +37,7 @@ public class ResourceUtil {
 
         Collection<String> resourceCollection = new HashSet<>();
 
-        URL dirUrl = clazz.getClassLoader().getResource(path);
+        URL dirUrl = clazz.getResource(path);
 
         if (dirUrl == null) {
 

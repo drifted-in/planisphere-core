@@ -93,15 +93,9 @@ public final class Settings {
 
         Collection<String> localeValueCollection = new TreeSet<>();
 
-        try (
-                InputStream in = Settings.class.getResourceAsStream("/in/drifted/planisphere/resources/localizations");
-                BufferedReader br = new BufferedReader(new InputStreamReader(in))) {
-
-            String line;
-            while ((line = br.readLine()) != null) {
-                if (line.startsWith("messages_")) {
-                    localeValueCollection.add(line.replace("messages_", "").replace(".properties", "").replace("_", "|"));
-                }
+        for (String fileName : ResourceUtil.getResourceCollection(Settings.class, "/in/drifted/planisphere/resources/localizations")) {
+            if (fileName.startsWith("messages_")) {
+                localeValueCollection.add(fileName.replace("messages_", "").replace(".properties", "").replace("_", "|"));
             }
         }
 
