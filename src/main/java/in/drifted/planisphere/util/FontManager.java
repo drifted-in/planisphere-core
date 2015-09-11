@@ -19,24 +19,38 @@ package in.drifted.planisphere.util;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 public final class FontManager {
 
     private static final String FONT_BASE_PATH = "/in/drifted/planisphere/resources/fonts/";
     private final ResourceBundle resources;
-    private final String country;
+    private final String fontNameSuffix;
 
     public FontManager(Locale locale) {
         resources = ResourceBundle.getBundle("in.drifted.planisphere.resources.fonts.mapping");
-        if (locale.getLanguage().equals("ar")) {
-            country = "ar";
+        fontNameSuffix = getFontNameSuffix(locale);
+    }
+
+    public String getFontNameSuffix(Locale locale) {
+
+        String language = locale.getLanguage();
+
+        Map<String, String> suffixMap = new HashMap<>();
+        suffixMap.put("ar", "ar");
+        suffixMap.put("fa", "ar");
+
+        if (suffixMap.containsKey(language)) {
+            return suffixMap.get(language);
+
         } else {
-            country = locale.getCountry();
+            return locale.getCountry();
         }
     }
 
@@ -102,7 +116,7 @@ public final class FontManager {
     }
 
     private String getValue(String key) {
-        String keyLocal = key + "." + country.toLowerCase(Locale.ENGLISH);
+        String keyLocal = key + "." + fontNameSuffix.toLowerCase(Locale.ENGLISH);
         String keyDefault = key + ".default";
         if (resources.containsKey(keyLocal)) {
             return resources.getString(keyLocal);

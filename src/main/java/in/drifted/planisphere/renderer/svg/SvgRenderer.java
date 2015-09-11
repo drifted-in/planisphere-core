@@ -30,6 +30,7 @@ import in.drifted.planisphere.model.Star;
 import in.drifted.planisphere.util.CacheHandler;
 import in.drifted.planisphere.util.CoordUtil;
 import in.drifted.planisphere.util.FontManager;
+import in.drifted.planisphere.util.LanguageUtil;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -145,9 +146,8 @@ public final class SvgRenderer {
             Attribute idAttr;
             Attribute dirAttr;
             String id;
-
-            String writingDirection = localizationUtil.getValue("writingDirection");
-            String direction = writingDirection.equals("writingDirection") ? "ltr" : writingDirection;
+            
+            String direction = LanguageUtil.getWritingDirection(options.getCurrentLocale().getLanguage());
 
             while (parser.hasNext()) {
                 XMLEvent event = parser.nextEvent();
