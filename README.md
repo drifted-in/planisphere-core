@@ -11,7 +11,7 @@ How to build
   * Clone this repository to your local disc.
   * Ensure that JDK 8 is available on your system.
   * Open this Maven based project in your favorite IDE.
-  * Build project using the goal `package assembly:single`.
+  * Build project.
 
 The final jar file with all dependencies included is located in the `target` subfolder. It can be copied or renamed as needed.
 
@@ -31,7 +31,3 @@ Aknowledgment
   * This tool utilizes two handy libraries. While the first takes care of milky way clipping, the second reduces the processing time over default JDK StAX parser significantly. I appreciate a lot that both are open sourced and hence available for this project:
     * javaGeom polygon clipper
     * woodstox StAX pull parser
-  
-
-
-  
