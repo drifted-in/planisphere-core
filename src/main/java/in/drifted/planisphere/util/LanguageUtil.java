@@ -20,14 +20,14 @@ import java.util.Collection;
 import java.util.HashSet;
 
 public class LanguageUtil {
-    
+
     public static String getWritingDirection(String language) {
-        
+
         Collection<String> rtlLanguageCollection = new HashSet<>();
-        
+
         rtlLanguageCollection.add("ar");
         rtlLanguageCollection.add("fa");
-        
+
         if (rtlLanguageCollection.contains(language)) {
             return "rtl";
         } else {

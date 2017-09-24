@@ -20,7 +20,7 @@
          }
          #buttonSettings:hover .reflection {
             fill: #ff6a66;
-         }         
+         }
          #buttonSettings .gradientUp {
             stop-color: #641e15;
          }
@@ -29,10 +29,10 @@
          }
          #buttonSettings .gradientDown {
             stop-color: #9f3026;
-         }         
+         }
          #buttonSettings .reflection {
             fill: #c83e05;
-         }         
+         }
          .gearLarge {
             fill: #FA9600;
          }

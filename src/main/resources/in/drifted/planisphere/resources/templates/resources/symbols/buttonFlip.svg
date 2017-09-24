@@ -20,7 +20,7 @@
          }
          #buttonFlip:hover .reflection {
             fill: #ff6a66;
-         }         
+         }
          #buttonFlip .gradientUp {
             stop-color: #641e15;
          }
@@ -29,10 +29,10 @@
          }
          #buttonFlip .gradientDown {
             stop-color: #9f3026;
-         }         
+         }
          #buttonFlip .reflection {
             fill: #c83e05;
-         }         
+         }
          .arrowTop {
             fill: #FA9600;
          }

@@ -98,7 +98,7 @@ public final class SvgRenderer {
         Integer latitudeFixedSign = (latitudeFixed >= 0) ? 1 : -1;
         doubleSidedSign = (int) (options.getDoubleSidedSign() * latitudeFixedSign);
         latitude = isDoubleSided ? doubleSidedSign * 65.0 : latitudeFixed;
-        latitudeSign = (latitude >= 0) ? 1 : -1; // Math.signum() returns 0 for zero latitude     
+        latitudeSign = (latitude >= 0) ? 1 : -1; // Math.signum() returns 0 for zero latitude
         localizationUtil = new LocalizationUtil(options.getCurrentLocale());
     }
 
@@ -146,7 +146,7 @@ public final class SvgRenderer {
             Attribute idAttr;
             Attribute dirAttr;
             String id;
-            
+
             String direction = LanguageUtil.getWritingDirection(options.getCurrentLocale().getLanguage());
 
             while (parser.hasNext()) {
@@ -863,7 +863,7 @@ public final class SvgRenderer {
         StringBuilder path = new StringBuilder();
         Coord coord = new Coord(0.0, 0.0);
 
-        // declination circle (it cannot be rendered using circles because of the rotation at vernal point)        
+        // declination circle (it cannot be rendered using circles because of the rotation at vernal point)
         for (Double Dec = 60.0; Dec >= Math.abs(latitude) - 90.0; Dec = Dec - 30.0) {
             for (Double RA = 0.0; RA <= 24.0; RA = RA + 0.5) {
                 CoordUtil.convert(RA, latitudeSign * Dec, coord, latitude, scale);
@@ -876,7 +876,7 @@ public final class SvgRenderer {
             }
         }
 
-        // RA        
+        // RA
         Double start;
         for (Integer RA = 0; RA < 24; RA++) {
             switch (RA % 6) {
@@ -1372,7 +1372,7 @@ public final class SvgRenderer {
         pathData.append(" ");
         pathData.append(PathUtil.format(y1));
 
-        // main arc        
+        // main arc
         pathData.append("A");
         // rx
         pathData.append(PathUtil.format(0.9 * scaleFixed));

@@ -27,11 +27,11 @@ public class SubsetUtil {
     public static String getFontForgeSelectionScript(Locale locale) {
 
         /*
-         
+
          Method Used for subsetting this huge font for non-latin languages:
          https://github.com/android/platform_frameworks_base/blob/master/data/fonts/DroidSansFallback.ttf
-        
-         1. Generate script and copy it from e.g. debug window into the clipboard        
+
+         1. Generate script and copy it from e.g. debug window into the clipboard
          2. Open FontForge | File | Open... and choose DroidSansFallback.ttf
          3. Choose File | Execute script...
          4. Insert the script to the dialog area and press Ok
@@ -40,7 +40,7 @@ public class SubsetUtil {
          7. Choose Element | Font Info... | OS/2 | Misc. | Embeddable and select 'Installable Font'
          8. Choose File | Generate Fonts...
          9. Store the final file in the following path: \in\drifted\planisphere\core\src\main\resources\in\drifted\planisphere\resources\fonts\droid-sans-[locale].ttf
-        
+
          */
         StringBuilder sb = new StringBuilder("Select(32, 127)\n");
 

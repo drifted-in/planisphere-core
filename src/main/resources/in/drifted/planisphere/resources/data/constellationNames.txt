@@ -1,4 +1,4 @@
-# 
+#
 # Copyright (c) 2012-present Jan Tošovský <jan.tosovsky.cz@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -13,7 +13,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-# 
+#
 400,4250,And,Andromeda
 10500,-3500,Ant,Antlia
 16134,-7641,Aps,Apus

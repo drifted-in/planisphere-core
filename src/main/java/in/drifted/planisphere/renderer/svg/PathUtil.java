@@ -50,10 +50,10 @@ public class PathUtil {
             pathData.append(format(coord.getY()));
         }
         pathData.append("z");
-        
+
         return pathData.toString();
     }
-    
+
     public static String getCirclePathData(Double radius) {
 
         BezierCircle circle = new BezierCircle(radius);
@@ -71,7 +71,7 @@ public class PathUtil {
         BezierCircle circle = new BezierCircle(center, radius, angle);
         return circle.getPathData();
     }
-    
+
     public static String getCirclePathDataInv(Coord center, Double radius) {
 
         BezierCircle circle = new BezierCircle(center, radius);
@@ -90,7 +90,7 @@ public class PathUtil {
 
         return path.toString();
     }
-    
+
     public static Coord getIntersection(Double ax, Double ay, Double bx, Double by, Double cx, Double cy) {
 
         // Get the perpendicular bisector of (x1, y1) and (x2, y2)

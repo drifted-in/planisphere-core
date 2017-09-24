@@ -14,18 +14,18 @@
         }
         .end {
           text-anchor: end;
-        }        
+        }
       ]]>
-    </style>  
+    </style>
     <clipPath id="view-area">
       <rect x="0" y="0" width="188.5" height="93.25"/>
-    </clipPath>    
+    </clipPath>
   </defs>
-  
+
   <g clip-path="url(#view-area)">
     <circle id="sun" cx="22" cy="12" r="0.5" class="star"/>
     <circle id="sirius" cx="26" cy="36" r="0.85" class="star"/>
-    <circle id="procyon" cx="30" cy="60" r="1" class="star"/>      
+    <circle id="procyon" cx="30" cy="60" r="1" class="star"/>
     <circle id="vega" cx="54" cy="47" r="1.75" class="star"/>
     <circle id="capella" cx="54" cy="16" r="6" class="star"/>
     <circle id="arcturus" cx="90" cy="22" r="12.85" class="star"/>
@@ -41,6 +41,6 @@
     <text x="90" y="48" class="star-label">${arcturus}</text>
     <text x="137" y="14" class="star-label">${aldebaran}</text>
     <text x="154" y="84" class="star-label end">${rigel}</text>
-    <text x="90" y="72" class="star-label">${betelgeuse}</text>    
+    <text x="90" y="72" class="star-label">${betelgeuse}</text>
   </g>
 </svg>

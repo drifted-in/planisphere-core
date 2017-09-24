@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
      x="0px" y="0px" width="1024px" height="768px" viewBox="0 0 1024 768" enable-background="new 0 0 1024 768" onload="startup(evt)">
     <?mouseEventsScript?>
     <defs>
@@ -27,7 +27,7 @@
         <g id="dialHoursMarkerMinorDouble" class="dialHoursMarkerMinor">
             <g transform="rotate(180)">
                 <text y="-45" x="0">#</text>
-            </g>    
+            </g>
         </g>
         <g id="dialHoursMarkerHalf" class="dialHoursMarkerHalf">
             <path d="M0 0L-4.434 7.68H4.434Z" stroke="none"/>

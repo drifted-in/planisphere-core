@@ -20,7 +20,7 @@
          }
          #buttonMoreInfo:hover .reflection {
             fill: #ff6a66;
-         }         
+         }
          #buttonMoreInfo .gradientUp {
             stop-color: #641e15;
          }
@@ -29,10 +29,10 @@
          }
          #buttonMoreInfo .gradientDown {
             stop-color: #9f3026;
-         }         
+         }
          #buttonMoreInfo .reflection {
             fill: #c83e05;
-         }         
+         }
          .moreInfo {
             fill: #FA9600;
          }

@@ -1,4 +1,4 @@
-# 
+#
 # Copyright (c) 2012-present Jan Tošovský <jan.tosovsky.cz@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -13,7 +13,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-# 
+#
 18000.0075954861 15421.6943359375
 17997.73383246527 15451.11545138888
 17993.88910590277 15497.6931423611

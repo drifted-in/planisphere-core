@@ -287,7 +287,7 @@
             <tspan x="0" dy="10">${virgo}</tspan>
             <tspan x="0" dy="10">${volans}</tspan>
             <tspan x="0" dy="10">${vulpecula}</tspan>
-        </text>        
+        </text>
         <linearGradient id="gradient_01" x1="0%" y1="0%" x2="0%" y2="100%">
             <stop id="gradient_01c01" offset="0"/>
             <stop id="gradient_01c02" offset="1"/>
@@ -317,7 +317,7 @@
             <use x="0" y="0" xlink:href="#dottedBlock"/>
             <use x="0" y="500" xlink:href="#dottedBlock"/>
             <use x="0" y="1000" xlink:href="#dottedBlock"/>
-        </g>        
+        </g>
     </defs>
     <g transform="rotate(20, 420, 590)">
         <use x="0" y="-150" xlink:href="#rect"/>

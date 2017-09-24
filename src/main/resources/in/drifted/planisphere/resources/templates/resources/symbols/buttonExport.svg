@@ -20,7 +20,7 @@
          }
          #buttonExport:hover .reflection {
             fill: #ff6a66;
-         }         
+         }
          #buttonExport .gradientUp {
             stop-color: #641e15;
          }
@@ -29,10 +29,10 @@
          }
          #buttonExport .gradientDown {
             stop-color: #9f3026;
-         }         
+         }
          #buttonExport .reflection {
             fill: #c83e05;
-         }         
+         }
          .planisphere {
             fill: #FA9600;
          }

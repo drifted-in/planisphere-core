@@ -237,7 +237,7 @@ svg {
 }
 #gradient_01c02 {
     stop-color: rgb(255,255,255);
-    stop-opacity: 1;    
+    stop-opacity: 1;
 }
 .dottedLine {
     stroke-dasharray: 0 10;
