@@ -14,9 +14,9 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>        
+        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
-    
+
     <dependencies>
         <!-- milky way clipper (the Java port of GPC clipper) -->
         <!-- JTS Topology suite could be used as well -->
@@ -24,29 +24,29 @@
             <groupId>math.geom2d</groupId>
             <artifactId>javaGeom</artifactId>
             <version>0.11.1</version>
-        </dependency>        
+        </dependency>
         <!-- for correct detection and handling of CDATA (buttons in the screen mode) -->
         <!-- 5 times faster then Java default stax engine -->
         <dependency>
             <groupId>com.fasterxml.woodstox</groupId>
             <artifactId>woodstox-core</artifactId>
-            <version>5.0.1</version>
+            <version>5.0.3</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.10</version>
             <scope>test</scope>
-        </dependency>        
+        </dependency>
     </dependencies>
-            
+
     <build>
         <finalName>planisphere-core</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
-                <version>2.5.5</version>
+                <version>3.0.0</version>
                 <configuration>
                     <archive>
                         <manifest>
@@ -64,9 +64,9 @@
                             <goal>single</goal>
                         </goals>
                     </execution>
-                </executions>                
+                </executions>
             </plugin>
         </plugins>
     </build>
-              
+
 </project>
