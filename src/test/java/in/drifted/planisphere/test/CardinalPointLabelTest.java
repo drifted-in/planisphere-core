@@ -2,7 +2,7 @@ package in.drifted.planisphere.test;
 
 import in.drifted.planisphere.Options;
 import in.drifted.planisphere.renderer.svg.SvgRenderer;
-import java.io.FileOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import org.junit.Assert;
 import org.junit.Test;
@@ -47,12 +47,10 @@ public class CardinalPointLabelTest {
         options.setLatitude(latitude);
         options.setDoubleSidedSign(doubleSidedSign);
 
-        try (OutputStream outputStream = new FileOutputStream("D:/planisphere.svg")) {
+        try (OutputStream outputStream = new ByteArrayOutputStream()) {
             svg.createFromTemplate("screenDefault", null, outputStream, options);
             String result = svg.getDelimitedCardinalPointLabelList();
-            //System.out.println(result);
             Assert.assertEquals(expected, result);
-            outputStream.close();
         }
     }
 }

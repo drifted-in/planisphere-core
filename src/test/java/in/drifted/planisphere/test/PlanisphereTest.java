@@ -5,11 +5,10 @@ import in.drifted.planisphere.Settings;
 import in.drifted.planisphere.renderer.html.HtmlRenderer;
 import in.drifted.planisphere.renderer.svg.SvgRenderer;
 import in.drifted.planisphere.util.SubsetUtil;
-import java.io.FileOutputStream;
 import java.io.OutputStream;
-import java.nio.file.Paths;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import org.junit.Before;
-import org.junit.Test;
 
 public class PlanisphereTest {
 
@@ -40,33 +39,32 @@ public class PlanisphereTest {
 
     //@Test
     public void generateHTML() throws Exception {
-        new HtmlRenderer(new SvgRenderer()).createFromTemplate(options, Paths.get("D:/planisphere_printDefault.html"));
+        new HtmlRenderer(new SvgRenderer()).createFromTemplate(options, Files.createTempFile("planisphere_printDefault", ".html"));
     }
 
-    @Test
+    //@Test
     public void generateSVG() throws Exception {
-        //createSVG("screenDefault", null, "D:/planisphere_printDefault_01.svg", options);
-        createSVG("printDefault_D_04", "printDefault_white", "D:/planisphere_printDefault_01.svg", options);
+        createSVG("printDefault_D_04", "printDefault_white", Files.createTempFile("planisphere_printDefault_01", ".svg"), options);
     }
 
     //@Test
     public void generateAllSVGs() throws Exception {
         for (String templateName : Settings.getTemplateNameCollection(Settings.MEDIA_SCREEN)) {
             for (String colorScheme : Settings.getColorSchemeCollection(templateName)) {
-                createSVG(templateName, colorScheme, "D:/" + colorScheme + ".svg", options);
+                createSVG(templateName, colorScheme, Files.createTempFile(colorScheme, ".svg"), options);
             }
         }
         for (String colorScheme : Settings.getColorSchemeCollection("printDefault")) {
-            createSVG("printDefault_S_01", colorScheme, "D:/" + colorScheme + "_A.svg", options);
-            createSVG("printDefault_S_02", colorScheme, "D:/" + colorScheme + "_B.svg", options);
+            createSVG("printDefault_S_01", colorScheme, Files.createTempFile(colorScheme, "_A.svg"), options);
+            createSVG("printDefault_S_02", colorScheme, Files.createTempFile(colorScheme, "_B.svg"), options);
         }
     }
 
-    public void createSVG(String template, String colorScheme, String outputPath, Options options) throws Exception {
+    public void createSVG(String template, String colorScheme, Path outputPath, Options options) throws Exception {
 
         SvgRenderer svg = new SvgRenderer();
 
-        try (OutputStream outputStream = new FileOutputStream(outputPath)) {
+        try (OutputStream outputStream = Files.newOutputStream(outputPath)) {
             svg.createFromTemplate(template, colorScheme, outputStream, options);
         }
     }
