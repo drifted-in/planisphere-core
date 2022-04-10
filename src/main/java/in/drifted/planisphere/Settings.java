@@ -40,7 +40,7 @@ public final class Settings {
     public static final String FILE_PATH_MILKY_WAY_BRIGHT_SOUTH = RESOURCE_DATA_PATH + "milkyWayBrightSouth.txt";
     public static final String FILE_PATH_TEMPLATES_PROPERTIES = RESOURCE_BASE_PATH + "templates/templates.properties";
     public static final String TEMPLATE_PRINT_DEFAULT = "printDefault";
-    public static final String THEME_PRINT_DEFAULT = TEMPLATE_PRINT_DEFAULT + "_default";
+    public static final String THEME_PRINT_DEFAULT = TEMPLATE_PRINT_DEFAULT + "_dark";
     public static final String TEMPLATE_SCREEN_DEFAULT = "screenDefault";
     public static final String THEME_SCREEN_DEFAULT = TEMPLATE_SCREEN_DEFAULT + "_default";
     public static final String MEDIA_PRINT = "print";
