@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2012-present Jan Tošovský <jan.tosovsky.cz@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -18,25 +18,26 @@ package in.drifted.planisphere.model;
 
 public final class Star {
 
-    private final Double RA;
-    private final Double Dec;
-    private final Double Mag;
+    private final double RA;
+    private final double Dec;
+    private final double Mag;
 
-    public Star(Double RA, Double Dec, Double Mag) {
+    public Star(double RA, double Dec, double Mag) {
         this.RA = RA;
         this.Dec = Dec;
         this.Mag = Mag;
     }
 
-    public Double getRA() {
+    public double getRA() {
         return RA;
     }
 
-    public Double getDec() {
+    public double getDec() {
         return Dec;
     }
 
-    public Double getMag() {
+    public double getMag() {
         return Mag;
     }
+
 }
