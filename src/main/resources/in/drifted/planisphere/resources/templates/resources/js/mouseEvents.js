@@ -80,10 +80,10 @@ function synchronize(evt) {
             if ("angle" in currentWindow && currentId !== "planisphere-0") {
                 currentWindow.angle = -angle;
                 currentWindow.wheel.setAttribute("transform", "rotate(" + (-180 * angle / Math.PI) + ")");
-                objects[i].setAttribute("style", "position:absolute; z-index:1");
+                objects[i].setAttribute("style", "position:absolute; z-index:1; width: 100vw;");
                 objects[i].setAttribute("id", "planisphere-0");
                 var otherIndex = (i + 1) % 2;
-                objects[otherIndex].setAttribute("style", "position:absolute; z-index:0");
+                objects[otherIndex].setAttribute("style", "position:absolute; z-index:0; width: 100vw;");
                 objects[otherIndex].setAttribute("id", "planisphere-1");
                 break;
             }
