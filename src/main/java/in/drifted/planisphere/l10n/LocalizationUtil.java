@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2012-present Jan Tošovský <jan.tosovsky.cz@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,23 +23,21 @@ import java.util.List;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
-import java.util.ResourceBundle.Control;
 
 public final class LocalizationUtil {
 
     private static final String LOCALE_BUNDLE = "in.drifted.planisphere.resources.localizations.messages";
-    private static final Control UNICODE_CONTROL = new UnicodeControl();
     private ResourceBundle resources;
     private ResourceBundle resourcesFallback;
 
     public LocalizationUtil(Locale locale) {
 
         try {
-            resources = ResourceBundle.getBundle(LOCALE_BUNDLE, locale, UNICODE_CONTROL);
-            resourcesFallback = ResourceBundle.getBundle(LOCALE_BUNDLE, Locale.ENGLISH, UNICODE_CONTROL);
+            resources = ResourceBundle.getBundle(LOCALE_BUNDLE, locale);
+            resourcesFallback = ResourceBundle.getBundle(LOCALE_BUNDLE, Locale.ENGLISH);
 
         } catch (MissingResourceException e) {
-            resources = ResourceBundle.getBundle(LOCALE_BUNDLE, Locale.ENGLISH, UNICODE_CONTROL);
+            resources = ResourceBundle.getBundle(LOCALE_BUNDLE, Locale.ENGLISH);
             resourcesFallback = resources;
         }
     }
