@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2012-present Jan Tošovský <jan.tosovsky.cz@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -134,13 +134,4 @@ public final class Settings {
         return templateMap;
     }
 
-    public static void normalizePrintTheme(Options options) throws IOException {
-
-        String themePrint = options.getThemePrint();
-        String templateName = themePrint.split("_")[0];
-
-        if (!getColorSchemeCollection(templateName).contains(themePrint)) {
-            options.setThemePrint(THEME_PRINT_DEFAULT);
-        }
-    }
 }
