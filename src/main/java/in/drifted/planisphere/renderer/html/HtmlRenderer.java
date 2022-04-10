@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2012-present Jan Tošovský <jan.tosovsky.cz@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -32,20 +32,13 @@ import java.util.Map.Entry;
 
 public final class HtmlRenderer {
 
-    private final SvgRenderer svgRenderer;
-
-    public HtmlRenderer(SvgRenderer svgRenderer) {
-        this.svgRenderer = svgRenderer;
-    }
-
-    public void createFromTemplate(Options options, Path outputPath) throws IOException {
-        Settings.normalizePrintTheme(options);
+    public static void createFromTemplate(Options options, Path outputPath) throws IOException {
         createFromTemplateMap(Settings.getTemplateOptionsMap(options), options.getThemePrint(), outputPath);
     }
 
-    private void createFromTemplateMap(Map<String, Options> templateMap, String colorScheme, Path outputPath) throws IOException {
+    private static void createFromTemplateMap(Map<String, Options> templateMap, String colorScheme, Path outputPath) throws IOException {
 
-        LocalizationUtil l10n = new LocalizationUtil(templateMap.values().iterator().next().getCurrentLocale());
+        LocalizationUtil l10n = new LocalizationUtil(templateMap.values().iterator().next().getLocale());
 
         try (BufferedWriter writer = Files.newBufferedWriter(outputPath, StandardCharsets.UTF_8)) {
 
@@ -57,7 +50,7 @@ public final class HtmlRenderer {
 
             for (Entry<String, Options> entry : templateMap.entrySet()) {
                 try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-                    svgRenderer.createFromTemplate(entry.getKey(), colorScheme, outputStream, entry.getValue());
+                    SvgRenderer.createFromTemplate(entry.getKey(), colorScheme, outputStream, entry.getValue());
                     writer.append(getBase64EncodedImage(outputStream.toByteArray()));
                 }
             }
@@ -65,7 +58,7 @@ public final class HtmlRenderer {
         }
     }
 
-    private String getBase64EncodedImage(byte[] imageByteArray) {
+    private static String getBase64EncodedImage(byte[] imageByteArray) {
 
         StringBuilder result = new StringBuilder();
         result.append("<img src=\"data:image/svg+xml;base64,");

@@ -22,7 +22,7 @@ import in.drifted.planisphere.resources.loader.ConstellationNameListLoader;
 import in.drifted.planisphere.resources.loader.MilkyWayLoader;
 import in.drifted.planisphere.resources.loader.StarListLoader;
 import in.drifted.planisphere.model.ConstellationName;
-import in.drifted.planisphere.model.Coord;
+import in.drifted.planisphere.model.Point;
 import in.drifted.planisphere.model.MilkyWay;
 import in.drifted.planisphere.model.Star;
 import in.drifted.planisphere.Settings;
@@ -44,8 +44,8 @@ public final class CacheHandler {
 
     private List<Star> starList;
     private List<ConstellationName> constellationNameList;
-    private List<Coord> constellationLineList;
-    private List<Coord> constellationBoundaryList;
+    private List<Point> constellationLineList;
+    private List<Point> constellationBoundaryList;
     private MilkyWay milkyWay;
     private final Map<String, String> colorSchemeMap = new HashMap<>();
     private final Map<String, String> fontDataMap = new HashMap<>();
@@ -153,11 +153,11 @@ public final class CacheHandler {
         return constellationNameList;
     }
 
-    public List<Coord> getConstellationLineList() {
+    public List<Point> getConstellationLineList() {
         return constellationLineList;
     }
 
-    public List<Coord> getConstellationBoundaryList() {
+    public List<Point> getConstellationBoundaryList() {
         return constellationBoundaryList;
     }
 

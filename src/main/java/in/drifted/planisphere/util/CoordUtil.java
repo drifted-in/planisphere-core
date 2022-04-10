@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2012-present Jan Tošovský <jan.tosovsky.cz@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,45 +16,46 @@
  */
 package in.drifted.planisphere.util;
 
-import in.drifted.planisphere.model.Coord;
+import in.drifted.planisphere.model.Point;
 
 public final class CoordUtil {
 
-    public static final Boolean convert(Double RA, Double Dec, Coord result, Double latitude, Double scale) {
-        Double RAInRads = RA * Math.PI / 12.0;
-        Double radius;
+    public static final Point convert(double RA, double Dec, double latitude, double scale) {
 
-        if (latitude > 0.0) {
-            if (Dec < latitude - 90.0) {
-                return false;
+        Point result = null;
+        double RAInRads = RA * Math.PI / 12.0;
+
+        if (latitude > 0) {
+            if (Dec < latitude - 90) {
+                return null;
             }
-            radius = scale * 0.89 * (90.0 - Dec) / (180.0 - latitude);
-            result.setLocation(Math.cos(RAInRads) * radius, Math.sin(RAInRads) * radius);
+            double radius = scale * 0.89 * (90 - Dec) / (180 - latitude);
+            result = new Point(Math.cos(RAInRads) * radius, Math.sin(RAInRads) * radius);
         } else {
-            if (Dec > latitude + 90.0) {
-                return false;
+            if (Dec > latitude + 90) {
+                return null;
             }
-            radius = scale * 0.89 * (90.0 + Dec) / (180.0 + latitude);
-            result.setLocation(-Math.cos(RAInRads) * radius, Math.sin(RAInRads) * radius);
+            double radius = scale * 0.89 * (90 + Dec) / (180 + latitude);
+            result = new Point(-Math.cos(RAInRads) * radius, Math.sin(RAInRads) * radius);
         }
 
-        return true;
+        return result;
     }
 
-    public static final void convertWithoutCheck(Double RA, Double Dec, Coord result, Double latitude, Double scale) {
-        Double RAInRads = RA * Math.PI / 12.0;
-        Double radius;
+    public static final Point convertWithoutCheck(double RA, double Dec, double latitude, double scale) {
 
-        if (latitude > 0.0) {
-            radius = scale * 0.89 * (90.0 - Dec) / (180.0 - latitude);
-            result.setLocation(Math.cos(RAInRads) * radius, Math.sin(RAInRads) * radius);
+        Point result = null;
+        double RAInRads = RA * Math.PI / 12.0;
+
+        if (latitude > 0) {
+            double radius = scale * 0.89 * (90 - Dec) / (180 - latitude);
+            result = new Point(Math.cos(RAInRads) * radius, Math.sin(RAInRads) * radius);
         } else {
-            radius = scale * 0.89 * (90.0 + Dec) / (180.0 + latitude);
-            result.setLocation(-Math.cos(RAInRads) * radius, Math.sin(RAInRads) * radius);
+            double radius = scale * 0.89 * (90 + Dec) / (180 + latitude);
+            result = new Point(-Math.cos(RAInRads) * radius, Math.sin(RAInRads) * radius);
         }
+
+        return result;
     }
 
-    public static final Double getDistance(Coord coord1, Coord coord2) {
-        return Math.sqrt(Math.pow(coord1.getX() - coord2.getX(), 2.0) + Math.pow(coord1.getY() - coord2.getY(), 2.0));
-    }
 }

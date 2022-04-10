@@ -20,40 +20,40 @@ import java.util.List;
 
 public final class MilkyWay {
 
-    private List<Coord> darkNorth;
-    private List<Coord> darkSouth;
-    private List<Coord> brightNorth;
-    private List<Coord> brightSouth;
+    private List<Point> darkNorth;
+    private List<Point> darkSouth;
+    private List<Point> brightNorth;
+    private List<Point> brightSouth;
 
-    public List<Coord> getDarkNorth() {
+    public List<Point> getDarkNorth() {
         return darkNorth;
     }
 
-    public void setDarkNorth(List<Coord> darkNorth) {
+    public void setDarkNorth(List<Point> darkNorth) {
         this.darkNorth = darkNorth;
     }
 
-    public List<Coord> getDarkSouth() {
+    public List<Point> getDarkSouth() {
         return darkSouth;
     }
 
-    public void setDarkSouth(List<Coord> darkSouth) {
+    public void setDarkSouth(List<Point> darkSouth) {
         this.darkSouth = darkSouth;
     }
 
-    public List<Coord> getBrightNorth() {
+    public List<Point> getBrightNorth() {
         return brightNorth;
     }
 
-    public void setBrightNorth(List<Coord> brightNorth) {
+    public void setBrightNorth(List<Point> brightNorth) {
         this.brightNorth = brightNorth;
     }
 
-    public List<Coord> getBrightSouth() {
+    public List<Point> getBrightSouth() {
         return brightSouth;
     }
 
-    public void setBrightSouth(List<Coord> brightSouth) {
+    public void setBrightSouth(List<Point> brightSouth) {
         this.brightSouth = brightSouth;
     }
 }

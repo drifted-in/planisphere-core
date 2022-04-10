@@ -20,14 +20,14 @@ public final class ConstellationName {
 
     private final String id;
     private final String abbreviation;
-    private final String latin;
-    private final Coord coord;
+    private final String latinName;
+    private final Point point;
 
-    public ConstellationName(String abbreviation, String latin, Coord coord) {
+    public ConstellationName(String abbreviation, String latinName, Point point) {
         this.abbreviation = abbreviation;
-        this.latin = latin;
-        this.id = generateId(latin);
-        this.coord = coord;
+        this.latinName = latinName;
+        this.id = generateId(latinName);
+        this.point = point;
     }
 
     private String generateId(String name) {
@@ -51,11 +51,11 @@ public final class ConstellationName {
         return this.abbreviation;
     }
 
-    public Coord getCoord() {
-        return this.coord;
+    public Point getPoint() {
+        return this.point;
     }
 
-    public String getLatin() {
-        return this.latin;
+    public String getLatinName() {
+        return this.latinName;
     }
 }

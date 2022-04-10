@@ -16,7 +16,7 @@
  */
 package in.drifted.planisphere.resources.loader;
 
-import in.drifted.planisphere.model.Coord;
+import in.drifted.planisphere.model.Point;
 import in.drifted.planisphere.model.MilkyWay;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -36,7 +36,7 @@ public final class MilkyWayLoader {
 
         for (String filePath : filePathList) {
 
-            List<Coord> dataSet = new LinkedList<>();
+            List<Point> dataSet = new LinkedList<>();
 
             try (
                     InputStream inputStream = MilkyWayLoader.class.getResourceAsStream(filePath);
@@ -50,7 +50,7 @@ public final class MilkyWayLoader {
                         Double b = Math.toRadians(Double.parseDouble(values[1]) / 1000.0);
                         Double Dec = Math.toDegrees(Math.asin(Math.cos(b) * Math.cos(ngp) * Math.sin(l) + Math.sin(b) * Math.sin(ngp)));
                         Double RA = 90.0 + (282.25 + Math.toDegrees(Math.atan2(Math.cos(b) * Math.cos(l), Math.sin(b) * Math.cos(ngp) - Math.cos(b) * Math.sin(ngp) * Math.sin(l)))) / 15.0;
-                        Coord coord = new Coord(RA, Dec);
+                        Point coord = new Point(RA, Dec);
                         dataSet.add(coord);
                     }
                 }

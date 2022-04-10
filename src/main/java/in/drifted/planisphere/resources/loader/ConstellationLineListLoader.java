@@ -16,7 +16,7 @@
  */
 package in.drifted.planisphere.resources.loader;
 
-import in.drifted.planisphere.model.Coord;
+import in.drifted.planisphere.model.Point;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,9 +26,9 @@ import java.util.List;
 
 public final class ConstellationLineListLoader {
 
-    public static List<Coord> getConstellationLineList(String filePath) throws IOException {
+    public static List<Point> getConstellationLineList(String filePath) throws IOException {
 
-        List<Coord> constellationLineList = new LinkedList<>();
+        List<Point> constellationLineList = new LinkedList<>();
 
         try (
                 InputStream inputStream = ConstellationLineListLoader.class.getResourceAsStream(filePath);
@@ -39,7 +39,7 @@ public final class ConstellationLineListLoader {
                 if (!strLine.isEmpty() && !strLine.startsWith("#")) {
                     String[] values = strLine.split(",");
                     for (int i = 0; i < 2; i++) {
-                        constellationLineList.add(new Coord(Double.parseDouble(values[(2 * i)]) / 1000.0, Double.parseDouble(values[(2 * i + 1)]) / 100.0));
+                        constellationLineList.add(new Point(Double.parseDouble(values[(2 * i)]) / 1000.0, Double.parseDouble(values[(2 * i + 1)]) / 100.0));
                     }
                 }
             }

@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2012-present Jan Tošovský <jan.tosovsky.cz@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,50 +16,49 @@
  */
 package in.drifted.planisphere.renderer.svg;
 
-import in.drifted.planisphere.model.Coord;
-import java.util.Iterator;
-import java.util.LinkedList;
+import in.drifted.planisphere.model.Point;
+import java.util.ArrayList;
 import java.util.List;
 
 public final class BezierCircle {
 
-    private static final Double KAPPA = 0.5522847498;
-    private final List<Coord> pointList = new LinkedList<>();
+    private static final double KAPPA = 0.5522847498;
+    private final List<Point> pointList = new ArrayList<>(12);
 
-    public BezierCircle(Double radius) {
-        this(new Coord(0.0, 0.0), radius, 0.0);
+    public BezierCircle(double radius) {
+        this(new Point(0, 0), radius, 0);
     }
 
-    public BezierCircle(Coord center, Double radius) {
-        this(center, radius, 0.0);
+    public BezierCircle(Point center, double radius) {
+        this(center, radius, 0);
     }
 
-    public BezierCircle(Coord center, Double radius, Double angle) {
-        Double rKappa = radius * KAPPA;
+    public BezierCircle(Point center, double radius, double angle) {
+        double rKappa = radius * KAPPA;
         // p0
-        pointList.add(new Coord(0.0, -radius));
+        pointList.add(new Point(0, -radius));
         // p1
-        pointList.add(new Coord(rKappa, -radius));
+        pointList.add(new Point(rKappa, -radius));
         // p2
-        pointList.add(new Coord(radius, -rKappa));
+        pointList.add(new Point(radius, -rKappa));
         // p3
-        pointList.add(new Coord(radius, 0.0));
+        pointList.add(new Point(radius, 0));
         // p4
-        pointList.add(new Coord(radius, rKappa));
+        pointList.add(new Point(radius, rKappa));
         // p5
-        pointList.add(new Coord(rKappa, radius));
+        pointList.add(new Point(rKappa, radius));
         // p6
-        pointList.add(new Coord(0.0, radius));
+        pointList.add(new Point(0, radius));
         // p7
-        pointList.add(new Coord(-rKappa, radius));
+        pointList.add(new Point(-rKappa, radius));
         // p8
-        pointList.add(new Coord(-radius, rKappa));
+        pointList.add(new Point(-radius, rKappa));
         // p9
-        pointList.add(new Coord(-radius, 0.0));
+        pointList.add(new Point(-radius, 0));
         // p10
-        pointList.add(new Coord(-radius, -rKappa));
+        pointList.add(new Point(-radius, -rKappa));
         // p11
-        pointList.add(new Coord(-rKappa, -radius));
+        pointList.add(new Point(-rKappa, -radius));
         if (angle % 360 != 0) {
             rotate(angle);
         }
@@ -68,66 +67,29 @@ public final class BezierCircle {
         }
     }
 
-    public void translate(Coord center) {
-        for (Coord point : pointList) {
-            point.setLocation(point.getX() + center.getX(), point.getY() + center.getY());
+    private void translate(Point center) {
+        List<Point> translatedPointList = new ArrayList<>(12);
+        for (Point point : pointList) {
+            translatedPointList.add(new Point(point.getX() + center.getX(), point.getY() + center.getY()));
         }
+        pointList.clear();
+        pointList.addAll(translatedPointList);
     }
 
-    public void rotate(Double angle) {
-        Double angleInRads = Math.PI / 2 - Math.toRadians(angle);
-        for (Coord point : pointList) {
-            Double radius = Math.sqrt(point.getX() * point.getX() + point.getY() * point.getY());
-            Double angleFinal = angleInRads + Math.atan2(point.getY(), point.getX());
-            point.setLocation(radius * Math.sin(angleFinal), radius * Math.cos(angleFinal));
+    private void rotate(double angle) {
+        List<Point> rotatedPointList = new ArrayList<>(12);
+        double angleInRads = Math.PI / 2 - Math.toRadians(angle);
+        for (Point point : pointList) {
+            double radius = Math.sqrt(point.getX() * point.getX() + point.getY() * point.getY());
+            double angleFinal = angleInRads + Math.atan2(point.getY(), point.getX());
+            rotatedPointList.add(new Point(radius * Math.sin(angleFinal), radius * Math.cos(angleFinal)));
         }
+        pointList.clear();
+        pointList.addAll(rotatedPointList);
     }
 
-    public String getPathDataInv() {
-
-        StringBuilder pathData = new StringBuilder();
-
-        Iterator<Coord> it = pointList.iterator();
-        String firstPoint = PathUtil.getCoordsChunk(it.next());
-        while (it.hasNext()) {
-            pathData.insert(0, PathUtil.getCoordsChunk(it.next()));
-            pathData.insert(0, " ");
-            pathData.insert(0, PathUtil.getCoordsChunk(it.next()));
-            pathData.insert(0, "C");
-            if (it.hasNext()) {
-                pathData.insert(0, PathUtil.getCoordsChunk(it.next()));
-                pathData.insert(0, " ");
-            } else {
-                pathData.insert(0, firstPoint);
-                pathData.insert(0, "M");
-            }
-        }
-        pathData.append(" ");
-        pathData.append(firstPoint);
-
-        return pathData.toString();
+    public List<Point> getPointList() {
+        return pointList;
     }
 
-    public String getPathData() {
-
-        StringBuilder pathData = new StringBuilder();
-
-        Iterator<Coord> it = pointList.iterator();
-        String firstPoint = PathUtil.getCoordsChunk(it.next());
-        pathData.append("M");
-        pathData.append(firstPoint);
-        while (it.hasNext()) {
-            pathData.append("C");
-            pathData.append(PathUtil.getCoordsChunk(it.next()));
-            pathData.append(" ");
-            pathData.append(PathUtil.getCoordsChunk(it.next()));
-            pathData.append(" ");
-            if (it.hasNext()) {
-                pathData.append(PathUtil.getCoordsChunk(it.next()));
-            } else {
-                pathData.append(firstPoint);
-            }
-        }
-        return pathData.toString();
-    }
 }

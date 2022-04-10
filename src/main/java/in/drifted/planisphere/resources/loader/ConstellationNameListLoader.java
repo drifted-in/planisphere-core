@@ -17,7 +17,7 @@
 package in.drifted.planisphere.resources.loader;
 
 import in.drifted.planisphere.model.ConstellationName;
-import in.drifted.planisphere.model.Coord;
+import in.drifted.planisphere.model.Point;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,7 +39,7 @@ public final class ConstellationNameListLoader {
             while ((strLine = reader.readLine()) != null) {
                 if (!strLine.isEmpty() && !strLine.startsWith("#")) {
                     String[] values = strLine.split(",");
-                    Coord coord = new Coord(Double.parseDouble(values[0]) / 1000.0, Double.parseDouble(values[1]) / 100.0);
+                    Point coord = new Point(Double.parseDouble(values[0]) / 1000.0, Double.parseDouble(values[1]) / 100.0);
                     constellationNameList.add(new ConstellationName(values[2], values[3], coord));
                 }
             }
