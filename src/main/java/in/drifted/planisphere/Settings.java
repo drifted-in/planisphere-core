@@ -92,7 +92,7 @@ public final class Settings {
 
         for (String fileName : ResourceUtil.getResourceCollection(Settings.class, "/in/drifted/planisphere/resources/localizations")) {
             if (fileName.startsWith("messages_")) {
-                localeValueCollection.add(fileName.replace("messages_", "").replace(".properties", "").replace("_", "|"));
+                localeValueCollection.add(fileName.replace("messages_", "").replace(".properties", ""));
             }
         }
 
