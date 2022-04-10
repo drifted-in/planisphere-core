@@ -103,15 +103,18 @@ public final class Settings {
 
         Map<String, Options> templateMap = new LinkedHashMap<>();
 
-        Options invertedDoubleSidedSignOptions = new Options(options);
-        invertedDoubleSidedSignOptions.setDoubleSidedSign(-1);
+        Options invertedDoubleSidedSignOptions = new Options(options.getLatitudeFixed(), options.getLocale(),
+                options.getThemeScreen(), options.getThemePrint(), -1, options.hasConstellationLines(),
+                options.hasConstellationLabels(), options.getConstellationLabelsMode(), options.hasConstellationBoundaries(),
+                options.hasMilkyWay(), options.hasDayLightSavingTimeScale(), options.hasCoordsRADec(), options.hasEcliptic(),
+                options.hasAllVisibleStars());
 
         Properties templatesProperties = new Properties();
         templatesProperties.load(Settings.class.getResourceAsStream(Settings.FILE_PATH_TEMPLATES_PROPERTIES));
 
         String templateName = options.getThemePrint().split("_")[0];
 
-        String mode = options.getDoubleSided() ? "D" : "S";
+        String mode = options.isDoubleSided() ? "D" : "S";
         String templateKey = templateName + "_" + mode;
 
         if (!templatesProperties.containsKey(templateKey)) {

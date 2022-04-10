@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2012-present Jan Tošovský <jan.tosovsky.cz@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,7 +17,6 @@
 package in.drifted.planisphere;
 
 import in.drifted.planisphere.renderer.html.HtmlRenderer;
-import in.drifted.planisphere.renderer.svg.SvgRenderer;
 import in.drifted.planisphere.util.CommandLineUtil;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -33,15 +32,7 @@ public class App {
             Path outputPath = Paths.get(args[1]);
             Options options = CommandLineUtil.getOptions(optionsPath);
 
-            try {
-                options = CommandLineUtil.getOptions(optionsPath);
-
-            } catch (IOException e) {
-                System.out.println("The options config file couldn't be found: " + optionsPath.toString());
-                System.out.println("Using default options instead.");
-            }
-
-            new HtmlRenderer(new SvgRenderer()).createFromTemplate(options, outputPath);
+            HtmlRenderer.createFromTemplate(options, outputPath);
 
             System.out.println("The file has been created successfully in the path: " + outputPath.toString());
 
