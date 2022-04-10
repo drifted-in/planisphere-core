@@ -31,7 +31,7 @@ public class App {
 
             Path optionsPath = Paths.get(args[0]);
             Path outputPath = Paths.get(args[1]);
-            Options options = new Options();
+            Options options = CommandLineUtil.getOptions(optionsPath);
 
             try {
                 options = CommandLineUtil.getOptions(optionsPath);

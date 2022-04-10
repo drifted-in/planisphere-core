@@ -1,0 +1,14 @@
+<options
+    latitude="50"
+    locale="en"
+    themePrint="printDefault_dark"
+    constellationLines="1"
+    constellationLabels="1"
+    constellationLabelsMode="0"
+    constellationBoundaries="0"
+    milkyWay="0"
+    dayLightSavingTimeScale="1"
+    coordsRADec="0"
+    ecliptic="1"
+    allVisibleStars="0"
+/>

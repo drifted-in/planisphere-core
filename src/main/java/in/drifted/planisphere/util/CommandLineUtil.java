@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (c) 2012-present Jan Tošovský <jan.tosovsky.cz@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -18,35 +18,99 @@ package in.drifted.planisphere.util;
 
 import in.drifted.planisphere.Options;
 import in.drifted.planisphere.Settings;
-import java.beans.BeanInfo;
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
+import java.util.Locale;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
 
 public class CommandLineUtil {
 
     public static Options getOptions(Path optionsPath) throws IOException {
+        try ( InputStream inputStream = Files.newInputStream(optionsPath)) {
+            return getOptions(inputStream);
+        }
+    }
 
-        Options options = new Options();
-
+    private static Options getOptions(InputStream inputStream) throws IOException {
         try {
-            JAXBContext jaxbContext = JAXBContext.newInstance(Options.class);
-            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-            options = (Options) jaxbUnmarshaller.unmarshal(optionsPath.toFile());
+            Node rootNode = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputStream).getDocumentElement();
 
-        } catch (JAXBException e) {
+            int latitude = 50;
+            Locale locale = Locale.ENGLISH;
+            String themeScreen = "screenDefault_blue";
+            String themePrint = "printDefault_dark";
+            int side = 1;
+            boolean constellationLines = true;
+            boolean constellationLabels = true;
+            int constellationLabelsMode = 0;
+            boolean constellationBoundaries = false;
+            boolean milkyWay = false;
+            boolean dayLightSavingTimeScale = true;
+            boolean coordsRADec = false;
+            boolean ecliptic = true;
+            boolean allVisibleStars = false;
+
+            for (int i = 0; i < rootNode.getAttributes().getLength(); i++) {
+                Node attribute = rootNode.getAttributes().item(i);
+                String value = attribute.getNodeValue();
+                switch (attribute.getNodeName()) {
+                    case "latitude":
+                        latitude = Integer.parseInt(value);
+                        break;
+                    case "locale":
+                        locale = Locale.forLanguageTag(value);
+                        break;
+                    case "themeScreen":
+                        themeScreen = value;
+                        break;
+                    case "themePrint":
+                        themePrint = value;
+                        break;
+                    case "constellationLines":
+                        constellationLines = value.equals("1");
+                        break;
+                    case "constellationLabels":
+                        constellationLabels = value.equals("1");
+                        break;
+                    case "constellationLabelsMode":
+                        constellationLabelsMode = Integer.parseInt(value);
+                        break;
+                    case "constellationBoundaries":
+                        constellationBoundaries = value.equals("1");
+                        break;
+                    case "milkyWay":
+                        milkyWay = value.equals("1");
+                        break;
+                    case "dayLightSavingTimeScale":
+                        dayLightSavingTimeScale = value.equals("1");
+                        break;
+                    case "coordsRADec":
+                        coordsRADec = value.equals("1");
+                        break;
+                    case "ecliptic":
+                        ecliptic = value.equals("1");
+                        break;
+                    case "allVisibleStars":
+                        allVisibleStars = value.equals("1");
+                        break;
+                }
+            }
+
+            return new Options(latitude, locale, themeScreen, themePrint, side, constellationLines, constellationLabels,
+                    constellationLabelsMode, constellationBoundaries, milkyWay, dayLightSavingTimeScale, coordsRADec,
+                    ecliptic, allVisibleStars);
+
+        } catch (ParserConfigurationException | SAXException e) {
             throw new IOException(e);
         }
-
-        return options;
     }
 
     public static String getUsage() throws IOException {
@@ -56,9 +120,18 @@ public class CommandLineUtil {
         usage.append("Usage: java -jar planisphere.jar xmlConfigPath htmlOutputPath \n\n");
         usage.append("Sample XML config with default values: \n");
 
-        Options options = new Options();
-        options.setThemePrint(Settings.THEME_PRINT_DEFAULT);
-        usage.append(CommandLineUtil.getOptionsAsXml(options));
+        try (
+            InputStream inputStream = CommandLineUtil.class.getResourceAsStream("/in/drifted/planisphere/resources/options/options.xml");
+            Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) {
+
+            char[] buffer = new char[1024];
+            int pos;
+
+            while ((pos = reader.read(buffer, 0, buffer.length)) > 0) {
+                usage.append(buffer, 0, pos);
+            }
+        }
+
         usage.append("\n");
 
         usage.append("Supported values: \n");
@@ -93,63 +166,4 @@ public class CommandLineUtil {
         return usage.toString();
     }
 
-    public static String getOptionsAsXml(Options options) throws IOException {
-
-        StringBuilder optionsAsXml = new StringBuilder();
-        optionsAsXml.append("<options\n");
-
-        for (Field field : Options.class.getDeclaredFields()) {
-            String fieldName = field.getName();
-            if (!fieldName.equals("doubleSidedSign")) {
-                Object fieldValueObject = getFieldValueObject(options, fieldName);
-                if (fieldValueObject != null) {
-                    optionsAsXml.append("\t");
-                    optionsAsXml.append(fieldName);
-                    optionsAsXml.append("=\"");
-                    optionsAsXml.append(fieldValueObject);
-                    optionsAsXml.append("\"\n");
-                }
-            }
-        }
-        optionsAsXml.append("/>\n");
-
-        return optionsAsXml.toString();
-    }
-
-    private static Object getFieldValueObject(Object object, String property) throws IOException {
-
-        Object propertyValue = null;
-
-        try {
-            Class<?> objectClass = object.getClass();
-            PropertyDescriptor propertyDescriptor = getPropertyDescriptor(objectClass, property);
-            if (propertyDescriptor != null) {
-                Method readMethod = propertyDescriptor.getReadMethod();
-                if (readMethod != null) {
-                    propertyValue = readMethod.invoke(object);
-                }
-            }
-
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | IntrospectionException e) {
-            throw new IOException(e);
-        }
-
-        return propertyValue;
-    }
-
-    private static PropertyDescriptor getPropertyDescriptor(Class<?> objectClass, String propertyname) throws IntrospectionException {
-
-        PropertyDescriptor propertyDescriptor = null;
-
-        BeanInfo beanInfo = Introspector.getBeanInfo(objectClass);
-
-        for (PropertyDescriptor currentPropertyDescriptor : beanInfo.getPropertyDescriptors()) {
-            if (currentPropertyDescriptor.getName().equals(propertyname)) {
-                propertyDescriptor = currentPropertyDescriptor;
-                break;
-            }
-        }
-
-        return propertyDescriptor;
-    }
 }
