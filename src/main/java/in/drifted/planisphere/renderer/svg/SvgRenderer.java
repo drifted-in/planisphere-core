@@ -1141,7 +1141,7 @@ public final class SvgRenderer {
 
             for (CardinalPoint cardinalPoint : cardinalPointList) {
 
-                if (cardinalPoint.getLabel() != null) {
+                if (cardinalPoint != null) {
 
                     String pathId = "cid" + index;
                     boolean isInner = index > 0 && index < 4;
