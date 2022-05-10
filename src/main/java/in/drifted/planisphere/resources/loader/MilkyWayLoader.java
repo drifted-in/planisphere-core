@@ -32,7 +32,7 @@ public final class MilkyWayLoader {
         MilkyWay milkyWay = new MilkyWay();
 
         int i = 0;
-        Double ngp = Math.toRadians(27.4);
+        double ngp = Math.toRadians(27.4);
 
         for (String filePath : filePathList) {
 
