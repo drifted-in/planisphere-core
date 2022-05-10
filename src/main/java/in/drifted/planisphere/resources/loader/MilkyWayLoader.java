@@ -46,10 +46,10 @@ public final class MilkyWayLoader {
                 while ((strLine = reader.readLine()) != null) {
                     if (!strLine.isEmpty() && !strLine.startsWith("#")) {
                         String[] values = strLine.split(" ");
-                        Double l = Math.toRadians(360.0 - 33.0 - (180.0 + Double.parseDouble(values[0]) / 100.0));
-                        Double b = Math.toRadians(Double.parseDouble(values[1]) / 1000.0);
-                        Double Dec = Math.toDegrees(Math.asin(Math.cos(b) * Math.cos(ngp) * Math.sin(l) + Math.sin(b) * Math.sin(ngp)));
-                        Double RA = 90.0 + (282.25 + Math.toDegrees(Math.atan2(Math.cos(b) * Math.cos(l), Math.sin(b) * Math.cos(ngp) - Math.cos(b) * Math.sin(ngp) * Math.sin(l)))) / 15.0;
+                        double l = Math.toRadians(360.0 - 33.0 - (180.0 + Double.parseDouble(values[0]) / 100.0));
+                        double b = Math.toRadians(Double.parseDouble(values[1]) / 1000.0);
+                        double Dec = Math.toDegrees(Math.asin(Math.cos(b) * Math.cos(ngp) * Math.sin(l) + Math.sin(b) * Math.sin(ngp)));
+                        double RA = 90.0 + (282.25 + Math.toDegrees(Math.atan2(Math.cos(b) * Math.cos(l), Math.sin(b) * Math.cos(ngp) - Math.cos(b) * Math.sin(ngp) * Math.sin(l)))) / 15.0;
                         Point coord = new Point(RA, Dec);
                         dataSet.add(coord);
                     }
