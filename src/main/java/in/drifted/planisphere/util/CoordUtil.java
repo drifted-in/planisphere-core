@@ -44,18 +44,15 @@ public final class CoordUtil {
 
     public static final Point convertWithoutCheck(double RA, double Dec, double latitude, double scale) {
 
-        Point result = null;
         double RAInRads = RA * Math.PI / 12.0;
 
         if (latitude > 0) {
             double radius = scale * 0.89 * (90 - Dec) / (180 - latitude);
-            result = new Point(Math.cos(RAInRads) * radius, Math.sin(RAInRads) * radius);
+            return new Point(Math.cos(RAInRads) * radius, Math.sin(RAInRads) * radius);
         } else {
             double radius = scale * 0.89 * (90 + Dec) / (180 + latitude);
-            result = new Point(-Math.cos(RAInRads) * radius, Math.sin(RAInRads) * radius);
+            return new Point(-Math.cos(RAInRads) * radius, Math.sin(RAInRads) * radius);
         }
-
-        return result;
     }
 
 }
