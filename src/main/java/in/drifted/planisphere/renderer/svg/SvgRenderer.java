@@ -16,9 +16,6 @@
  */
 package in.drifted.planisphere.renderer.svg;
 
-import com.seisw.util.geom.Point2D;
-import com.seisw.util.geom.Poly;
-import com.seisw.util.geom.PolyDefault;
 import in.drifted.planisphere.Options;
 import in.drifted.planisphere.Settings;
 import in.drifted.planisphere.l10n.LocalizationUtil;
@@ -31,6 +28,7 @@ import in.drifted.planisphere.util.CacheHandler;
 import in.drifted.planisphere.util.CoordUtil;
 import in.drifted.planisphere.util.FontManager;
 import in.drifted.planisphere.util.LanguageUtil;
+import in.drifted.planisphere.util.PolygonClipper;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -804,35 +802,37 @@ public final class SvgRenderer {
 
         double latitude = renderingContext.getOptions().getLatitude();
         MilkyWay milkyWay = renderingContext.getCacheHandler().getMilkyWay();
-        Poly sourcePolygon = new PolyDefault();
-        Poly destPolygon = new PolyDefault();
+        PolygonClipper polygonClipper = new PolygonClipper(getClipAreaPointList(scale, latitude));
 
-        destPolygon.add(createClipArea(scale, latitude));
+        List<Point> darkAreaPointList = new ArrayList<>();
+        darkAreaPointList.addAll(getContourPointList(scale, milkyWay.getDarkNorth(), latitude));
+        darkAreaPointList.addAll(getContourPointList(scale, milkyWay.getDarkSouth(), latitude));
+        darkAreaPointList.add(darkAreaPointList.get(0));
 
-        sourcePolygon.add(createContour(scale, milkyWay.getDarkNorth(), latitude));
-        sourcePolygon.add(createContour(scale, milkyWay.getDarkSouth(), latitude));
+        renderMilkyWay(writer, polygonClipper.getClippedContourList(darkAreaPointList), "milkyWayDark");
 
-        renderMilkyWay(writer, sourcePolygon.intersection(destPolygon), "milkyWayBright");
+        List<Point> brightAreaPointList = new ArrayList<>();
+        brightAreaPointList.addAll(getContourPointList(scale, milkyWay.getBrightNorth(), latitude));
+        brightAreaPointList.addAll(getContourPointList(scale, milkyWay.getBrightSouth(), latitude));
+        brightAreaPointList.add(brightAreaPointList.get(0));
 
-        sourcePolygon.add(createContour(scale, milkyWay.getBrightNorth(), latitude));
-        sourcePolygon.add(createContour(scale, milkyWay.getBrightSouth(), latitude));
-
-        renderMilkyWay(writer, sourcePolygon.intersection(destPolygon), "milkyWayDark");
+        renderMilkyWay(writer, polygonClipper.getClippedContourList(brightAreaPointList), "milkyWayBright");
     }
 
-    private static void renderMilkyWay(XMLStreamWriter writer, Poly polygon, String style) throws XMLStreamException {
+    private static void renderMilkyWay(XMLStreamWriter writer, List<List<Point>> contourList, String style) throws XMLStreamException {
         StringBuilder pathData = new StringBuilder();
-        for (int i = 0; i < polygon.getNumInnerPoly(); i++) {
-            Poly contour = polygon.getInnerPoly(i);
-            for (int j = 0; j < contour.getNumPoints(); j++) {
-                if (j == 0) {
+        for (List<Point> contour : contourList) {
+            boolean first = true;
+            for (Point point : contour) {
+                if (first) {
                     pathData.append("M");
+                    first = false;
                 } else {
                     pathData.append("L");
                 }
-                pathData.append(Number.format(contour.getX(j)));
+                pathData.append(Number.format(point.getX()));
                 pathData.append(" ");
-                pathData.append(Number.format(contour.getY(j)));
+                pathData.append(Number.format(point.getY()));
             }
         }
         RendererUtil.renderPath(writer, pathData.toString(), null, style);
@@ -1466,23 +1466,21 @@ public final class SvgRenderer {
         RendererUtil.renderPath(writer, pathData.toString(), "pinMark", "pinMark");
     }
 
-    private static Poly createContour(double scale, List<Point> pointList, double latitude) {
-        Poly contour = new PolyDefault();
+    private static List<Point> getContourPointList(double scale, List<Point> pointList, double latitude) {
+        List<Point> contourPointList = new ArrayList<>();
         for (Point pointRaw : pointList) {
-            Point point = CoordUtil.convertWithoutCheck(pointRaw.getX(), pointRaw.getY(), latitude, scale);
-            contour.add(new Point2D(point.getX(), point.getY()));
+            contourPointList.add(CoordUtil.convertWithoutCheck(pointRaw.getX(), pointRaw.getY(), latitude, scale));
         }
-        return contour;
+        return contourPointList;
     }
 
-    private static Poly createClipArea(double scale, double latitude) {
-        Poly contour = new PolyDefault();
+    private static List<Point> getClipAreaPointList(double scale, double latitude) {
+        List<Point> clipAreaPointList = new ArrayList<>();
         double Dec = latitude > 0 ? latitude - 90 : latitude + 90;
         for (double RA = 0.0; RA <= 24; RA = RA + 0.5) {
-            Point point = CoordUtil.convertWithoutCheck(RA, Dec, latitude, scale);
-            contour.add(new Point2D(point.getX(), point.getY()));
+            clipAreaPointList.add(CoordUtil.convertWithoutCheck(RA, Dec, latitude, scale));
         }
-        return contour;
+        return clipAreaPointList;
     }
 
     private static String getCirclePathDataForConstellationName(Point point) {

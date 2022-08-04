@@ -16,12 +16,11 @@
     </properties>
 
     <dependencies>
-        <!-- milky way clipper (the Java port of GPC clipper) -->
-        <!-- JTS Topology suite could be used as well -->
+        <!-- milky way clipper -->
         <dependency>
-            <groupId>math.geom2d</groupId>
-            <artifactId>javaGeom</artifactId>
-            <version>0.11.1</version>
+            <groupId>org.locationtech.jts</groupId>
+            <artifactId>jts-core</artifactId>
+            <version>1.19.0</version>
         </dependency>
         <!-- for correct detection and handling of CDATA (buttons in the screen mode) -->
         <!-- 5 times faster then Java default stax engine -->
